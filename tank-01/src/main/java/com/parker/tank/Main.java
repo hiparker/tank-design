@@ -7,7 +7,7 @@ package com.parker.tank;
  * @CreateTime: 2020-08-10 01:32
  * @Description: 坦克 主入口
  */
-public class T {
+public class Main {
 
 
     public static void main(String[] args) {
