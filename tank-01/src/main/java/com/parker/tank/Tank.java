@@ -17,6 +17,8 @@ public class Tank {
     private Dir dir = Dir.DOWN;
     /** 速度 */
     private final static int SPEED = 10;
+    /** 是否是移动的状态 */
+    private boolean moving = false;
 
 
     /**
@@ -35,10 +37,23 @@ public class Tank {
         this.dir = dir;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     /**
      * 坦克方向处理
      */
     public void tankDirectionHandler(){
+
+        if(!moving){
+            return;
+        }
+
         switch (dir) {
             case LEFT:
                 x -= SPEED;

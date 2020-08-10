@@ -85,17 +85,22 @@ public class TankFrame extends Frame{
 
             // 处理坦克方向
             setMainTankDir();
-
         }
 
         /**
          * 设置主战坦克方向
          */
         private void setMainTankDir() {
-            if(bL) myTank.setDir(Dir.LEFT);
-            if(bU) myTank.setDir(Dir.UP);
-            if(bR) myTank.setDir(Dir.RIGHT);
-            if(bD) myTank.setDir(Dir.DOWN);
+            if(!bL && !bU && !bR && !bD) {
+                myTank.setMoving(false);
+            }else{
+                if(bL) myTank.setDir(Dir.LEFT);
+                if(bU) myTank.setDir(Dir.UP);
+                if(bR) myTank.setDir(Dir.RIGHT);
+                if(bD) myTank.setDir(Dir.DOWN);
+
+                myTank.setMoving(true);
+            }
         }
 
         @Override
