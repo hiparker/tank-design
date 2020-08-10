@@ -19,12 +19,11 @@ public class TankFrame extends Frame{
 
     private static final String TITLE = "坦克大战 v1.0.0";
     /** 游戏画布宽高 */
-    private static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
+    public static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
     List<Bullet> bulletList = new ArrayList<Bullet>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
-    Bullet myBullet = new Bullet(200,200,Dir.DOWN);
 
     public TankFrame(){
         // 可见
@@ -77,9 +76,9 @@ public class TankFrame extends Frame{
         // 坦克自动行走
         myTank.paint(g);
 
-        for (Bullet bullet : bulletList) {
+        for (int i = 0; i < bulletList.size(); i++) {
             // 子弹自动行走
-            bullet.paint(g);
+            bulletList.get(i).paint(g);
         }
     }
 

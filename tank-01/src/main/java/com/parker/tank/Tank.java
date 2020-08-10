@@ -13,6 +13,8 @@ public class Tank {
 
     /** 速度 */
     private final static int SPEED = 5;
+    /** 宽高 */
+    private final static int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
     /** XY坐标 */
     private int x , y;
@@ -52,43 +54,55 @@ public class Tank {
     /**
      * 坦克方向处理
      */
-    public void tankDirectionHandler(){
+    public void moveHandler(){
 
         if(!moving){
             return;
         }
 
+        int xT = x;
+        int yT = y;
+
         switch (dir) {
             case LEFT:
-                x -= SPEED;
+                xT -= SPEED;
                 break;
             case UP:
-                y -= SPEED;
+                yT -= SPEED;
                 break;
             case RIGHT:
-                x += SPEED;
+                xT += SPEED;
                 break;
             case DOWN:
-                y += SPEED;
+                yT += SPEED;
                 break;
             default:
                 break;
         }
+
+        // 边缘处理
+        if(xT < 0 || yT < TANK_HEIGHT/2|| xT > TankFrame.GAME_WIDTH-TANK_WIDTH || yT > TankFrame.GAME_HEIGHT-TANK_HEIGHT){
+            return;
+        }
+
+        x = xT;
+        y = yT;
     }
 
     public void paint(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.YELLOW);
-        g.fillRect(x,y,50,50);
+        g.fillRect(x,y,TANK_WIDTH,TANK_HEIGHT);
         g.setColor(c);
+
         // 坦克自动行走
-        this.tankDirectionHandler();
+        this.moveHandler();
     }
 
     /**
      * 开火
      */
     public void fired() {
-        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir));
+        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame));
     }
 }

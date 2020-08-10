@@ -14,13 +14,17 @@ public class Bullet {
     /** 速度 */
     private final static int SPEED = 10;
     /** 宽度 高度 */
-    private final static int WIDTH = 5,HEIGHT = 15;
+    private final static int BULLET_WIDTH = 5,BULLET_HEIGHT = 15;
 
 
     /** XY坐标 */
     private int x , y;
     /** 子弹方向 */
     private Dir dir = Dir.DOWN;
+    /** 画布 */
+    private TankFrame tankFrame;
+    /** 存活状态 */
+    private boolean liveFlag = true;
 
     /**
      * 构造函数
@@ -28,10 +32,11 @@ public class Bullet {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir) {
+    public Bullet(int x, int y, Dir dir,TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tankFrame = tankFrame;
     }
 
     /**
@@ -45,7 +50,7 @@ public class Bullet {
     /**
      * 子弹方向处理
      */
-    public void tankDirectionHandler(){
+    public void moveHandler(){
         switch (dir) {
             case LEFT:
                 x -= SPEED;
@@ -62,18 +67,29 @@ public class Bullet {
             default:
                 break;
         }
+
+        // 边缘处理
+        if(x < BULLET_WIDTH/2 || y < 0 || x > TankFrame.GAME_WIDTH-BULLET_WIDTH || y > TankFrame.GAME_HEIGHT-BULLET_HEIGHT){
+            liveFlag = false;
+        }
+
     }
 
 
     public void paint(Graphics g) {
 
+        // 炮弹死亡移除
+        if(!this.liveFlag){
+            tankFrame.bulletList.remove(this);
+        }
+
         Color c = g.getColor();
         g.setColor(Color.RED);
-        g.fillOval(x,y,WIDTH,HEIGHT);
+        g.fillOval(x,y,BULLET_WIDTH,BULLET_HEIGHT);
         g.setColor(c);
 
         // 子弹自动行走
-        this.tankDirectionHandler();
+        this.moveHandler();
     }
 
 }
