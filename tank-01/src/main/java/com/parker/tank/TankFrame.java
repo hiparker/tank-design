@@ -19,7 +19,7 @@ public class TankFrame extends Frame{
     /** 游戏画布宽高 */
     private static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
-    Tank myTank = new Tank(200,200,Dir.DOWN);
+    Tank myTank = new Tank(200,200,Dir.DOWN,this);
     Bullet myBullet = new Bullet(200,200,Dir.DOWN);
 
     public TankFrame(){
@@ -99,6 +99,12 @@ public class TankFrame extends Frame{
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = flag;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    // 按键抬起时
+                    if(!flag){
+                        myTank.fired();
+                    }
                     break;
                 default:
                     break;

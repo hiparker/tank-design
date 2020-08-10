@@ -20,6 +20,8 @@ public class Tank {
     private Dir dir = Dir.DOWN;
     /** 是否是移动的状态 */
     private boolean moving = false;
+    /** 画布 */
+    private TankFrame tankFrame;
 
 
     /**
@@ -28,10 +30,11 @@ public class Tank {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir,TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tankFrame = tankFrame;
     }
 
     public void setDir(Dir dir) {
@@ -80,5 +83,12 @@ public class Tank {
         g.setColor(c);
         // 坦克自动行走
         this.tankDirectionHandler();
+    }
+
+    /**
+     * 开火
+     */
+    public void fired() {
+        tankFrame.myBullet = new Bullet(this.x,this.y,this.dir);
     }
 }
