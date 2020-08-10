@@ -18,7 +18,8 @@ public class TankFrame extends Frame{
     private static final String TITLE = "坦克大战 v1.0.0";
     private int x = 200;
     private int y = 200;
-    private int speed = 10;
+    private final static int SPEED = 10;
+    private Dir dir = Dir.RIGHT;
 
     public TankFrame(){
         // 可见
@@ -47,8 +48,31 @@ public class TankFrame extends Frame{
     @Override
     public void paint(Graphics g) {
         g.fillRect(x,y,50,50);
-//        x+=10;
-//        y+=10;
+
+        // 坦克自动行走
+        this.tankDirectionHandler();
+    }
+
+    /**
+     * 坦克方向处理
+     */
+    public void tankDirectionHandler(){
+        switch (dir) {
+            case LEFT:
+                x -= SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -56,10 +80,10 @@ public class TankFrame extends Frame{
      */
     class MyKeyListener extends KeyAdapter {
 
-        boolean bL = false;
-        boolean bU = false;
-        boolean bR = false;
-        boolean bD = false;
+        private boolean bL = false;
+        private boolean bU = false;
+        private boolean bR = false;
+        private boolean bD = false;
 
         /**
          * 键盘按键事件处理
@@ -86,29 +110,22 @@ public class TankFrame extends Frame{
             }
 
             // 处理坦克方向
-            tankDirectionHandler();
+            setMainTankDir();
+
         }
 
         /**
-         * 坦克方向处理
+         * 设置主战坦克方向
          */
-        public void tankDirectionHandler(){
+        private void setMainTankDir() {
             // 左
-            if(bL){
-                x -= speed;
-            }
+            if(bL) dir = Dir.LEFT;
             // 上
-            if(bU){
-                y -= speed;
-            }
+            if(bU) dir = Dir.UP;
             // 右
-            if(bR){
-                x += speed;
-            }
+            if(bR) dir = Dir.RIGHT;
             // 下
-            if(bD){
-                y += speed;
-            }
+            if(bD) dir = Dir.DOWN;
         }
 
         @Override
@@ -124,4 +141,6 @@ public class TankFrame extends Frame{
             this.KeyEventHandler(false,e);
         }
     }
+
+
 }
