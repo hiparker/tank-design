@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @BelongsProject: tank-01
@@ -18,6 +20,8 @@ public class TankFrame extends Frame{
     private static final String TITLE = "坦克大战 v1.0.0";
     /** 游戏画布宽高 */
     private static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
+
+    List<Bullet> bulletList = new ArrayList<Bullet>();
 
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
     Bullet myBullet = new Bullet(200,200,Dir.DOWN);
@@ -64,10 +68,19 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
+
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("子弹的数量："+bulletList.size(),10,60);
+        g.setColor(c);
+
         // 坦克自动行走
         myTank.paint(g);
-        // 子弹自动行走
-        myBullet.paint(g);
+
+        for (Bullet bullet : bulletList) {
+            // 子弹自动行走
+            bullet.paint(g);
+        }
     }
 
     /**
