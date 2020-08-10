@@ -14,7 +14,7 @@ public class Bullet {
     /** 速度 */
     private final static int SPEED = 10;
     /** 宽度 高度 */
-    private int bulletWidth = 5,bulletHeight = 12;
+    private int bulletWidth = ResourcesMgr.bulletD.getWidth(), bulletHeight = ResourcesMgr.bulletD.getHeight();
 
 
     /** XY坐标 */
