@@ -18,6 +18,7 @@ public class TankFrame extends Frame{
     private static final String TITLE = "坦克大战 v1.0.0";
     private int x = 200;
     private int y = 200;
+    private int speed = 10;
 
     public TankFrame(){
         // 可见
@@ -45,7 +46,6 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
         g.fillRect(x,y,50,50);
 //        x+=10;
 //        y+=10;
@@ -55,15 +55,73 @@ public class TankFrame extends Frame{
      * 内部类 窗口键盘监听事件
      */
     class MyKeyListener extends KeyAdapter {
+
+        boolean bL = false;
+        boolean bU = false;
+        boolean bR = false;
+        boolean bD = false;
+
+        /**
+         * 键盘按键事件处理
+         * @param flag
+         * @param e
+         */
+        public void KeyEventHandler(boolean flag,KeyEvent e){
+            // 键盘按下时 操作
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_LEFT:
+                    bL = flag;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = flag;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = flag;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = flag;
+                    break;
+                default:
+                    break;
+            }
+
+            // 处理坦克方向
+            tankDirectionHandler();
+        }
+
+        /**
+         * 坦克方向处理
+         */
+        public void tankDirectionHandler(){
+            // 左
+            if(bL){
+                x -= speed;
+            }
+            // 上
+            if(bU){
+                y -= speed;
+            }
+            // 右
+            if(bR){
+                x += speed;
+            }
+            // 下
+            if(bD){
+                y += speed;
+            }
+        }
+
         @Override
         public void keyPressed(KeyEvent e) {
-            x+= 200;
-            System.out.println("key pressed");
+            // 键盘按下时 操作
+            this.KeyEventHandler(true,e);
+
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            System.out.println("key released");
+            // 键盘按下时 操作
+            this.KeyEventHandler(false,e);
         }
     }
 }
