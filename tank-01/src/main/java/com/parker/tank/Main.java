@@ -1,5 +1,7 @@
 package com.parker.tank;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @BelongsProject: tank-01
  * @BelongsPackage: com.parker.tank
@@ -10,8 +12,14 @@ package com.parker.tank;
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         TankFrame t = new TankFrame();
+
+        // 自动刷新 window
+        while (true){
+            t.repaint();
+            TimeUnit.MILLISECONDS.sleep(50);
+        }
     }
 
 }
