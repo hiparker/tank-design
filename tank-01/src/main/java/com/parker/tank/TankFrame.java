@@ -16,10 +16,8 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame{
 
     private static final String TITLE = "坦克大战 v1.0.0";
-    private int x = 200;
-    private int y = 200;
-    private final static int SPEED = 10;
-    private Dir dir = Dir.RIGHT;
+
+    Tank myTank = new Tank(200,200,Dir.DOWN);
 
     public TankFrame(){
         // 可见
@@ -47,32 +45,8 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x,y,50,50);
-
         // 坦克自动行走
-        this.tankDirectionHandler();
-    }
-
-    /**
-     * 坦克方向处理
-     */
-    public void tankDirectionHandler(){
-        switch (dir) {
-            case LEFT:
-                x -= SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
-            default:
-                break;
-        }
+        myTank.paint(g);
     }
 
     /**
@@ -118,14 +92,10 @@ public class TankFrame extends Frame{
          * 设置主战坦克方向
          */
         private void setMainTankDir() {
-            // 左
-            if(bL) dir = Dir.LEFT;
-            // 上
-            if(bU) dir = Dir.UP;
-            // 右
-            if(bR) dir = Dir.RIGHT;
-            // 下
-            if(bD) dir = Dir.DOWN;
+            if(bL) myTank.setDir(Dir.LEFT);
+            if(bU) myTank.setDir(Dir.UP);
+            if(bR) myTank.setDir(Dir.RIGHT);
+            if(bD) myTank.setDir(Dir.DOWN);
         }
 
         @Override
