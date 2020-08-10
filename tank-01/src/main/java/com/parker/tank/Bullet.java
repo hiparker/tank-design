@@ -14,7 +14,7 @@ public class Bullet {
     /** 速度 */
     private final static int SPEED = 10;
     /** 宽度 高度 */
-    private final static int BULLET_WIDTH = 5,BULLET_HEIGHT = 15;
+    private int bulletWidth = 5,bulletHeight = 15;
 
 
     /** XY坐标 */
@@ -37,6 +37,8 @@ public class Bullet {
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
+        // 设置 子弹样式
+        setBulletStyle();
     }
 
     /**
@@ -45,6 +47,50 @@ public class Bullet {
      */
     public void setDir(Dir dir) {
         this.dir = dir;
+    }
+
+    /**
+     * 设置 子弹样式
+     */
+    public void setBulletStyle(){
+        switch (this.dir) {
+            case LEFT:
+                // 设置子弹 方向大小样式
+                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
+                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+
+                // 设置子弹方向
+                this.y = this.y + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.x = this.x - this.bulletWidth;
+
+                break;
+            case UP:
+                // 设置子弹方向
+                this.x = this.x + Tank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.y = this.y - this.bulletHeight;
+
+                break;
+            case RIGHT:
+                // 设置子弹 方向大小样式
+                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
+                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+
+                // 设置子弹方向
+                this.x = this.x + Tank.TANK_WIDTH;
+                this.y = this.y + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+
+                break;
+            case DOWN:
+                // 设置子弹方向
+                this.x = this.x + Tank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.y = this.y + Tank.TANK_HEIGHT;
+
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -69,7 +115,7 @@ public class Bullet {
         }
 
         // 边缘处理
-        if(x < BULLET_WIDTH/2 || y < 0 || x > TankFrame.GAME_WIDTH-BULLET_WIDTH || y > TankFrame.GAME_HEIGHT-BULLET_HEIGHT){
+        if(x < 0 || y < bulletHeight/2 || x > TankFrame.GAME_WIDTH-bulletWidth || y > TankFrame.GAME_HEIGHT-bulletHeight){
             liveFlag = false;
         }
 
@@ -85,7 +131,7 @@ public class Bullet {
 
         Color c = g.getColor();
         g.setColor(Color.RED);
-        g.fillOval(x,y,BULLET_WIDTH,BULLET_HEIGHT);
+        g.fillOval(x,y,bulletWidth,bulletHeight);
         g.setColor(c);
 
         // 子弹自动行走

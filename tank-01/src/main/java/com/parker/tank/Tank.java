@@ -14,7 +14,7 @@ public class Tank {
     /** 速度 */
     private final static int SPEED = 5;
     /** 宽高 */
-    private final static int TANK_WIDTH = 50, TANK_HEIGHT = 50;
+    public final static int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
     /** XY坐标 */
     private int x , y;
