@@ -14,7 +14,7 @@ public class Bullet {
     /** 速度 */
     private final static int SPEED = 10;
     /** 宽度 高度 */
-    private int bulletWidth = 5,bulletHeight = 15;
+    private int bulletWidth = 5,bulletHeight = 12;
 
 
     /** XY坐标 */
@@ -61,14 +61,14 @@ public class Bullet {
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
 
                 // 设置子弹方向
-                this.y = this.y + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
-                this.x = this.x - this.bulletWidth;
+                this.y += Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.x -= this.bulletWidth/2;
 
                 break;
             case UP:
                 // 设置子弹方向
-                this.x = this.x + Tank.TANK_WIDTH/2 - this.bulletWidth/2;
-                this.y = this.y - this.bulletHeight;
+                this.x += Tank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.y -= this.bulletHeight/2;
 
                 break;
             case RIGHT:
@@ -78,14 +78,14 @@ public class Bullet {
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
 
                 // 设置子弹方向
-                this.x = this.x + Tank.TANK_WIDTH;
-                this.y = this.y + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.x += + Tank.TANK_WIDTH - this.bulletWidth/2;
+                this.y += + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
 
                 break;
             case DOWN:
                 // 设置子弹方向
-                this.x = this.x + Tank.TANK_WIDTH/2 - this.bulletWidth/2;
-                this.y = this.y + Tank.TANK_HEIGHT;
+                this.x += Tank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.y += Tank.TANK_HEIGHT - this.bulletHeight/2;
 
                 break;
             default:
@@ -110,8 +110,6 @@ public class Bullet {
             case DOWN:
                 y += SPEED;
                 break;
-            default:
-                break;
         }
 
         // 边缘处理
@@ -129,10 +127,20 @@ public class Bullet {
             tankFrame.bulletList.remove(this);
         }
 
-        Color c = g.getColor();
-        g.setColor(Color.RED);
-        g.fillOval(x,y,bulletWidth,bulletHeight);
-        g.setColor(c);
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourcesMgr.bulletL,x,y,null);
+                break;
+            case UP:
+                g.drawImage(ResourcesMgr.bulletU,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourcesMgr.bulletR,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourcesMgr.bulletD,x,y,null);
+                break;
+        }
 
         // 子弹自动行走
         this.moveHandler();
