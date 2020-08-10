@@ -146,4 +146,20 @@ public class Bullet {
         this.moveHandler();
     }
 
+    /**
+     * 碰撞检测
+     * @param tank
+     */
+    public void collideWith(Tank tank) {
+        Rectangle bulletR = new Rectangle(this.x,this.y,this.bulletWidth,this.bulletHeight);
+        Rectangle tankR = new Rectangle(tank.getX(),tank.getY(),Tank.TANK_WIDTH,Tank.TANK_HEIGHT);
+        if(bulletR.intersects(tankR)){
+            tank.died();
+            this.died();
+        }
+    }
+
+    private void died() {
+        this.liveFlag = false;
+    }
 }

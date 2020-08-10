@@ -24,7 +24,8 @@ public class Tank {
     private boolean moving = false;
     /** 画布 */
     private TankFrame tankFrame;
-
+    /** 存活状态 */
+    private boolean liveFlag = true;
 
     /**
      * 构造函数
@@ -51,10 +52,23 @@ public class Tank {
         this.moving = moving;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     /**
      * 坦克方向处理
      */
     public void moveHandler(){
+        // 坦克阵亡
+        if(!liveFlag){
+            tankFrame.enemyTanks.remove(this);
+            return;
+        }
 
         if(!moving){
             return;
@@ -112,5 +126,9 @@ public class Tank {
      */
     public void fired() {
         tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame));
+    }
+
+    public void died() {
+        this.liveFlag = false;
     }
 }

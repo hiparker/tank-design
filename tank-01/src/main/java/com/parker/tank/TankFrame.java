@@ -21,9 +21,14 @@ public class TankFrame extends Frame{
     /** 游戏画布宽高 */
     public static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
+    /** 子弹集合 */
     List<Bullet> bulletList = new ArrayList<Bullet>();
 
-    Tank myTank = new Tank(200,200,Dir.DOWN,this);
+    /** 我方主战坦克 */
+    Tank myTank = new Tank(200,400,Dir.DOWN,this);
+
+    /** 地方坦克 */
+    List<Tank> enemyTanks = new ArrayList<Tank>();
 
     public TankFrame(){
         // 可见
@@ -70,15 +75,28 @@ public class TankFrame extends Frame{
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("子弹的数量："+bulletList.size(),10,60);
+        g.drawString("子弹的数量："+bulletList.size(),10,40);
+        g.drawString("敌人的数量："+enemyTanks.size(),10,60);
         g.setColor(c);
 
         // 坦克自动行走
         myTank.paint(g);
 
+        // 敌方坦克渲染
+        for (int i = 0; i < enemyTanks.size(); i++) {
+            enemyTanks.get(i).paint(g);
+        }
+
+        // 子弹自动行走
         for (int i = 0; i < bulletList.size(); i++) {
-            // 子弹自动行走
             bulletList.get(i).paint(g);
+        }
+
+        // 子弹与坦克碰撞
+        for (int i = 0; i < bulletList.size(); i++) {
+            for (int tk = 0; tk < enemyTanks.size(); tk++) {
+                bulletList.get(i).collideWith(enemyTanks.get(tk));
+            } 
         }
     }
 
