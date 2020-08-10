@@ -16,6 +16,8 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame{
 
     private static final String TITLE = "坦克大战 v1.0.0";
+    /** 游戏画布宽高 */
+    private static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
     Tank myTank = new Tank(200,200,Dir.DOWN);
     Bullet myBullet = new Bullet(200,200,Dir.DOWN);
@@ -24,7 +26,7 @@ public class TankFrame extends Frame{
         // 可见
         this.setVisible(true);
         // 设置窗口大小
-        this.setSize(800,600);
+        this.setSize(GAME_WIDTH,GAME_HEIGHT);
         // 禁止改变大小
         this.setResizable(false);
         // 设置标题
@@ -42,6 +44,22 @@ public class TankFrame extends Frame{
 
         // window 按键监听
         this.addKeyListener(new MyKeyListener());
+    }
+
+    Image offScreenImage = null;
+    // 双通道缓存解决闪烁问题
+    @Override
+    public void update(Graphics g) {
+        if(offScreenImage == null){
+            offScreenImage = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage,0,0,null);
     }
 
     @Override
