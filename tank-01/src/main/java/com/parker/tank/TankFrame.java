@@ -1,6 +1,8 @@
 package com.parker.tank;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -36,6 +38,9 @@ public class TankFrame extends Frame{
                 System.exit(0);
             }
         });
+
+        // window 按键监听
+        this.addKeyListener(new MyKeyListener());
     }
 
     @Override
@@ -44,5 +49,20 @@ public class TankFrame extends Frame{
         g.fillRect(x,y,50,50);
         x+=10;
         y+=10;
+    }
+
+    /**
+     * 内部类 窗口键盘监听事件
+     */
+    class MyKeyListener extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("key pressed");
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            System.out.println("key released");
+        }
     }
 }
