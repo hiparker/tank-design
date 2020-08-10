@@ -18,6 +18,7 @@ public class TankFrame extends Frame{
     private static final String TITLE = "坦克大战 v1.0.0";
 
     Tank myTank = new Tank(200,200,Dir.DOWN);
+    Bullet myBullet = new Bullet(200,200,Dir.DOWN);
 
     public TankFrame(){
         // 可见
@@ -47,6 +48,8 @@ public class TankFrame extends Frame{
     public void paint(Graphics g) {
         // 坦克自动行走
         myTank.paint(g);
+        // 子弹自动行走
+        myBullet.paint(g);
     }
 
     /**

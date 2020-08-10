@@ -6,21 +6,21 @@ import java.awt.*;
  * @BelongsProject: tank-01
  * @BelongsPackage: com.parker.tank
  * @Author: Parker
- * @CreateTime: 2020-08-10 15:46
- * @Description: 主战坦克
+ * @CreateTime: 2020-08-10 16:18
+ * @Description: 炮弹类
  */
-public class Tank {
+public class Bullet {
 
     /** 速度 */
-    private final static int SPEED = 5;
+    private final static int SPEED = 10;
+    /** 宽度 高度 */
+    private final static int WIDTH = 5,HEIGHT = 15;
+
 
     /** XY坐标 */
     private int x , y;
-    /** 坦克方向 */
+    /** 子弹方向 */
     private Dir dir = Dir.DOWN;
-    /** 是否是移动的状态 */
-    private boolean moving = false;
-
 
     /**
      * 构造函数
@@ -28,33 +28,24 @@ public class Tank {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir) {
+    public Bullet(int x, int y, Dir dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
+    /**
+     * 后期可作为 跟踪弹 自动子弹方向
+     * @param dir
+     */
     public void setDir(Dir dir) {
         this.dir = dir;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     /**
-     * 坦克方向处理
+     * 子弹方向处理
      */
     public void tankDirectionHandler(){
-
-        if(!moving){
-            return;
-        }
-
         switch (dir) {
             case LEFT:
                 x -= SPEED;
@@ -73,9 +64,16 @@ public class Tank {
         }
     }
 
+
     public void paint(Graphics g) {
-        g.fillRect(x,y,50,50);
-        // 坦克自动行走
+
+        Color c = g.getColor();
+        g.setColor(Color.RED);
+        g.fillOval(x,y,WIDTH,HEIGHT);
+        g.setColor(c);
+
+        // 子弹自动行走
         this.tankDirectionHandler();
     }
+
 }
