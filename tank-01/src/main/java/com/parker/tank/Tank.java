@@ -64,11 +64,7 @@ public class Tank {
      * 坦克方向处理
      */
     public void moveHandler(){
-        // 坦克阵亡
-        if(!liveFlag){
-            tankFrame.enemyTanks.remove(this);
-            return;
-        }
+
 
         if(!moving){
             return;
@@ -102,6 +98,12 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        // 坦克阵亡
+        if(!liveFlag){
+            tankFrame.enemyTanks.remove(this);
+            return;
+        }
+
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourcesMgr.tankL,x,y,null);
