@@ -9,6 +9,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @BelongsProject: tank-01
@@ -20,6 +22,7 @@ import java.util.List;
 public class TankFrame extends Frame{
 
     private static final String TITLE = "坦克大战 v1.0.0";
+
     /** 游戏画布宽高 */
     public static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
@@ -59,8 +62,8 @@ public class TankFrame extends Frame{
         this.addKeyListener(new MyKeyListener());
 
         // 背景音乐
-        new Thread(() -> {
-                new Audio("static/audio/war1.wav").loop();
+        new Thread(()->{
+            new Audio("static/audio/war1.wav").loop();
         }).start();
 
     }

@@ -39,11 +39,8 @@ public class Explode {
     public void paint(Graphics g) {
         g.drawImage(ResourcesMgr.explodes[count++],x,y,null);
         if(count >= ResourcesMgr.explodes.length){
-
             // 爆炸消失
             tankFrame.explodeList.remove(this);
-
-            //count = 0;
         }
     }
 

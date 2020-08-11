@@ -1,9 +1,6 @@
 package com.parker.tank;
 
-import com.parker.tank.util.TankUtil;
-
 import java.awt.*;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -40,6 +37,8 @@ public class Tank {
     private Tank futureTank;
 
     private Random random = new Random();
+
+    private Audio moveAudio = new Audio("static/audio/tank_move.wav");
 
     /**
      * 构造函数
@@ -96,6 +95,14 @@ public class Tank {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+        // 移动中 添加音效
+        /*if(this.moving){
+            TankFrame.threads.submit(()->{
+               moveAudio.loop();
+            });
+        }else{
+            moveAudio.close();
+        }*/
     }
 
     public void setFutureTank(Tank futureTank) {
@@ -219,6 +226,7 @@ public class Tank {
      */
     public void fired() {
         tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
+
         // 开火音效
         new Thread(()->{
             new Audio("static/audio/tank_fire.wav").play();
