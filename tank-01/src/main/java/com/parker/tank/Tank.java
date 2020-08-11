@@ -26,6 +26,8 @@ public class Tank {
     private TankFrame tankFrame;
     /** 存活状态 */
     private boolean liveFlag = true;
+    /** 当前位置 */
+    private Rectangle rectangle;
 
     /**
      * 构造函数
@@ -38,6 +40,20 @@ public class Tank {
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
+
+        // 设置碰撞检测位置
+        rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+
+    }
+
+    /**
+     * 获得当前位置（用于碰撞检测）
+     * @return
+     */
+    public Rectangle getPosition(){
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        return rectangle;
     }
 
     public void setDir(Dir dir) {

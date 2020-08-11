@@ -1,5 +1,7 @@
 package com.parker.tank;
 
+import com.parker.tank.util.TankUtil;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -95,8 +97,8 @@ public class TankFrame extends Frame{
         // 子弹与坦克碰撞
         for (int i = 0; i < bulletList.size(); i++) {
             for (int tk = 0; tk < enemyTanks.size(); tk++) {
-                bulletList.get(i).collideWith(enemyTanks.get(tk));
-            } 
+                TankUtil.collideWith(enemyTanks.get(tk),bulletList.get(i));
+            }
         }
     }
 

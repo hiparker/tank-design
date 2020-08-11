@@ -25,6 +25,8 @@ public class Bullet {
     private TankFrame tankFrame;
     /** 存活状态 */
     private boolean liveFlag = true;
+    /** 当前位置 */
+    private Rectangle rectangle;
 
     /**
      * 构造函数
@@ -37,9 +39,24 @@ public class Bullet {
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
+
+        // 设置碰撞检测位置
+        rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);
+
         // 设置 子弹样式
         setBulletStyle();
     }
+
+    /**
+     * 获得当前位置（用于碰撞检测）
+     * @return
+     */
+    public Rectangle getPosition(){
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        return rectangle;
+    }
+
 
     /**
      * 后期可作为 跟踪弹 自动子弹方向
@@ -146,20 +163,7 @@ public class Bullet {
         this.moveHandler();
     }
 
-    /**
-     * 碰撞检测
-     * @param tank
-     */
-    public void collideWith(Tank tank) {
-        Rectangle bulletR = new Rectangle(this.x,this.y,this.bulletWidth,this.bulletHeight);
-        Rectangle tankR = new Rectangle(tank.getX(),tank.getY(),Tank.TANK_WIDTH,Tank.TANK_HEIGHT);
-        if(bulletR.intersects(tankR)){
-            tank.died();
-            this.died();
-        }
-    }
-
-    private void died() {
+    public void died() {
         this.liveFlag = false;
     }
 }
