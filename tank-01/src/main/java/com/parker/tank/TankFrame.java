@@ -54,6 +54,12 @@ public class TankFrame extends Frame{
 
         // window 按键监听
         this.addKeyListener(new MyKeyListener());
+
+        // 背景音乐
+        new Thread(() -> {
+                new Audio("static/audio/war1.wav").loop();
+        }).start();
+
     }
 
     Image offScreenImage = null;
