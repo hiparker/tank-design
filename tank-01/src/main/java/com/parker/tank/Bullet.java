@@ -27,6 +27,8 @@ public class Bullet {
     private boolean liveFlag = true;
     /** 当前位置 */
     private Rectangle rectangle;
+    /** 归属坦克 */
+    public Tank belongTank;
 
     /**
      * 构造函数
@@ -34,11 +36,12 @@ public class Bullet {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir,TankFrame tankFrame) {
+    public Bullet(int x, int y, Dir dir,TankFrame tankFrame,Tank belongTank) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
+        this.belongTank = belongTank;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);

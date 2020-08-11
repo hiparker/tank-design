@@ -15,9 +15,9 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         TankFrame t = new TankFrame();
 
-        // 创建5个地方坦克
+        // 创建5个敌方坦克
         for (int i = 0; i < 5; i++) {
-            t.enemyTanks.add(new Tank(50+i*80,200,Dir.DOWN,t));
+            t.enemyTanks.add(new Tank(50+i*80,200,Dir.DOWN,t,TankGroup.BLUE,true));
         }
 
         // 自动刷新 window

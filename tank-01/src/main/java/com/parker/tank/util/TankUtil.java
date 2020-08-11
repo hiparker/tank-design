@@ -25,12 +25,19 @@ public final class TankUtil {
      */
     public static boolean collideWith(Tank tank, Bullet bullet) {
         boolean flag = true;
+        Tank bulletBelongTank = bullet.belongTank;
         Rectangle tankPosition = tank.getPosition();
         Rectangle bulletPosition = bullet.getPosition();
         if(bulletPosition.intersects(tankPosition)){
-            tank.died();
-            bullet.died();
-            flag = false;
+            System.out.println(123);
+            // 自己不能打自己 并且 默认关闭队友伤害
+            if(!tank.equals(bulletBelongTank) &&
+                !tank.group.equals(bulletBelongTank.group)
+                ){
+                tank.died();
+                bullet.died();
+                flag = false;
+            }
         }
         return flag;
     }

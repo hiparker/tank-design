@@ -27,9 +27,9 @@ public class TankFrame extends Frame{
     List<Bullet> bulletList = new ArrayList<Bullet>();
 
     /** 我方主战坦克 */
-    Tank myTank = new Tank(200,400,Dir.DOWN,this);
+    Tank myTank = new Tank(200,400,Dir.DOWN,this,TankGroup.RED);
 
-    /** 地方坦克 */
+    /** 敌方坦克 */
     List<Tank> enemyTanks = new ArrayList<Tank>();
 
     public TankFrame(){
@@ -99,6 +99,8 @@ public class TankFrame extends Frame{
             for (int tk = 0; tk < enemyTanks.size(); tk++) {
                 TankUtil.collideWith(enemyTanks.get(tk),bulletList.get(i));
             }
+
+            TankUtil.collideWith(myTank,bulletList.get(i));
         }
     }
 

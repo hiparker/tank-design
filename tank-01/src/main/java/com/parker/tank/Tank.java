@@ -1,6 +1,7 @@
 package com.parker.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @BelongsProject: tank-01
@@ -28,6 +29,12 @@ public class Tank {
     private boolean liveFlag = true;
     /** 当前位置 */
     private Rectangle rectangle;
+    /** 坦克分组 */
+    public TankGroup group;
+    /** 自动模式 */
+    private boolean autoFlag = false;
+
+    private Random random = new Random();
 
     /**
      * 构造函数
@@ -35,15 +42,33 @@ public class Tank {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir,TankFrame tankFrame) {
+    public Tank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
+        this.group = group;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+    }
 
+    /**
+     * 构造函数
+     * @param x
+     * @param y
+     * @param dir
+     */
+    public Tank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group,boolean autoFlag) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.tankFrame = tankFrame;
+        this.group = group;
+        this.autoFlag = autoFlag;
+
+        // 设置碰撞检测位置
+        rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
     }
 
     /**
@@ -80,8 +105,6 @@ public class Tank {
      * 坦克方向处理
      */
     public void moveHandler(){
-
-
         if(!moving){
             return;
         }
@@ -137,13 +160,24 @@ public class Tank {
 
         // 坦克自动行走
         this.moveHandler();
+
+        // 设置坦克随机开炮 与 行走
+        if(this.autoFlag){
+
+            // 随机开炮 几率暂定 5%
+            int randomBullet = random.nextInt(100);
+            if(randomBullet > 95){
+                this.fired();
+            }
+
+        }
     }
 
     /**
      * 开火
      */
     public void fired() {
-        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame));
+        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
     }
 
     public void died() {
