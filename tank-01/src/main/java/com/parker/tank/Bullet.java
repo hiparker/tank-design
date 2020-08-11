@@ -76,9 +76,13 @@ public class Bullet {
         switch (this.dir) {
             case LEFT:
                 // 设置子弹 方向大小样式
+                System.out.println(this.bulletWidth +"--1--"+ this.bulletHeight);
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                System.out.println(this.bulletWidth +"--1--"+ this.bulletHeight);
                 this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
+                System.out.println(this.bulletWidth +"--2--"+ this.bulletHeight);
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                System.out.println(this.bulletWidth +"--3--"+ this.bulletHeight);
 
                 // 设置子弹方向
                 this.y += Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
