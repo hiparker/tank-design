@@ -1,6 +1,9 @@
 package com.parker.tank;
 
+import com.parker.tank.util.TankUtil;
+
 import java.awt.*;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,6 +36,8 @@ public class Tank {
     public TankGroup group;
     /** 自动模式 */
     private boolean autoFlag = false;
+    private Dir[] dirs = {Dir.LEFT,Dir.UP,Dir.RIGHT,Dir.DOWN};
+    private Tank futureTank;
 
     private Random random = new Random();
 
@@ -93,6 +98,10 @@ public class Tank {
         this.moving = moving;
     }
 
+    public void setFutureTank(Tank futureTank) {
+        this.futureTank = futureTank;
+    }
+
     public int getX() {
         return x;
     }
@@ -132,6 +141,29 @@ public class Tank {
             return;
         }
 
+        /*List<Tank> enemyTanks = tankFrame.enemyTanks;
+        Tank myTank = tankFrame.myTank;
+        this.futureTank.x = xT;
+        this.futureTank.y = yT;
+
+        // 检测是否碰撞到 我方主战坦克
+        boolean collideFlag = false;
+        if(!myTank.equals(this)){
+            collideFlag = !TankUtil.collideWithTank(this.futureTank,myTank);
+        }
+        for (int i = 0; i < enemyTanks.size(); i++) {
+            // 不等于自身的坦克进行 碰撞检测
+            if(!enemyTanks.get(i).equals(this)){
+                if(!TankUtil.collideWithTank(this.futureTank,enemyTanks.get(i))){
+                    collideFlag = true;
+                    break;
+                }
+            }
+        }
+        if(collideFlag){
+            return;
+        }*/
+
         x = xT;
         y = yT;
     }
@@ -164,10 +196,19 @@ public class Tank {
         // 设置坦克随机开炮 与 行走
         if(this.autoFlag){
 
+            this.setMoving(true);
+
             // 随机开炮 几率暂定 5%
             int randomBullet = random.nextInt(100);
             if(randomBullet > 95){
                 this.fired();
+            }
+
+            // 随机坦克方向 几率暂定 4%
+            int randomTankDire = random.nextInt(100);
+            if(randomTankDire > 96){
+                int po = random.nextInt(4);
+                this.setDir(dirs[po]);
             }
 
         }

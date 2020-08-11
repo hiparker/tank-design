@@ -17,7 +17,7 @@ public class Main {
 
         // 创建5个敌方坦克
         for (int i = 0; i < 5; i++) {
-            t.enemyTanks.add(new Tank(50+i*80,200,Dir.DOWN,t,TankGroup.BLUE,true));
+            t.enemyTanks.add(TankFactory.createTank(50+i*80,200,Dir.DOWN,t,TankGroup.BLUE,true));
         }
 
         // 自动刷新 window

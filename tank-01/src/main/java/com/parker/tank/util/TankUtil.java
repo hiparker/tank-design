@@ -29,7 +29,6 @@ public final class TankUtil {
         Rectangle tankPosition = tank.getPosition();
         Rectangle bulletPosition = bullet.getPosition();
         if(bulletPosition.intersects(tankPosition)){
-            System.out.println(123);
             // 自己不能打自己 并且 默认关闭队友伤害
             if(!tank.equals(bulletBelongTank) &&
                 !tank.group.equals(bulletBelongTank.group)
@@ -38,6 +37,20 @@ public final class TankUtil {
                 bullet.died();
                 flag = false;
             }
+        }
+        return flag;
+    }
+
+    /**
+     * 坦克自身 碰撞检测
+     * @param tank1 tank2
+     */
+    public static boolean collideWithTank(Tank tank1, Tank tank2) {
+        boolean flag = true;
+        Rectangle tank1Position = tank1.getPosition();
+        Rectangle tank2Position = tank2.getPosition();
+        if(tank1Position.intersects(tank2Position)){
+           flag = false;
         }
         return flag;
     }

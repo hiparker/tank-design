@@ -27,7 +27,7 @@ public class TankFrame extends Frame{
     List<Bullet> bulletList = new ArrayList<Bullet>();
 
     /** 我方主战坦克 */
-    Tank myTank = new Tank(200,400,Dir.DOWN,this,TankGroup.RED);
+    Tank myTank = TankFactory.createTank(200,400,Dir.DOWN,this,TankGroup.RED);
 
     /** 敌方坦克 */
     List<Tank> enemyTanks = new ArrayList<Tank>();
