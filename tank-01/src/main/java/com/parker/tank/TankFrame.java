@@ -26,6 +26,9 @@ public class TankFrame extends Frame{
     /** 子弹集合 */
     List<Bullet> bulletList = new ArrayList<Bullet>();
 
+    /** 爆炸集合 */
+    List<Explode> explodeList = new ArrayList<Explode>();
+
     /** 我方主战坦克 */
     Tank myTank = TankFactory.createTank(200,400,Dir.DOWN,this,TankGroup.RED);
 
@@ -99,6 +102,11 @@ public class TankFrame extends Frame{
         for (int i = 0; i < bulletList.size(); i++) {
             bulletList.get(i).paint(g);
         }
+        
+        // 坦克爆炸
+        for (int i = 0; i < explodeList.size(); i++) {
+            explodeList.get(i).paint(g);
+        }
 
         // 子弹与坦克碰撞
         for (int i = 0; i < bulletList.size(); i++) {
@@ -108,6 +116,8 @@ public class TankFrame extends Frame{
 
             TankUtil.collideWith(myTank,bulletList.get(i));
         }
+
+        
     }
 
     /**

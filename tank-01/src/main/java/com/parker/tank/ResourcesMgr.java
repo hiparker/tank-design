@@ -18,6 +18,8 @@ public class ResourcesMgr {
     public static BufferedImage tankL, tankU, tankR, tankD;
     /** 炮弹图片 */
     public static BufferedImage bulletL, bulletU, bulletR, bulletD;
+    /** 爆炸图片 */
+    public static BufferedImage[] explodes = new BufferedImage[16];
 
     static{
         try {
@@ -30,6 +32,10 @@ public class ResourcesMgr {
             bulletU = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/bulletU.gif"));
             bulletR = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/bulletR.gif"));
             bulletD = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/bulletD.gif"));
+
+            for (int i = 0; i < 16; i++) {
+                explodes[i] = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/e"+(i+1)+".gif"));
+            }
 
 
         } catch (IOException e) {

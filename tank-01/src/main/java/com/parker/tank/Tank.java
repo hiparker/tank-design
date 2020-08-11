@@ -219,9 +219,15 @@ public class Tank {
      */
     public void fired() {
         tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
+        // 开火音效
+        new Thread(()->{
+            new Audio("static/audio/tank_fire.wav").play();
+        }).start();
     }
 
     public void died() {
         this.liveFlag = false;
+        // 坦克阵亡新建爆炸
+        tankFrame.explodeList.add(new Explode(this.x,this.y,tankFrame));
     }
 }
