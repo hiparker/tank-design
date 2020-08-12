@@ -9,6 +9,9 @@ import java.util.Properties;
  * @Author: Parker
  * @CreateTime: 2020-08-12 14:29
  * @Description: 配置文件
+ *
+ * 单例模式
+ *
  */
 public final class PropertiesMgr {
 

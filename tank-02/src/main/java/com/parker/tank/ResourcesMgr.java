@@ -13,6 +13,9 @@ import java.io.InputStream;
  * @Author: Parker
  * @CreateTime: 2020-08-11 01:09
  * @Description: 加载静态资源
+ *
+ * 单例模式
+ *
  */
 public class ResourcesMgr {
 
