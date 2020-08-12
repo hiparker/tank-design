@@ -27,11 +27,12 @@ public enum  TankFireFour implements TankFire{
         if(tank == null || tank.tankFrame == null){
             return;
         }
-        new Bullet(tank.getX(),tank.getY(),Dir.LEFT,tank.tankFrame,tank);
-        new Bullet(tank.getX(),tank.getY(),Dir.UP,tank.tankFrame,tank);
-        new Bullet(tank.getX(),tank.getY(),Dir.RIGHT,tank.tankFrame,tank);
-        new Bullet(tank.getX(),tank.getY(),Dir.DOWN,tank.tankFrame,tank);
 
+        Dir[] values = Dir.values();
+        for (Dir value : values) {
+            new Bullet(tank.getX(),tank.getY(),value,tank.tankFrame,tank);
+        }
+        
         // 开火音效
         new Thread(()->{
             new Audio("static/audio/tank_fire.wav").play();
