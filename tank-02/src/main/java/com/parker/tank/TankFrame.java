@@ -25,7 +25,7 @@ public class TankFrame extends Frame{
     public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;
 
     /** 子弹集合 */
-    List<Bullet> bulletList = new ArrayList<Bullet>();
+    public List<Bullet> bulletList = new ArrayList<Bullet>();
 
     /** 爆炸集合 */
     List<Explode> explodeList = new ArrayList<Explode>();

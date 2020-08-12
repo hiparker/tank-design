@@ -1,5 +1,9 @@
 package com.parker.tank;
 
+import com.parker.tank.fire.TankFire;
+import com.parker.tank.fire.TankFireFour;
+import com.parker.tank.fire.TankFireSingle;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -27,7 +31,7 @@ public class Tank {
     /** 是否是移动的状态 */
     private boolean moving = false;
     /** 画布 */
-    private TankFrame tankFrame;
+    public TankFrame tankFrame;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -100,6 +104,10 @@ public class Tank {
         this.dir = dir;
     }
 
+    public Dir getDir() {
+        return dir;
+    }
+
     public boolean isMoving() {
         return moving;
     }
@@ -119,6 +127,8 @@ public class Tank {
     public int getY() {
         return y;
     }
+
+
 
     /**
      * 坦克方向处理
@@ -207,12 +217,22 @@ public class Tank {
      * 开火
      */
     public void fired() {
-        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
 
-        // 开火音效
-        new Thread(()->{
-            new Audio("static/audio/tank_fire.wav").play();
-        }).start();
+        TankFire tankFire = null;
+        // 策略模式 不同的开火方案
+        if(TankGroup.BLUE.equals(this.group)){
+            tankFire = new TankFireSingle();
+        }else if(TankGroup.RED.equals(this.group)){
+            tankFire = new TankFireFour();
+        }
+        if(tankFire != null){
+            tankFire.fire(this);
+            // 开火音效
+            new Thread(()->{
+                new Audio("static/audio/tank_fire.wav").play();
+            }).start();
+        }
+
     }
 
     public void died() {

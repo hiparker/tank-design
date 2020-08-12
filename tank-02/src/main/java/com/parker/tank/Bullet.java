@@ -50,6 +50,8 @@ public class Bullet {
         setBulletStyle();
     }
 
+
+
     /**
      * 获得当前位置（用于碰撞检测）
      * @return
