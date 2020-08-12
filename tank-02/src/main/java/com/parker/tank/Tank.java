@@ -18,7 +18,7 @@ import java.util.Random;
 public class Tank {
 
     /** 速度 */
-    private final static int SPEED = 5;
+    private static int SPEED = 5;
     /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
     public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
@@ -54,6 +54,10 @@ public class Tank {
      * @param dir
      */
     public Tank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group) {
+
+        // 初始化
+        this.init();
+
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -78,6 +82,10 @@ public class Tank {
      * @param dir
      */
     public Tank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group,boolean autoFlag) {
+
+        // 初始化
+        this.init();
+
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -94,6 +102,16 @@ public class Tank {
 
         // 初始化开火的策略模式
         this.initFireStrategy();
+    }
+
+    /**
+     * 初始化
+     */
+    public void init(){
+        // 速度
+        if(PropertiesMgr.getByInteger("tankSpeed") != null){
+            SPEED = PropertiesMgr.getByInteger("tankSpeed");
+        }
     }
 
     /**

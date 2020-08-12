@@ -1,5 +1,7 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
+
 import java.awt.*;
 
 /**
@@ -12,7 +14,7 @@ import java.awt.*;
 public class Bullet {
 
     /** 速度 */
-    private final static int SPEED = 10;
+    private static int SPEED = 10;
     /** 宽度 高度 */
     private int bulletWidth = ResourcesMgr.bulletD.getWidth(), bulletHeight = ResourcesMgr.bulletD.getHeight();
 
@@ -37,6 +39,10 @@ public class Bullet {
      * @param dir
      */
     public Bullet(int x, int y, Dir dir,TankFrame tankFrame,Tank belongTank) {
+
+        // 初始化
+        this.init();
+
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -52,7 +58,15 @@ public class Bullet {
         tankFrame.bulletList.add(this);
     }
 
-
+    /**
+     * 初始化
+     */
+    public void init(){
+        // 速度
+        if(PropertiesMgr.getByInteger("bulletSpeed") != null){
+            SPEED = PropertiesMgr.getByInteger("bulletSpeed");
+        }
+    }
 
     /**
      * 获得当前位置（用于碰撞检测）
