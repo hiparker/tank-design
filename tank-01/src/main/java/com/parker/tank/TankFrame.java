@@ -60,9 +60,9 @@ public class TankFrame extends Frame{
         this.addKeyListener(new MyKeyListener());
 
         // 背景音乐
-        new Thread(()->{
+        /*new Thread(()->{
             new Audio("static/audio/war1.wav").loop();
-        }).start();
+        }).start();*/
 
     }
 
@@ -89,6 +89,7 @@ public class TankFrame extends Frame{
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量："+bulletList.size(),10,40);
         g.drawString("敌人的数量："+enemyTanks.size(),10,60);
+        g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
 
         // 坦克自动行走
