@@ -11,8 +11,17 @@ import com.parker.tank.Tank;
  * @Author: Parker
  * @CreateTime: 2020-08-12 16:51
  * @Description: 坦克开火 - 单发
+ *
+ * 策略模式 -》 具体实现使用单例模式
+ *
  */
-public class TankFireFour implements TankFire{
+public enum  TankFireFour implements TankFire{
+
+    /**
+     * 实例
+     */
+    INSTANCE;
+
     @Override
     public void fire(Tank tank) {
         if(tank == null || tank.tankFrame == null){

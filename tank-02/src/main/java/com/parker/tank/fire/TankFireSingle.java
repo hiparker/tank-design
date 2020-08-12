@@ -11,7 +11,13 @@ import com.parker.tank.Tank;
  * @CreateTime: 2020-08-12 16:51
  * @Description: 坦克开火 - 单发
  */
-public class TankFireSingle implements TankFire{
+public enum TankFireSingle implements TankFire{
+
+    /**
+     * 实例
+     */
+    INSTANCE;
+
     @Override
     public void fire(Tank tank) {
         if(tank == null || tank.tankFrame == null){
