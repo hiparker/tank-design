@@ -43,9 +43,6 @@ public class Tank {
 
     private Audio moveAudio = new Audio("static/audio/tank_move.wav");
 
-    /** 获得坦克图片 */
-    private Map<String,BufferedImage> tankImagesMap = new HashMap<>();
-
     /**
      * 构造函数
      * @param x
@@ -61,11 +58,10 @@ public class Tank {
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
-        // 获得坦克图片
-        this.getTankImage(this.dir,this);
+
         // 赋值坦克宽高
-        this.TANK_WIDTH = tankImagesMap.get("tankU").getWidth();
-        this.TANK_HEIGHT = tankImagesMap.get("tankU").getHeight();
+        this.TANK_WIDTH = TankImage.getTankImage(this.group).get("tankU").getWidth();
+        this.TANK_HEIGHT = TankImage.getTankImage(this.group).get("tankU").getHeight();
     }
 
     /**
@@ -84,12 +80,10 @@ public class Tank {
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
-        // 获得坦克图片
-        this.getTankImage(this.dir,this);
 
         // 赋值坦克宽高
-        this.TANK_WIDTH = tankImagesMap.get("tankU").getWidth();
-        this.TANK_HEIGHT = tankImagesMap.get("tankU").getHeight();
+        this.TANK_WIDTH = TankImage.getTankImage(this.group).get("tankU").getWidth();
+        this.TANK_HEIGHT = TankImage.getTankImage(this.group).get("tankU").getHeight();
     }
 
     /**
@@ -170,16 +164,16 @@ public class Tank {
 
         switch (dir) {
             case LEFT:
-                g.drawImage(tankImagesMap.get("tankL"),x,y,null);
+                g.drawImage(TankImage.getTankImage(this.group).get("tankL"),x,y,null);
                 break;
             case UP:
-                g.drawImage(tankImagesMap.get("tankU"),x,y,null);
+                g.drawImage(TankImage.getTankImage(this.group).get("tankU"),x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(tankImagesMap.get("tankR"),x,y,null);
+                g.drawImage(TankImage.getTankImage(this.group).get("tankR"),x,y,null);
                 break;
             case DOWN:
-                g.drawImage(tankImagesMap.get("tankD"),x,y,null);
+                g.drawImage(TankImage.getTankImage(this.group).get("tankD"),x,y,null);
                 break;
         }
 
@@ -207,24 +201,7 @@ public class Tank {
         }
     }
 
-    private void getTankImage(Dir dirFlag,Tank tank){
-        if(TankGroup.BLUE.equals(tank.group)){
-            tankImagesMap.put("tankL",ResourcesMgr.badTankL);
-            tankImagesMap.put("tankU",ResourcesMgr.badTankU);
-            tankImagesMap.put("tankR",ResourcesMgr.badTankR);
-            tankImagesMap.put("tankD",ResourcesMgr.badTankD);
-        }else if(TankGroup.RED.equals(tank.group)){
-            tankImagesMap.put("tankL",ResourcesMgr.goodTankL);
-            tankImagesMap.put("tankU",ResourcesMgr.goodTankU);
-            tankImagesMap.put("tankR",ResourcesMgr.goodTankR);
-            tankImagesMap.put("tankD",ResourcesMgr.goodTankD);
-        }else{
-            tankImagesMap.put("tankL",ResourcesMgr.defaultTankL);
-            tankImagesMap.put("tankU",ResourcesMgr.defaultTankU);
-            tankImagesMap.put("tankR",ResourcesMgr.defaultTankR);
-            tankImagesMap.put("tankD",ResourcesMgr.defaultTankD);
-        }
-    }
+
 
     /**
      * 开火
