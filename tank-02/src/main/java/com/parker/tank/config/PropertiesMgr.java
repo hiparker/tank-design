@@ -28,15 +28,30 @@ public final class PropertiesMgr {
 
     private PropertiesMgr(){}
 
-    public static String get(String key){
+    public static String getByString(String key){
         if(PROPERTIES == null){
             return "";
         }
         return PROPERTIES.getProperty(key,"");
     }
 
+    public static Integer getByInteger(String key){
+        if(PROPERTIES == null){
+            return null;
+        }
+        return Integer.parseInt(PROPERTIES.getProperty(key,""));
+    }
+
+    public static Boolean getByBoolean(String key){
+        if(PROPERTIES == null){
+            return null;
+        }
+        return Boolean.parseBoolean(PROPERTIES.getProperty(key,""));
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(PropertiesMgr.get("title"));
+        System.out.println(PropertiesMgr.getByString("title"));
     }
 
 }

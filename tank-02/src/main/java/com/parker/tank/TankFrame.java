@@ -1,5 +1,6 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -19,10 +20,10 @@ import java.util.List;
  */
 public class TankFrame extends Frame{
 
-    private static final String TITLE = "坦克大战 v2.0.0";
+    private static  String TITLE = "坦克大战 v2.0.0";
 
     /** 游戏画布宽高 */
-    public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;
+    public static int GAME_WIDTH = 800,GAME_HEIGHT = 600;
 
     /** 子弹集合 */
     public List<Bullet> bulletList = new ArrayList<Bullet>();
@@ -37,6 +38,9 @@ public class TankFrame extends Frame{
     List<Tank> enemyTanks = new ArrayList<Tank>();
 
     public TankFrame(){
+
+        this.init();
+
         // 可见
         this.setVisible(true);
         // 设置窗口大小
@@ -65,6 +69,20 @@ public class TankFrame extends Frame{
         }).start();
 
     }
+
+    /**
+     * 初始化
+     */
+    private void init(){
+        TITLE = PropertiesMgr.getByString("title")+" - "+PropertiesMgr.getByString("version");
+        if(PropertiesMgr.getByInteger("gameHeight") != null){
+            GAME_HEIGHT = PropertiesMgr.getByInteger("gameHeight");
+        }
+        if(PropertiesMgr.getByInteger("gameWidth") != null){
+            GAME_WIDTH = PropertiesMgr.getByInteger("gameWidth");
+        }
+    }
+
 
     Image offScreenImage = null;
     // 双通道缓存解决闪烁问题

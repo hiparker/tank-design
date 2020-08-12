@@ -11,7 +11,7 @@ import com.parker.tank.Tank;
  * @CreateTime: 2020-08-12 16:51
  * @Description: 坦克开火 - 单发
  */
-public enum TankFireSingle implements TankFire{
+public enum TankFireDefault implements TankFire{
 
     /**
      * 实例

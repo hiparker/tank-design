@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         // 敌方坦克数量
-        int badTankCount = Integer.parseInt(PropertiesMgr.get("badTankCount"));
+        int badTankCount = PropertiesMgr.getByInteger("badTankCount");
 
         TankFrame t = new TankFrame();
 

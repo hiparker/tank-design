@@ -1,13 +1,11 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireFour;
-import com.parker.tank.fire.TankFireSingle;
+import com.parker.tank.fire.TankFireDefault;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -47,6 +45,8 @@ public class Tank {
 
     private Audio moveAudio = new Audio("static/audio/tank_move.wav");
 
+    private TankFire tf = null;
+
     /**
      * 构造函数
      * @param x
@@ -66,6 +66,9 @@ public class Tank {
         // 赋值坦克宽高
         this.TANK_WIDTH = TankImage.getTankImage(this.group).get("tankU").getWidth();
         this.TANK_HEIGHT = TankImage.getTankImage(this.group).get("tankU").getHeight();
+
+        // 初始化开火的策略模式
+        this.initFireStrategy();
     }
 
     /**
@@ -88,6 +91,35 @@ public class Tank {
         // 赋值坦克宽高
         this.TANK_WIDTH = TankImage.getTankImage(this.group).get("tankU").getWidth();
         this.TANK_HEIGHT = TankImage.getTankImage(this.group).get("tankU").getHeight();
+
+        // 初始化开火的策略模式
+        this.initFireStrategy();
+    }
+
+    /**
+     * 初始化开火的策略模式
+     */
+    private void initFireStrategy(){
+        // 策略模式 不同的开火方案
+        if(TankGroup.BLUE.equals(this.group)){
+            String fireName = PropertiesMgr.getByString("blueFire");
+            try {
+                tf = (TankFire) Class.forName(fireName).newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                System.out.println("找不到 blueFire 开火策略");
+            }
+        }else if(TankGroup.RED.equals(this.group)){
+            String fireName = PropertiesMgr.getByString("redFire");
+            try {
+                tf = (TankFire) Class.forName(fireName).newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                System.out.println("找不到 redFire 开火策略");
+            }
+        }
+        // 如果策略为空 则使用默认策略
+        if(tf == null){
+            tf = TankFireDefault.INSTANCE;
+        }
     }
 
     /**
@@ -212,23 +244,13 @@ public class Tank {
     }
 
 
-
     /**
      * 开火
      */
     public void fired() {
-
-        TankFire tankFire = null;
-        // 策略模式 不同的开火方案
-        if(TankGroup.BLUE.equals(this.group)){
-            tankFire = TankFireSingle.INSTANCE;
-        }else if(TankGroup.RED.equals(this.group)){
-            tankFire = TankFireFour.INSTANCE;
+        if(tf != null){
+            tf.fire(this);
         }
-        if(tankFire != null){
-            tankFire.fire(this);
-        }
-
     }
 
     public void died() {
