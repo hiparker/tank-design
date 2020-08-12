@@ -60,9 +60,9 @@ public class TankFrame extends Frame{
         this.addKeyListener(new MyKeyListener());
 
         // 背景音乐
-        /*new Thread(()->{
+        new Thread(()->{
             new Audio("static/audio/war1.wav").loop();
-        }).start();*/
+        }).start();
 
     }
 
