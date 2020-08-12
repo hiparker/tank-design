@@ -227,10 +227,6 @@ public class Tank {
         }
         if(tankFire != null){
             tankFire.fire(this);
-            // 开火音效
-            new Thread(()->{
-                new Audio("static/audio/tank_fire.wav").play();
-            }).start();
         }
 
     }

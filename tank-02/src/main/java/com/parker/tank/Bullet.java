@@ -48,6 +48,8 @@ public class Bullet {
 
         // 设置 子弹样式
         setBulletStyle();
+
+        tankFrame.bulletList.add(this);
     }
 
 

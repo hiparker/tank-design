@@ -1,5 +1,6 @@
 package com.parker.tank.fire;
 
+import com.parker.tank.Audio;
 import com.parker.tank.Bullet;
 import com.parker.tank.Dir;
 import com.parker.tank.Tank;
@@ -17,9 +18,14 @@ public class TankFireFour implements TankFire{
         if(tank == null || tank.tankFrame == null){
             return;
         }
-        tank.tankFrame.bulletList.add(new Bullet(tank.getX(),tank.getY(),Dir.LEFT,tank.tankFrame,tank));
-        tank.tankFrame.bulletList.add(new Bullet(tank.getX(),tank.getY(),Dir.UP,tank.tankFrame,tank));
-        tank.tankFrame.bulletList.add(new Bullet(tank.getX(),tank.getY(),Dir.RIGHT,tank.tankFrame,tank));
-        tank.tankFrame.bulletList.add(new Bullet(tank.getX(),tank.getY(),Dir.DOWN,tank.tankFrame,tank));
+        new Bullet(tank.getX(),tank.getY(),Dir.LEFT,tank.tankFrame,tank);
+        new Bullet(tank.getX(),tank.getY(),Dir.UP,tank.tankFrame,tank);
+        new Bullet(tank.getX(),tank.getY(),Dir.RIGHT,tank.tankFrame,tank);
+        new Bullet(tank.getX(),tank.getY(),Dir.DOWN,tank.tankFrame,tank);
+
+        // 开火音效
+        new Thread(()->{
+            new Audio("static/audio/tank_fire.wav").play();
+        }).start();
     }
 }
