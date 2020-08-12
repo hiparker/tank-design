@@ -221,9 +221,9 @@ public class Tank {
         TankFire tankFire = null;
         // 策略模式 不同的开火方案
         if(TankGroup.BLUE.equals(this.group)){
-            tankFire = new TankFireSingle();
+            tankFire = TankFireSingle.INSTANCE;
         }else if(TankGroup.RED.equals(this.group)){
-            tankFire = new TankFireFour();
+            tankFire = TankFireFour.INSTANCE;
         }
         if(tankFire != null){
             tankFire.fire(this);
