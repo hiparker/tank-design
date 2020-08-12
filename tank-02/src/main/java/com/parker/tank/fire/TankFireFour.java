@@ -15,7 +15,7 @@ import com.parker.tank.Tank;
  * 策略模式 -》 具体实现使用单例模式
  *
  */
-public class  TankFireFour implements TankFire{
+public class TankFireFour implements TankFire{
 
     @Override
     public void fire(Tank tank) {
