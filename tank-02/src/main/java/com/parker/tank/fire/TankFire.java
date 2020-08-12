@@ -8,6 +8,9 @@ import com.parker.tank.Tank;
  * @Author: Parker
  * @CreateTime: 2020-08-12 16:47
  * @Description: 坦克开火
+ *
+ * 策略模式
+ *
  */
 public interface TankFire {
 
