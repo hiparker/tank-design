@@ -6,6 +6,7 @@ import com.parker.tank.fire.TankFireFour;
 import com.parker.tank.fire.TankFireDefault;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 /**
@@ -122,15 +123,17 @@ public class Tank {
         if(TankGroup.BLUE.equals(this.group)){
             String fireName = PropertiesMgr.getByString("blueFire");
             try {
-                tf = (TankFire) Class.forName(fireName).newInstance();
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                tf = (TankFire) Class.forName(fireName).getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 System.out.println("找不到 blueFire 开火策略");
             }
         }else if(TankGroup.RED.equals(this.group)){
             String fireName = PropertiesMgr.getByString("redFire");
             try {
-                tf = (TankFire) Class.forName(fireName).newInstance();
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                tf = (TankFire) Class.forName(fireName).getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 System.out.println("找不到 redFire 开火策略");
             }
         }
