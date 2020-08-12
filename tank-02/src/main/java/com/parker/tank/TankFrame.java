@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class TankFrame extends Frame{
 
-    private static final String TITLE = "坦克大战 v1.0.0";
+    private static final String TITLE = "坦克大战 v2.0.0";
 
     /** 游戏画布宽高 */
     public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;

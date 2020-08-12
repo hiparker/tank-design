@@ -1,5 +1,7 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,10 +15,14 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+
+        // 敌方坦克数量
+        int badTankCount = Integer.parseInt(PropertiesMgr.get("badTankCount"));
+
         TankFrame t = new TankFrame();
 
         // 创建5个敌方坦克
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < badTankCount; i++) {
             t.enemyTanks.add(TankFactory.createTank(50+i*80,200,Dir.DOWN,t,TankGroup.BLUE,true));
         }
 
