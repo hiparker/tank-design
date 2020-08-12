@@ -76,22 +76,18 @@ public class Bullet {
         switch (this.dir) {
             case LEFT:
                 // 设置子弹 方向大小样式
-                System.out.println(this.bulletWidth +"--1--"+ this.bulletHeight);
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
-                System.out.println(this.bulletWidth +"--1--"+ this.bulletHeight);
                 this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
-                System.out.println(this.bulletWidth +"--2--"+ this.bulletHeight);
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
-                System.out.println(this.bulletWidth +"--3--"+ this.bulletHeight);
 
                 // 设置子弹方向
-                this.y += Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.y += belongTank.TANK_HEIGHT/2 - this.bulletHeight/2;
                 this.x -= this.bulletWidth/2;
 
                 break;
             case UP:
                 // 设置子弹方向
-                this.x += Tank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.x += belongTank.TANK_WIDTH/2 - this.bulletWidth/2;
                 this.y -= this.bulletHeight/2;
 
                 break;
@@ -102,14 +98,14 @@ public class Bullet {
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
 
                 // 设置子弹方向
-                this.x += + Tank.TANK_WIDTH - this.bulletWidth/2;
-                this.y += + Tank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.x += + belongTank.TANK_WIDTH - this.bulletWidth/2;
+                this.y += + belongTank.TANK_HEIGHT/2 - this.bulletHeight/2;
 
                 break;
             case DOWN:
                 // 设置子弹方向
-                this.x += Tank.TANK_WIDTH/2 - this.bulletWidth/2;
-                this.y += Tank.TANK_HEIGHT - this.bulletHeight/2;
+                this.x += belongTank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.y += belongTank.TANK_HEIGHT - this.bulletHeight/2;
 
                 break;
             default:

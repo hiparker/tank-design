@@ -9,8 +9,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @BelongsProject: tank-01
@@ -24,7 +22,7 @@ public class TankFrame extends Frame{
     private static final String TITLE = "坦克大战 v1.0.0";
 
     /** 游戏画布宽高 */
-    public static final int GAME_WIDTH = 800,GAME_HEIGHT = 600;
+    public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;
 
     /** 子弹集合 */
     List<Bullet> bulletList = new ArrayList<Bullet>();
@@ -143,15 +141,23 @@ public class TankFrame extends Frame{
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     bL = flag;
+                    // 处理坦克方向
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_UP:
                     bU = flag;
+                    // 处理坦克方向
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR = flag;
+                    // 处理坦克方向
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = flag;
+                    // 处理坦克方向
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_SPACE:
                     // 按键抬起时
@@ -159,12 +165,13 @@ public class TankFrame extends Frame{
                         myTank.fired();
                     }
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    // 关闭程序
+                    System.exit(0);
+                    break;
                 default:
                     break;
             }
-
-            // 处理坦克方向
-            setMainTankDir();
         }
 
         /**
@@ -178,6 +185,11 @@ public class TankFrame extends Frame{
                 if(bU) myTank.setDir(Dir.UP);
                 if(bR) myTank.setDir(Dir.RIGHT);
                 if(bD) myTank.setDir(Dir.DOWN);
+
+                // 移动音乐
+                new Thread(()->{
+                    new Audio("static/audio/tank_move.wav").play();
+                }).start();
 
                 myTank.setMoving(true);
             }

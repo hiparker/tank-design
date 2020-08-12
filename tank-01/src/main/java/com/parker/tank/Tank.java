@@ -1,6 +1,9 @@
 package com.parker.tank;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -14,8 +17,8 @@ public class Tank {
 
     /** 速度 */
     private final static int SPEED = 5;
-    /** 宽高 */
-    public final static int TANK_WIDTH = ResourcesMgr.tankD.getWidth(), TANK_HEIGHT = ResourcesMgr.tankD.getHeight();
+    /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
+    public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
     /** XY坐标 */
     private int x , y;
@@ -40,6 +43,9 @@ public class Tank {
 
     private Audio moveAudio = new Audio("static/audio/tank_move.wav");
 
+    /** 获得坦克图片 */
+    private Map<String,BufferedImage> tankImagesMap = new HashMap<>();
+
     /**
      * 构造函数
      * @param x
@@ -55,6 +61,11 @@ public class Tank {
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+        // 获得坦克图片
+        this.getTankImage(this.dir,this);
+        // 赋值坦克宽高
+        this.TANK_WIDTH = tankImagesMap.get("tankU").getWidth();
+        this.TANK_HEIGHT = tankImagesMap.get("tankU").getHeight();
     }
 
     /**
@@ -73,6 +84,12 @@ public class Tank {
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+        // 获得坦克图片
+        this.getTankImage(this.dir,this);
+
+        // 赋值坦克宽高
+        this.TANK_WIDTH = tankImagesMap.get("tankU").getWidth();
+        this.TANK_HEIGHT = tankImagesMap.get("tankU").getHeight();
     }
 
     /**
@@ -95,14 +112,6 @@ public class Tank {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
-        // 移动中 添加音效
-        /*if(this.moving){
-            TankFrame.threads.submit(()->{
-               moveAudio.loop();
-            });
-        }else{
-            moveAudio.close();
-        }*/
     }
 
     public void setFutureTank(Tank futureTank) {
@@ -148,29 +157,6 @@ public class Tank {
             return;
         }
 
-        /*List<Tank> enemyTanks = tankFrame.enemyTanks;
-        Tank myTank = tankFrame.myTank;
-        this.futureTank.x = xT;
-        this.futureTank.y = yT;
-
-        // 检测是否碰撞到 我方主战坦克
-        boolean collideFlag = false;
-        if(!myTank.equals(this)){
-            collideFlag = !TankUtil.collideWithTank(this.futureTank,myTank);
-        }
-        for (int i = 0; i < enemyTanks.size(); i++) {
-            // 不等于自身的坦克进行 碰撞检测
-            if(!enemyTanks.get(i).equals(this)){
-                if(!TankUtil.collideWithTank(this.futureTank,enemyTanks.get(i))){
-                    collideFlag = true;
-                    break;
-                }
-            }
-        }
-        if(collideFlag){
-            return;
-        }*/
-
         x = xT;
         y = yT;
     }
@@ -184,16 +170,16 @@ public class Tank {
 
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourcesMgr.tankL,x,y,null);
+                g.drawImage(tankImagesMap.get("tankL"),x,y,null);
                 break;
             case UP:
-                g.drawImage(ResourcesMgr.tankU,x,y,null);
+                g.drawImage(tankImagesMap.get("tankU"),x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(ResourcesMgr.tankR,x,y,null);
+                g.drawImage(tankImagesMap.get("tankR"),x,y,null);
                 break;
             case DOWN:
-                g.drawImage(ResourcesMgr.tankD,x,y,null);
+                g.drawImage(tankImagesMap.get("tankD"),x,y,null);
                 break;
         }
 
@@ -218,6 +204,25 @@ public class Tank {
                 this.setDir(dirs[po]);
             }
 
+        }
+    }
+
+    private void getTankImage(Dir dirFlag,Tank tank){
+        if(TankGroup.BLUE.equals(tank.group)){
+            tankImagesMap.put("tankL",ResourcesMgr.badTankL);
+            tankImagesMap.put("tankU",ResourcesMgr.badTankU);
+            tankImagesMap.put("tankR",ResourcesMgr.badTankR);
+            tankImagesMap.put("tankD",ResourcesMgr.badTankD);
+        }else if(TankGroup.RED.equals(tank.group)){
+            tankImagesMap.put("tankL",ResourcesMgr.goodTankL);
+            tankImagesMap.put("tankU",ResourcesMgr.goodTankU);
+            tankImagesMap.put("tankR",ResourcesMgr.goodTankR);
+            tankImagesMap.put("tankD",ResourcesMgr.goodTankD);
+        }else{
+            tankImagesMap.put("tankL",ResourcesMgr.defaultTankL);
+            tankImagesMap.put("tankU",ResourcesMgr.defaultTankU);
+            tankImagesMap.put("tankR",ResourcesMgr.defaultTankR);
+            tankImagesMap.put("tankD",ResourcesMgr.defaultTankD);
         }
     }
 

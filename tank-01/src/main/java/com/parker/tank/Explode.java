@@ -1,7 +1,6 @@
 package com.parker.tank;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * @BelongsProject: tank-01
@@ -11,10 +10,6 @@ import java.util.Random;
  * @Description: 爆炸效果
  */
 public class Explode {
-
-
-    /** 宽高 */
-    public final static int WIDTH = ResourcesMgr.tankD.getWidth(), HEIGHT = ResourcesMgr.tankD.getHeight();
 
     /** XY坐标 */
     private int x , y;

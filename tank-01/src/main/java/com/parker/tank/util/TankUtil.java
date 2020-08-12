@@ -2,6 +2,7 @@ package com.parker.tank.util;
 
 import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
+import com.parker.tank.TankGroup;
 
 import java.awt.*;
 
@@ -33,9 +34,13 @@ public final class TankUtil {
             if(!tank.equals(bulletBelongTank) &&
                 !tank.group.equals(bulletBelongTank.group)
                 ){
-                tank.died();
-                bullet.died();
-                flag = false;
+
+                // 暂时设置自身无敌
+                if(!tank.group.equals(TankGroup.RED)){
+                    tank.died();
+                    bullet.died();
+                    flag = false;
+                }
             }
         }
         return flag;
