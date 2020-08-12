@@ -1,4 +1,4 @@
-package com.parker.tank;
+package com.parker.tank.dist;
 
 /**
  * @BelongsProject: tank-01

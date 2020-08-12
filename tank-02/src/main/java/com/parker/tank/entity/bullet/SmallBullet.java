@@ -1,6 +1,11 @@
-package com.parker.tank;
+package com.parker.tank.entity.bullet;
 
+import com.parker.tank.TankFrame;
 import com.parker.tank.config.PropertiesMgr;
+import com.parker.tank.config.ResourcesMgr;
+import com.parker.tank.dist.Dir;
+import com.parker.tank.factory.base.BaseBullet;
+import com.parker.tank.factory.base.BaseTank;
 
 import java.awt.*;
 
@@ -9,28 +14,13 @@ import java.awt.*;
  * @BelongsPackage: com.parker.tank
  * @Author: Parker
  * @CreateTime: 2020-08-10 16:18
- * @Description: 炮弹类
+ * @Description: 炮弹类 小
  */
-public class Bullet {
+public class SmallBullet extends BaseBullet {
 
-    /** 速度 */
-    private static int SPEED = 10;
     /** 宽度 高度 */
-    private int bulletWidth = ResourcesMgr.bulletD.getWidth(), bulletHeight = ResourcesMgr.bulletD.getHeight();
+    private int bulletWidth = ResourcesMgr.bulletSmallU.getWidth(), bulletHeight = ResourcesMgr.bulletSmallU.getHeight();
 
-
-    /** XY坐标 */
-    private int x , y;
-    /** 子弹方向 */
-    private Dir dir = Dir.DOWN;
-    /** 画布 */
-    private TankFrame tankFrame;
-    /** 存活状态 */
-    private boolean liveFlag = true;
-    /** 当前位置 */
-    private Rectangle rectangle;
-    /** 归属坦克 */
-    public Tank belongTank;
 
     /**
      * 构造函数
@@ -38,7 +28,7 @@ public class Bullet {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir,TankFrame tankFrame,Tank belongTank) {
+    public SmallBullet(int x, int y, Dir dir, TankFrame tankFrame, BaseTank belongTank) {
 
         // 初始化
         this.init();
@@ -50,12 +40,12 @@ public class Bullet {
         this.belongTank = belongTank;
 
         // 设置碰撞检测位置
-        rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);
+        this.rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);
 
         // 设置 子弹样式
         setBulletStyle();
 
-        tankFrame.bulletList.add(this);
+        tankFrame.addBullet(this);
     }
 
     /**
@@ -64,32 +54,14 @@ public class Bullet {
     public void init(){
         // 速度
         if(PropertiesMgr.getByInteger("bulletSpeed") != null){
-            SPEED = PropertiesMgr.getByInteger("bulletSpeed");
+            this.speed = PropertiesMgr.getByInteger("bulletSpeed");
         }
-    }
-
-    /**
-     * 获得当前位置（用于碰撞检测）
-     * @return
-     */
-    public Rectangle getPosition(){
-        rectangle.x = this.x;
-        rectangle.y = this.y;
-        return rectangle;
-    }
-
-
-    /**
-     * 后期可作为 跟踪弹 自动子弹方向
-     * @param dir
-     */
-    public void setDir(Dir dir) {
-        this.dir = dir;
     }
 
     /**
      * 设置 子弹样式
      */
+    @Override
     public void setBulletStyle(){
         switch (this.dir) {
             case LEFT:
@@ -126,27 +98,26 @@ public class Bullet {
                 this.y += belongTank.TANK_HEIGHT - this.bulletHeight/2;
 
                 break;
-            default:
-                break;
         }
     }
 
     /**
      * 子弹方向处理
      */
+    @Override
     public void moveHandler(){
         switch (dir) {
             case LEFT:
-                x -= SPEED;
+                x -= this.speed;
                 break;
             case UP:
-                y -= SPEED;
+                y -= this.speed;
                 break;
             case RIGHT:
-                x += SPEED;
+                x += this.speed;
                 break;
             case DOWN:
-                y += SPEED;
+                y += this.speed;
                 break;
         }
 
@@ -157,26 +128,26 @@ public class Bullet {
 
     }
 
-
+    @Override
     public void paint(Graphics g) {
 
         // 炮弹死亡移除
         if(!this.liveFlag){
-            tankFrame.bulletList.remove(this);
+            tankFrame.removeBullet(this);
         }
 
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourcesMgr.bulletL,x,y,null);
+                g.drawImage(ResourcesMgr.bulletSmallL,x,y,null);
                 break;
             case UP:
-                g.drawImage(ResourcesMgr.bulletU,x,y,null);
+                g.drawImage(ResourcesMgr.bulletSmallU,x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(ResourcesMgr.bulletR,x,y,null);
+                g.drawImage(ResourcesMgr.bulletSmallR,x,y,null);
                 break;
             case DOWN:
-                g.drawImage(ResourcesMgr.bulletD,x,y,null);
+                g.drawImage(ResourcesMgr.bulletSmallD,x,y,null);
                 break;
         }
 
@@ -184,7 +155,4 @@ public class Bullet {
         this.moveHandler();
     }
 
-    public void died() {
-        this.liveFlag = false;
-    }
 }
