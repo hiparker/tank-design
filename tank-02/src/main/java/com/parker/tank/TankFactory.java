@@ -1,13 +1,14 @@
 package com.parker.tank;
 
-import java.awt.*;
-
 /**
  * @BelongsProject: tank-01
  * @BelongsPackage: com.parker.tank
  * @Author: Parker
  * @CreateTime: 2020-08-11 17:09
  * @Description: 坦克工厂
+ *
+ * 工厂模式
+ *
  */
 public final class TankFactory {
 
