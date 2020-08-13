@@ -1,4 +1,4 @@
-package com.parker.tank;
+package com.parker.tank.dist;
 
 /**
  * @BelongsProject: tank-01
@@ -16,6 +16,10 @@ public enum TankGroup {
     /**
      * 红方
      */
-    RED;
+    RED,
+    /**
+     * 默认
+     */
+    DEFAULT;
 
 }

@@ -1,5 +1,13 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
+import com.parker.tank.dist.Dir;
+import com.parker.tank.dist.TankGroup;
+import com.parker.tank.factory.GameFactory;
+import com.parker.tank.factory.base.BaseBullet;
+import com.parker.tank.factory.base.BaseExplode;
+import com.parker.tank.factory.base.BaseTank;
+import com.parker.tank.factory.child.DefaultFactory;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -7,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,24 +28,44 @@ import java.util.List;
  */
 public class TankFrame extends Frame{
 
-    private static final String TITLE = "坦克大战 v1.0.0";
+    private static  String TITLE = "坦克大战 v2.0.0";
+
+    /** 游戏工厂 */
+    private static GameFactory gf = null;
 
     /** 游戏画布宽高 */
-    public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;
+    public static int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
     /** 子弹集合 */
-    List<Bullet> bulletList = new ArrayList<Bullet>();
+    private final List<BaseBullet> bulletList = new ArrayList<>();
 
     /** 爆炸集合 */
-    List<Explode> explodeList = new ArrayList<Explode>();
+    private final List<BaseExplode> explodeList = new ArrayList<>();
 
     /** 我方主战坦克 */
-    Tank myTank = TankFactory.createTank(200,400,Dir.DOWN,this,TankGroup.RED);
+    private final BaseTank myTank = gf.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
 
     /** 敌方坦克 */
-    List<Tank> enemyTanks = new ArrayList<Tank>();
+    private final List<BaseTank> badTanks = new ArrayList<>();
+
+    /** 初始化 游戏工厂 */
+    static{
+        try {
+            gf = (GameFactory) Class.forName(PropertiesMgr.getByString("tankFactory")).getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            //System.out.println("找不到 游戏工厂策略");
+        }
+        if(gf == null){
+            gf = new DefaultFactory();
+        }
+    }
+
 
     public TankFrame(){
+
+        this.init();
+
         // 可见
         this.setVisible(true);
         // 设置窗口大小
@@ -66,6 +95,20 @@ public class TankFrame extends Frame{
 
     }
 
+    /**
+     * 初始化
+     */
+    private void init(){
+        TITLE = PropertiesMgr.getByString("title")+" - "+PropertiesMgr.getByString("version");
+        if(PropertiesMgr.getByInteger("gameHeight") != null){
+            GAME_HEIGHT = PropertiesMgr.getByInteger("gameHeight");
+        }
+        if(PropertiesMgr.getByInteger("gameWidth") != null){
+            GAME_WIDTH = PropertiesMgr.getByInteger("gameWidth");
+        }
+    }
+
+
     Image offScreenImage = null;
     // 双通道缓存解决闪烁问题
     @Override
@@ -88,7 +131,7 @@ public class TankFrame extends Frame{
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量："+bulletList.size(),10,40);
-        g.drawString("敌人的数量："+enemyTanks.size(),10,60);
+        g.drawString("敌人的数量："+badTanks.size(),10,60);
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
 
@@ -96,8 +139,8 @@ public class TankFrame extends Frame{
         myTank.paint(g);
 
         // 敌方坦克渲染
-        for (int i = 0; i < enemyTanks.size(); i++) {
-            enemyTanks.get(i).paint(g);
+        for (int i = 0; i < badTanks.size(); i++) {
+            badTanks.get(i).paint(g);
         }
 
         // 子弹自动行走
@@ -112,10 +155,9 @@ public class TankFrame extends Frame{
 
         // 子弹与坦克碰撞
         for (int i = 0; i < bulletList.size(); i++) {
-            for (int tk = 0; tk < enemyTanks.size(); tk++) {
-                TankUtil.collideWith(enemyTanks.get(tk),bulletList.get(i));
+            for (int tk = 0; tk < badTanks.size(); tk++) {
+                TankUtil.collideWith(badTanks.get(tk),bulletList.get(i));
             }
-
             TankUtil.collideWith(myTank,bulletList.get(i));
         }
 
@@ -210,5 +252,56 @@ public class TankFrame extends Frame{
         }
     }
 
+    // -------------------------------------------------------------------
 
+    /**
+     * 获得游戏工厂
+     * @return
+     */
+    public GameFactory getGf() {
+        return gf;
+    }
+
+    /**
+     * 添加爆炸
+     * @param be
+     */
+    public void addExplode(BaseExplode be){
+        this.explodeList.add(be);
+    }
+    /**
+     * 删除爆炸
+     * @param be
+     */
+    public void removeExplode(BaseExplode be){
+        this.explodeList.remove(be);
+    }
+    /**
+     * 添加炮弹
+     * @param bb
+     */
+    public void addBullet(BaseBullet bb){
+        this.bulletList.add(bb);
+    }
+    /**
+     * 删除炮弹
+     * @param be
+     */
+    public void removeBullet(BaseBullet be){
+        this.bulletList.remove(be);
+    }
+    /**
+     * 添加坦克
+     * @param bt
+     */
+    public void addBadTank(BaseTank bt){
+        this.badTanks.add(bt);
+    }
+    /**
+     * 删除坦克
+     * @param bt
+     */
+    public void removeBadTank(BaseTank bt){
+        this.badTanks.remove(bt);
+    }
 }
