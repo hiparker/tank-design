@@ -25,7 +25,6 @@ public class Main {
         }).start();
 
         TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
-        System.out.println("普通坦克数量["+TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
 
         // 自动刷新 window
         while (true){

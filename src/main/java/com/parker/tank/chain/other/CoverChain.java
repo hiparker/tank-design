@@ -1,18 +1,14 @@
 package com.parker.tank.chain.other;
 
 import com.parker.tank.StringG;
-import com.parker.tank.Wall;
 import com.parker.tank.WallFactory;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.CoverModel;
-import com.parker.tank.factory.TankFrameFactory;
 
-import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 

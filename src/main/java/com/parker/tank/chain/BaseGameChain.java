@@ -4,7 +4,6 @@ import com.parker.tank.chain.gate.Gate1;
 import com.parker.tank.chain.gate.GateTest;
 import com.parker.tank.chain.other.CoverChain;
 import com.parker.tank.chain.other.OverChain;
-import com.parker.tank.chain.other.TitleChain;
 import com.parker.tank.config.PropertiesMgr;
 
 import java.util.LinkedList;
@@ -54,7 +53,6 @@ public class BaseGameChain extends GameChain{
     @Override
     public boolean handler() {
         ChainStack.INSTANCE.put(this);
-        boolean flag = true;
         for (GameChain gate : gates) {
 
             long totalTimeStart = System.currentTimeMillis();
@@ -62,18 +60,15 @@ public class BaseGameChain extends GameChain{
             long totalTimeEnd = System.currentTimeMillis();
             System.out.println("总执行时间(秒)："+(totalTimeEnd/1000-totalTimeStart/1000));
 
-            // 第一次 关卡任务失败
-            // 第一次 关卡任务失败
+            // 关卡任务失败
             if(!handler){
-                flag = false;
                 break;
             }
         }
 
         // 游戏结束
-        if(!flag){
-            gates.get(gates.size()-1).handler();
-        }
+        gates.get(gates.size()-1).handler();
+
         return true;
     }
 

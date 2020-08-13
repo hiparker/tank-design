@@ -1,8 +1,8 @@
 package com.parker.tank.faced;
 
+import com.parker.tank.Audio;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFactory;
-import com.parker.tank.WallFactory;
 import com.parker.tank.collide.Collide;
 import com.parker.tank.collide.chain.CollideChain;
 import com.parker.tank.config.PropertiesMgr;
@@ -10,6 +10,7 @@ import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -55,6 +56,14 @@ public class GameModel extends BaseGameModel{
         // 单机主战坦克
         super.setMainTank(TankFactory.createTank(300,710, Dir.UP,this, TankGroup.RED));
         this.add(super.getMainTank());
+
+        System.out.println("普通坦克数量["+TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
+
+
+        // 背景音乐
+        new Thread(()->{
+            new Audio("static/audio/war1.wav").play();
+        }).start();
     }
 
     /**
