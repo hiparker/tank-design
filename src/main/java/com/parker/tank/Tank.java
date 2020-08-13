@@ -3,6 +3,8 @@ package com.parker.tank;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireDefault;
 import com.parker.tank.util.TankImageUtil;
@@ -39,7 +41,7 @@ public class Tank extends GameObject {
     /** 是否是移动的状态 */
     private volatile boolean moving = false;
     /** 调停者 */
-    private GameModel gm;
+    private BaseGameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -61,7 +63,7 @@ public class Tank extends GameObject {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, GameModel gm, TankGroup group) {
+    public Tank(int x, int y, Dir dir, BaseGameModel gm, TankGroup group) {
 
         // 初始化
         this.init();
@@ -93,7 +95,7 @@ public class Tank extends GameObject {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, GameModel gm, TankGroup group, boolean autoFlag) {
+    public Tank(int x, int y, Dir dir, BaseGameModel gm, TankGroup group, boolean autoFlag) {
 
         // 初始化
         this.init();
@@ -242,9 +244,9 @@ public class Tank extends GameObject {
             // 坦克移动启动
             this.start();
 
-            // 随机开炮 几率暂定 5%
+            // 随机开炮 几率暂定 3%
             int randomBullet = random.nextInt(100);
-            if(randomBullet > 95){
+            if(randomBullet > 97){
                 this.fired();
             }
 
@@ -339,7 +341,7 @@ public class Tank extends GameObject {
         return y;
     }
 
-    public GameModel getGameModel() {
+    public BaseGameModel getGameModel() {
         return gm;
     }
 

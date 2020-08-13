@@ -1,8 +1,14 @@
 package com.parker.tank;
 
+import com.parker.tank.config.PropertiesMgr;
+import com.parker.tank.dist.WallGroup;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
+import com.parker.tank.util.WallmageUtil;
 import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @BelongsProject: tank-design
@@ -13,20 +19,84 @@ import java.awt.*;
  */
 public class Wall extends GameObject{
 
+    private int speed = 5;
+    private int sx = 0, sy = 0;
+    private int offX = 0,offY = 0;
+    private boolean offFlag = false;
+    private int hp = 1;
     /** 宽高 */
     private int width,height;
-    private Color color;
+    private WallGroup group;
     /** 当前位置 */
     private Rectangle rectangle;
+    private BufferedImage bufferedImage;
+    /** 调停者 */
+    private BaseGameModel gm;
 
-    public Wall(int x, int y, int width, int height, @NotNull Color c) {
+    public Wall(int x, int y, int width, int height, @NotNull WallGroup group, BaseGameModel gm) {
         this.x = x;
         this.y = y;
+        this.sx = x;
+        this.sy = y;
         this.width = width;
         this.height = height;
-        this.color = c;
+        this.group = group;
+        this.gm = gm;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
+    }
+
+    public Wall(int x, int y, int width, int height, @NotNull BufferedImage image,BaseGameModel gm) {
+        this.x = x;
+        this.y = y;
+        this.sx = x;
+        this.sy = y;
+        this.width = width;
+        this.height = height;
+        this.group = WallGroup.BRICK;
+        this.bufferedImage = image;
+        this.gm = gm;
+        // 设置碰撞检测位置
+        this.rectangle = new Rectangle(x,y,width,height);
+    }
+
+    public Wall(int x, int y, int width, int height,int hp, @NotNull WallGroup group, BaseGameModel gm) {
+        this.x = x;
+        this.y = y;
+        this.sx = x;
+        this.sy = y;
+        this.width = width;
+        this.height = height;
+        this.group = group;
+        this.gm = gm;
+        this.hp = hp;
+        // 设置碰撞检测位置
+        this.rectangle = new Rectangle(x,y,width,height);
+    }
+
+    public Wall(int x, int y, int width, int height, int hp, @NotNull BufferedImage image,BaseGameModel gm) {
+        this.x = x;
+        this.y = y;
+        this.sx = x;
+        this.sy = y;
+        this.width = width;
+        this.height = height;
+        this.group = WallGroup.BRICK;
+        this.bufferedImage = image;
+        this.gm = gm;
+        this.hp = hp;
+        // 设置碰撞检测位置
+        this.rectangle = new Rectangle(x,y,width,height);
+    }
+
+    public void setOffX(int offX) {
+        this.offX = offX;
+        this.offFlag = true;
+    }
+
+    public void setOffY(int offY) {
+        this.offY = offY;
+        this.offFlag = true;
     }
 
     /**
@@ -41,9 +111,35 @@ public class Wall extends GameObject{
 
     @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(color);
-        g.fillRect(this.x,this.y,this.width,this.height);
-        g.setColor(c);
+
+        if(hp <= 0){
+            gm.remove(this);
+        }
+
+        BufferedImage temp = bufferedImage;
+        if(temp == null){
+            temp = WallmageUtil.getWallImage(group);
+        }
+
+        if (!this.offFlag){
+            g.drawImage(temp,this.x,this.y,this.width,this.height,null);
+        }else{
+            if(this.offY > 0){
+                g.drawImage(temp,this.x,this.y+=this.speed,this.width,this.height,null);
+                if(this.y >= this.sy+this.offY){
+                    this.offFlag = false;
+                }
+            }else if(this.offY > 0){
+                g.drawImage(temp,this.x,this.x+=this.speed,this.width,this.height,null);
+                if(this.x >= this.sx+this.offX){
+                    this.offFlag = false;
+                }
+            }
+        }
+
+    }
+
+    public void subHp(){
+        this.hp--;
     }
 }

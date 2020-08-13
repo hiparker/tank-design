@@ -35,6 +35,18 @@ public class ResourcesMgr {
     /** 爆炸图片 小 */
     public static BufferedImage[] explodesSmall = new BufferedImage[10];
 
+    /** 地雷 */
+    public static BufferedImage[] mines = new BufferedImage[7];
+
+    /** 墙*/
+    public static BufferedImage wallY, wallG, wallR;
+
+    /** 封面背景 */
+    public static BufferedImage bg;
+    public static BufferedImage over;
+
+    /** 鸟巢背景 */
+    public static BufferedImage special;
 
     static{
         try {
@@ -83,6 +95,21 @@ public class ResourcesMgr {
             for (int i = 0; i < 10; i++) {
                 explodesSmall[i] = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/"+i+".gif"));
             }
+
+            // 地雷
+            for (int i = 0; i < 7; i++) {
+                mines[i] = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/square"+i+".jpg"));
+            }
+
+            wallY = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/vein-y.png"));
+            wallG = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/vein-g.png"));
+            wallR = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/vein-r.png"));
+
+
+            bg = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/tank-bg.png"));
+            over = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/tank_over.png"));
+
+            special = ImageIO.read(ResourcesMgr.class.getClassLoader().getResourceAsStream("static/images/special.png"));
 
 
         } catch (IOException e) {

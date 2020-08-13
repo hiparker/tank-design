@@ -2,6 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
+import com.parker.tank.faced.GameModel;
 
 /**
  * @BelongsProject: tank-design

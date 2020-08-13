@@ -1,10 +1,10 @@
 package com.parker.tank;
 
 import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.dist.Dir;
+import com.parker.tank.event.SystemEvent;
+import com.parker.tank.faced.BaseGameModel;
+
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -17,14 +17,13 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame{
 
-    private static  String TITLE = "坦克大战 v2.0.0";
+    private static  String TITLE = "TankWar - Game v2.0.0";
 
     /** 游戏画布宽高 */
     public static int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
     /** 调停者 */
-    private GameModel gm = new GameModel();
-
+    private volatile BaseGameModel bgm;
 
 
     public TankFrame(){
@@ -51,12 +50,12 @@ public class TankFrame extends Frame{
         });
 
         // window 按键监听
-        this.addKeyListener(new MyKeyListener());
+        this.addKeyListener(new SystemEvent());
 
         // 背景音乐
-        new Thread(()->{
+        /*new Thread(()->{
             new Audio("static/audio/war1.wav").loop();
-        }).start();
+        }).start();*/
 
     }
 
@@ -92,108 +91,21 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
-
-        // 交给调停者去处理
-        gm.paint(g);
-    }
-
-    /**
-     * 内部类 窗口键盘监听事件
-     */
-    class MyKeyListener extends KeyAdapter {
-
-        private boolean bL = false;
-        private boolean bU = false;
-        private boolean bR = false;
-        private boolean bD = false;
-
-        /**
-         * 键盘按键事件处理
-         * @param flag
-         * @param e
-         */
-        public void KeyEventHandler(boolean flag,KeyEvent e){
-            // 键盘按下时 操作
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    bL = flag;
-                    // 处理坦克方向
-                    setMainTankDir();
-                    break;
-                case KeyEvent.VK_UP:
-                    bU = flag;
-                    // 处理坦克方向
-                    setMainTankDir();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    bR = flag;
-                    // 处理坦克方向
-                    setMainTankDir();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    bD = flag;
-                    // 处理坦克方向
-                    setMainTankDir();
-                    break;
-                case KeyEvent.VK_SPACE:
-                    // 按键抬起时
-                    if(!flag){
-                        gm.getMainTank().fired();
-                        // 开火音效
-                        new Thread(()->{
-                            new Audio("static/audio/tank_fire.wav").play();
-                        }).start();
-                    }
-                    break;
-                case KeyEvent.VK_ESCAPE:
-                    // 关闭程序
-                    System.exit(0);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /**
-         * 设置主战坦克方向
-         */
-        private void setMainTankDir() {
-            if(!bL && !bU && !bR && !bD) {
-                gm.getMainTank().stop();
-            }else{
-                if(bL) gm.getMainTank().setDir(Dir.LEFT);
-                if(bU) gm.getMainTank().setDir(Dir.UP);
-                if(bR) gm.getMainTank().setDir(Dir.RIGHT);
-                if(bD) gm.getMainTank().setDir(Dir.DOWN);
-
-                // 移动音乐
-                new Thread(()->{
-                    new Audio("static/audio/tank_move.wav").play();
-                }).start();
-
-                gm.getMainTank().start();
-            }
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            // 键盘按下时 操作
-            this.KeyEventHandler(true,e);
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            // 键盘按下时 操作
-            this.KeyEventHandler(false,e);
+        if(bgm != null){
+            // 交给调停者去处理
+            bgm.paint(g);
         }
     }
+
 
     // -------------------------------------------------------------------
 
-    public GameModel getGm() {
-        return gm;
+
+    public BaseGameModel getBgm() {
+        return bgm;
     }
 
-
+    public void setBgm(BaseGameModel bgm) {
+        this.bgm = bgm;
+    }
 }

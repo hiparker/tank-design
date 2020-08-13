@@ -1,5 +1,9 @@
 package com.parker.tank;
 
+import com.parker.tank.chain.BaseGameChain;
+import com.parker.tank.chain.GameChain;
+import com.parker.tank.factory.TankFrameFactory;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,8 +18,13 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        TankFrame tankFrame = new TankFrame();
+        // 调用完整责任链
+        new Thread(()->{
+            GameChain gameChain = new BaseGameChain();
+            gameChain.handler();
+        }).start();
 
+        TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
         System.out.println("普通坦克数量["+TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
 
         // 自动刷新 window

@@ -3,6 +3,8 @@ package com.parker.tank;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.Dir;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
 
 import java.awt.*;
 
@@ -20,7 +22,7 @@ public class Bullet extends GameObject {
     /** 子弹方向 */
     private Dir dir = Dir.DOWN;
     /** 调停者 */
-    private GameModel gm;
+    private BaseGameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -37,7 +39,7 @@ public class Bullet extends GameObject {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir, GameModel gm, Tank belongTank) {
+    public Bullet(int x, int y, Dir dir, BaseGameModel gm, Tank belongTank) {
 
         // 初始化
         this.init();
@@ -194,7 +196,7 @@ public class Bullet extends GameObject {
     // -----------
 
 
-    public GameModel getGm() {
+    public BaseGameModel getGm() {
         return gm;
     }
 

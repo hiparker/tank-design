@@ -37,7 +37,7 @@ public enum ExplodeAndTankCollide implements Collide{
 
                 // 暂时设置自身无敌
                 if(!tank.getGroup().equals(TankGroup.RED)){
-                    tank.died();
+                    //tank.died();
                     flag = false;
                 }
             }

@@ -1,6 +1,8 @@
 package com.parker.tank;
 
 import com.parker.tank.config.ResourcesMgr;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,13 +19,13 @@ public class Explode extends GameObject {
     /** XY坐标 */
     protected int x , y;
     /** 画布 */
-    protected GameModel gm;
+    protected BaseGameModel gm;
     /** 当前位置 */
     private Rectangle rectangle;
     /** 当前数量 */
     protected int count = 0;
 
-    public Explode(int x, int y, GameModel gm) {
+    public Explode(int x, int y, BaseGameModel gm) {
         this.x = x;
         this.y = y;
         this.gm = gm;

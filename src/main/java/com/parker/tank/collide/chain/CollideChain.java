@@ -26,6 +26,8 @@ public enum  CollideChain implements Collide {
         this.add(TankAndWallCollide.INSTANCE);
         this.add(BulletAndWallCollide.INSTANCE);
         this.add(ExplodeAndTankCollide.INSTANCE);
+        this.add(BulletAndSpecialCollide.INSTANCE);
+        this.add(MineAndTankCollide.INSTANCE);
     }
 
     public void add(Collide collide){

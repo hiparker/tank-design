@@ -1,8 +1,11 @@
 package com.parker.tank;
 
-import com.parker.tank.config.PropertiesMgr;
+import com.parker.tank.dist.WallGroup;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
+import com.sun.istack.internal.NotNull;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @BelongsProject: tank-design
@@ -16,19 +19,19 @@ public enum WallFactory {
     /** 实例 */
     INSTANCE;
 
-    public void createWall(GameModel gm){
-
-        int gameWidth = 800, gameHeight = 600;
-        if(PropertiesMgr.getByInteger("gameWidth") != null){
-            gameWidth = PropertiesMgr.getByInteger("gameWidth");
-        }
-        if(PropertiesMgr.getByInteger("gameHeight") != null){
-            gameHeight = PropertiesMgr.getByInteger("gameHeight");
-        }
-
-
-        gm.add(new Wall(0,120,180,60, Color.LIGHT_GRAY));
-        gm.add(new Wall(gameWidth-120,120,120,60, Color.LIGHT_GRAY));
+    public Wall createWall(int x, int y, int width, int height, @NotNull WallGroup group, BaseGameModel gm) {
+        return new Wall(x,y,width,height,group,gm);
     }
 
+    public Wall createWall(int x, int y, int width, int height, @NotNull BufferedImage image, BaseGameModel gm) {
+        return new Wall(x,y,width,height,image,gm);
+    }
+
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, @NotNull WallGroup group, BaseGameModel gm) {
+        return new Wall(x,y,width,height,hp,group,gm);
+    }
+
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, @NotNull BufferedImage image, BaseGameModel gm) {
+        return new Wall(x,y,width,height,hp,image,gm);
+    }
 }
