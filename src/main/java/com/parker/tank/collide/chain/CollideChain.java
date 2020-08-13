@@ -1,9 +1,7 @@
 package com.parker.tank.collide.chain;
 
 import com.parker.tank.GameObject;
-import com.parker.tank.collide.BulletAndTankCollide;
-import com.parker.tank.collide.Collide;
-import com.parker.tank.collide.TankAndTankCollide;
+import com.parker.tank.collide.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +23,9 @@ public enum  CollideChain implements Collide {
     CollideChain(){
         this.add(BulletAndTankCollide.INSTANCE);
         this.add(TankAndTankCollide.INSTANCE);
+        this.add(TankAndWallCollide.INSTANCE);
+        this.add(BulletAndWallCollide.INSTANCE);
+        this.add(ExplodeAndTankCollide.INSTANCE);
     }
 
     public void add(Collide collide){

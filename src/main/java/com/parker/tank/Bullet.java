@@ -191,4 +191,12 @@ public class Bullet extends GameObject {
         this.liveFlag = false;
     }
 
+    // -----------
+
+
+    public GameModel getGm() {
+        return gm;
+    }
+
+
 }

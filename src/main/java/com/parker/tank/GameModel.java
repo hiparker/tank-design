@@ -53,6 +53,10 @@ public class GameModel {
         // 我方坦克
         myTank = TankFactory.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
         this.add(myTank);
+
+
+        // 创建墙体
+        WallFactory.INSTANCE.createWall(this);
     }
 
     /**

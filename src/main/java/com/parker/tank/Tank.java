@@ -9,7 +9,6 @@ import com.parker.tank.util.TankImageUtil;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -78,11 +77,11 @@ public class Tank extends GameObject {
         this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
-        rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+        this.rectangle = new Rectangle(x,y,TANK_WIDTH,TANK_HEIGHT);
 
         // 赋值坦克宽高
-        this.TANK_WIDTH = TankImageUtil.getTankImage(this.group,Dir.UP).getWidth();
-        this.TANK_HEIGHT = TankImageUtil.getTankImage(this.group,Dir.UP).getHeight();
+        this.TANK_WIDTH = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
+        this.TANK_HEIGHT = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
 
         // 初始化开火的策略模式
         this.initFireStrategy();
@@ -111,11 +110,11 @@ public class Tank extends GameObject {
         this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
-        rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+        this.rectangle = new Rectangle(x,y,TANK_WIDTH,TANK_HEIGHT);
 
         // 赋值坦克宽高
-        this.TANK_WIDTH = TankImageUtil.getTankImage(this.group,Dir.UP).getWidth();
-        this.TANK_HEIGHT = TankImageUtil.getTankImage(this.group,Dir.UP).getHeight();
+        this.TANK_WIDTH = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
+        this.TANK_HEIGHT = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
 
         // 初始化开火的策略模式
         this.initFireStrategy();

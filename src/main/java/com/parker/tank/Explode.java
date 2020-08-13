@@ -3,6 +3,7 @@ package com.parker.tank;
 import com.parker.tank.config.ResourcesMgr;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @BelongsProject: tank-01
@@ -17,6 +18,8 @@ public class Explode extends GameObject {
     protected int x , y;
     /** 画布 */
     protected GameModel gm;
+    /** 当前位置 */
+    private Rectangle rectangle;
     /** 当前数量 */
     protected int count = 0;
 
@@ -25,10 +28,23 @@ public class Explode extends GameObject {
         this.y = y;
         this.gm = gm;
 
+        // 设置碰撞检测位置
+        this.rectangle = new Rectangle(x,y,0,0);
+
         // 爆炸音效
         new Thread(()->{
             new Audio("static/audio/explode.wav").play();
         }).start();
+    }
+
+    /**
+     * 获得当前位置（用于碰撞检测）
+     * @return
+     */
+    public Rectangle getPosition(){
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        return rectangle;
     }
 
     /**
@@ -37,7 +53,11 @@ public class Explode extends GameObject {
      */
     @Override
     public void paint(Graphics g) {
-        g.drawImage(ResourcesMgr.explodesBig[count++],x,y,null);
+        BufferedImage image = ResourcesMgr.explodesBig[count++];
+        this.rectangle.width = image.getWidth();
+        this.rectangle.height = image.getHeight();
+
+        g.drawImage(image,x,y,null);
         if(count >= ResourcesMgr.explodesBig.length){
             // 爆炸消失
             gm.remove(this);

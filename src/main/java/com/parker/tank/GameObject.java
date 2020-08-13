@@ -23,4 +23,11 @@ public abstract class GameObject {
      */
     public abstract void paint(Graphics g);
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
