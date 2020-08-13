@@ -21,8 +21,8 @@ public class Bullet {
     private int x , y;
     /** 子弹方向 */
     private Dir dir = Dir.DOWN;
-    /** 画布 */
-    private TankFrame tankFrame;
+    /** 调停者 */
+    private GameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -39,7 +39,7 @@ public class Bullet {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir, TankFrame tankFrame, Tank belongTank) {
+    public Bullet(int x, int y, Dir dir, GameModel gm, Tank belongTank) {
 
         // 初始化
         this.init();
@@ -47,7 +47,7 @@ public class Bullet {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tankFrame = tankFrame;
+        this.gm = gm;
         this.belongTank = belongTank;
 
         // 设置碰撞检测位置
@@ -56,7 +56,7 @@ public class Bullet {
         // 设置 子弹样式
         setBulletStyle();
 
-        tankFrame.addBullet(this);
+        gm.addBullet(this);
     }
 
     /**
@@ -145,7 +145,7 @@ public class Bullet {
 
         // 炮弹死亡移除
         if(!this.liveFlag){
-            tankFrame.removeBullet(this);
+            gm.removeBullet(this);
         }
 
         switch (dir) {

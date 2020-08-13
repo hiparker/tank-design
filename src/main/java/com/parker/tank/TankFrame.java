@@ -2,16 +2,11 @@ package com.parker.tank;
 
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
-import com.parker.tank.dist.TankGroup;
-import com.parker.tank.util.TankUtil;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @BelongsProject: tank-01
@@ -27,17 +22,10 @@ public class TankFrame extends Frame{
     /** 游戏画布宽高 */
     public static int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
-    /** 子弹集合 */
-    private final List<Bullet> bulletList = new ArrayList<>();
+    /** 调停者 */
+    private GameModel gm = new GameModel();
 
-    /** 爆炸集合 */
-    private final List<Explode> explodeList = new ArrayList<>();
 
-    /** 我方主战坦克 */
-    private final Tank myTank = TankFactory.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
-
-    /** 敌方坦克 */
-    private final List<Tank> badTanks = new ArrayList<>();
 
     public TankFrame(){
 
@@ -105,40 +93,8 @@ public class TankFrame extends Frame{
     @Override
     public void paint(Graphics g) {
 
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹的数量："+bulletList.size(),10,40);
-        g.drawString("敌人的数量："+badTanks.size(),10,60);
-        g.drawString("爆炸的数量："+explodeList.size(),10,80);
-        g.setColor(c);
-
-        // 坦克自动行走
-        myTank.paint(g);
-
-        // 敌方坦克渲染
-        for (int i = 0; i < badTanks.size(); i++) {
-            badTanks.get(i).paint(g);
-        }
-
-        // 子弹自动行走
-        for (int i = 0; i < bulletList.size(); i++) {
-            bulletList.get(i).paint(g);
-        }
-        
-        // 坦克爆炸
-        for (int i = 0; i < explodeList.size(); i++) {
-            explodeList.get(i).paint(g);
-        }
-
-        // 子弹与坦克碰撞
-        for (int i = 0; i < bulletList.size(); i++) {
-            for (int tk = 0; tk < badTanks.size(); tk++) {
-                TankUtil.collideWith(badTanks.get(tk),bulletList.get(i));
-            }
-            TankUtil.collideWith(myTank,bulletList.get(i));
-        }
-
-        
+        // 交给调停者去处理
+        gm.paint(g);
     }
 
     /**
@@ -182,7 +138,7 @@ public class TankFrame extends Frame{
                 case KeyEvent.VK_SPACE:
                     // 按键抬起时
                     if(!flag){
-                        myTank.fired();
+                        gm.getMainTank().fired();
                     }
                     break;
                 case KeyEvent.VK_ESCAPE:
@@ -199,19 +155,19 @@ public class TankFrame extends Frame{
          */
         private void setMainTankDir() {
             if(!bL && !bU && !bR && !bD) {
-                myTank.setMoving(false);
+                gm.getMainTank().setMoving(false);
             }else{
-                if(bL) myTank.setDir(Dir.LEFT);
-                if(bU) myTank.setDir(Dir.UP);
-                if(bR) myTank.setDir(Dir.RIGHT);
-                if(bD) myTank.setDir(Dir.DOWN);
+                if(bL) gm.getMainTank().setDir(Dir.LEFT);
+                if(bU) gm.getMainTank().setDir(Dir.UP);
+                if(bR) gm.getMainTank().setDir(Dir.RIGHT);
+                if(bD) gm.getMainTank().setDir(Dir.DOWN);
 
                 // 移动音乐
                 new Thread(()->{
                     new Audio("static/audio/tank_move.wav").play();
                 }).start();
 
-                myTank.setMoving(true);
+                gm.getMainTank().setMoving(true);
             }
         }
 
@@ -231,46 +187,9 @@ public class TankFrame extends Frame{
 
     // -------------------------------------------------------------------
 
-    /**
-     * 添加爆炸
-     * @param be
-     */
-    public void addExplode(Explode be){
-        this.explodeList.add(be);
+    public GameModel getGm() {
+        return gm;
     }
-    /**
-     * 删除爆炸
-     * @param be
-     */
-    public void removeExplode(Explode be){
-        this.explodeList.remove(be);
-    }
-    /**
-     * 添加炮弹
-     * @param bb
-     */
-    public void addBullet(Bullet bb){
-        this.bulletList.add(bb);
-    }
-    /**
-     * 删除炮弹
-     * @param be
-     */
-    public void removeBullet(Bullet be){
-        this.bulletList.remove(be);
-    }
-    /**
-     * 添加坦克
-     * @param bt
-     */
-    public void addBadTank(Tank bt){
-        this.badTanks.add(bt);
-    }
-    /**
-     * 删除坦克
-     * @param bt
-     */
-    public void removeBadTank(Tank bt){
-        this.badTanks.remove(bt);
-    }
+
+
 }

@@ -34,8 +34,8 @@ public class Tank{
     private Dir dir = Dir.DOWN;
     /** 是否是移动的状态 */
     private boolean moving = false;
-    /** 画布 */
-    private TankFrame tankFrame;
+    /** 调停者 */
+    private GameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -58,7 +58,7 @@ public class Tank{
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, TankFrame tankFrame, TankGroup group) {
+    public Tank(int x, int y, Dir dir, GameModel gm, TankGroup group) {
 
         // 初始化
         this.init();
@@ -66,7 +66,7 @@ public class Tank{
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tankFrame = tankFrame;
+        this.gm = gm;
         this.group = group;
 
         // 设置碰撞检测位置
@@ -86,7 +86,7 @@ public class Tank{
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, TankFrame tankFrame, TankGroup group, boolean autoFlag) {
+    public Tank(int x, int y, Dir dir, GameModel gm, TankGroup group, boolean autoFlag) {
 
         // 初始化
         this.init();
@@ -94,7 +94,7 @@ public class Tank{
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tankFrame = tankFrame;
+        this.gm = gm;
         this.group = group;
         this.autoFlag = autoFlag;
 
@@ -199,7 +199,7 @@ public class Tank{
     public void paint(Graphics g) {
         // 坦克阵亡
         if(!liveFlag){
-            tankFrame.removeBadTank(this);
+            gm.removeBadTank(this);
             return;
         }
 
@@ -246,8 +246,8 @@ public class Tank{
     public void died() {
         this.liveFlag = false;
         // 坦克阵亡新建爆炸
-        Explode explode = new Explode(this.x, this.y, tankFrame);
-        tankFrame.addExplode(explode);
+        Explode explode = new Explode(this.x, this.y, gm);
+        this.gm.addExplode(explode);
     }
 
     // -----------------------------------------------
@@ -287,7 +287,7 @@ public class Tank{
         return y;
     }
 
-    public TankFrame getTankFrame() {
-        return tankFrame;
+    public GameModel getGameModel() {
+        return gm;
     }
 }

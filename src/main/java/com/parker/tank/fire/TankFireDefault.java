@@ -20,11 +20,11 @@ public enum TankFireDefault implements TankFire{
 
     @Override
     public void fire(Tank tank) {
-        if(tank == null || tank.getTankFrame() == null){
+        if(tank == null || tank.getGameModel() == null){
             return;
         }
 
-        new Bullet(tank.getX(),tank.getY(),tank.getDir(),tank.getTankFrame(),tank);
+        new Bullet(tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank);
 
         // 开火音效
         new Thread(()->{

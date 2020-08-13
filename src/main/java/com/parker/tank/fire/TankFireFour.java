@@ -19,13 +19,13 @@ public class TankFireFour implements TankFire{
 
     @Override
     public void fire(Tank tank) {
-        if(tank == null || tank.getTankFrame() == null){
+        if(tank == null || tank.getGameModel() == null){
             return;
         }
 
         Dir[] values = Dir.values();
         for (Dir value : values) {
-            new Bullet(tank.getX(),tank.getY(),value,tank.getTankFrame(),tank);
+            new Bullet(tank.getX(),tank.getY(),value,tank.getGameModel(),tank);
         }
         
         // 开火音效

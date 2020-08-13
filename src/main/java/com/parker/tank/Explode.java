@@ -16,14 +16,14 @@ public class Explode {
     /** XY坐标 */
     protected int x , y;
     /** 画布 */
-    protected TankFrame tankFrame;
+    protected GameModel gm;
     /** 当前数量 */
     protected int count = 0;
 
-    public Explode(int x, int y, TankFrame tankFrame) {
+    public Explode(int x, int y, GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tankFrame = tankFrame;
+        this.gm = gm;
 
         // 爆炸音效
         new Thread(()->{
@@ -39,7 +39,7 @@ public class Explode {
         g.drawImage(ResourcesMgr.explodesBig[count++],x,y,null);
         if(count >= ResourcesMgr.explodesBig.length){
             // 爆炸消失
-            tankFrame.removeExplode(this);
+            gm.removeExplode(this);
         }
     }
 

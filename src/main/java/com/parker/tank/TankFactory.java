@@ -18,12 +18,12 @@ public final class TankFactory {
      * 创建坦克
      * @param x x 坐标
      * @param y y 坐标
-     * @param tankFrame tank画布
+     * @param gm tank画布
      * @return
      */
-    public static Tank createTank(int x, int y, Dir dir, TankFrame tankFrame, TankGroup group) {
-        Tank tank = new Tank(x, y, dir, tankFrame, group);
-        tank.setFutureTank(new Tank(x, y, dir, tankFrame, group));
+    public static Tank createTank(int x, int y, Dir dir, GameModel gm, TankGroup group) {
+        Tank tank = new Tank(x, y, dir, gm, group);
+        tank.setFutureTank(new Tank(x, y, dir, gm, group));
         return tank;
     }
 
@@ -31,12 +31,12 @@ public final class TankFactory {
      * 创建自动坦克
      * @param x x 坐标
      * @param y y 坐标
-     * @param tankFrame tank画布
+     * @param gm tank画布
      * @return
      */
-    public static Tank createAutoTank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group,boolean autoFlag) {
-        Tank tank = new Tank(x, y, dir, tankFrame, group,autoFlag);
-        tank.setFutureTank(new Tank(x, y, dir, tankFrame, group,autoFlag));
+    public static Tank createAutoTank(int x, int y, Dir dir,GameModel gm,TankGroup group,boolean autoFlag) {
+        Tank tank = new Tank(x, y, dir, gm, group,autoFlag);
+        tank.setFutureTank(new Tank(x, y, dir, gm, group,autoFlag));
         return tank;
     }
 
