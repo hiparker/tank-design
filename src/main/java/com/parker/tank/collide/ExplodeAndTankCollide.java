@@ -1,6 +1,5 @@
 package com.parker.tank.collide;
 
-import com.parker.tank.Bullet;
 import com.parker.tank.Explode;
 import com.parker.tank.GameObject;
 import com.parker.tank.Tank;
