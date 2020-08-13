@@ -32,9 +32,13 @@ public enum  CollideChain implements Collide {
     }
 
     @Override
-    public void comparator(GameObject go1, GameObject go2) {
+    public boolean comparator(GameObject go1, GameObject go2) {
         for (Collide collide : collides) {
-            collide.comparator(go1,go2);
+            boolean flag = collide.comparator(go1,go2);
+            if(!flag){
+                return false;
+            }
         }
+        return true;
     }
 }

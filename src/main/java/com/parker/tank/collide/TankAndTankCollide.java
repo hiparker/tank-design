@@ -23,7 +23,7 @@ public enum TankAndTankCollide implements Collide{
     INSTANCE;
 
     @Override
-    public void comparator(GameObject go1, GameObject go2) {
+    public boolean comparator(GameObject go1, GameObject go2) {
         if (go1 instanceof Tank && go2 instanceof Tank){
             Tank tank1 = (Tank) go1;
             Tank tank2 = (Tank) go2;
@@ -49,5 +49,6 @@ public enum TankAndTankCollide implements Collide{
                 }*/
             }
         }
+        return true;
     }
 }

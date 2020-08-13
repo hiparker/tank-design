@@ -11,6 +11,6 @@ import com.parker.tank.GameObject;
  */
 public interface Collide {
 
-    void comparator(GameObject go1,GameObject go2);
+    boolean comparator(GameObject go1,GameObject go2);
 
 }

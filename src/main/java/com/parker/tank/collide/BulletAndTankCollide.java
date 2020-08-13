@@ -22,7 +22,8 @@ public enum BulletAndTankCollide implements Collide{
     INSTANCE;
 
     @Override
-    public void comparator(GameObject go1, GameObject go2) {
+    public boolean comparator(GameObject go1, GameObject go2) {
+        boolean flag = true;
         if (go1 instanceof Bullet && go2 instanceof Tank){
             Bullet bullet = (Bullet) go1;
             Tank tank = (Tank) go2;
@@ -40,11 +41,13 @@ public enum BulletAndTankCollide implements Collide{
                     if(!tank.getGroup().equals(TankGroup.RED)){
                         tank.died();
                         bullet.died();
+                        flag = false;
                     }
                 }
             }
         }else if(go1 instanceof Tank && go2 instanceof Bullet){
-            this.comparator(go2,go1);
+            return this.comparator(go2,go1);
         }
+        return flag;
     }
 }
