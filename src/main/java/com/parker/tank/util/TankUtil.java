@@ -1,8 +1,8 @@
 package com.parker.tank.util;
 
+import com.parker.tank.Bullet;
+import com.parker.tank.Tank;
 import com.parker.tank.dist.TankGroup;
-import com.parker.tank.factory.base.BaseBullet;
-import com.parker.tank.factory.base.BaseTank;
 
 import java.awt.*;
 
@@ -24,9 +24,9 @@ public final class TankUtil {
      * 碰撞检测
      * @param tank
      */
-    public static boolean collideWith(BaseTank tank, BaseBullet bullet) {
+    public static boolean collideWith(Tank tank, Bullet bullet) {
         boolean flag = true;
-        BaseTank bulletBelongTank = bullet.getBelongTank();
+        Tank bulletBelongTank = bullet.getBelongTank();
         Rectangle tankPosition = tank.getPosition();
         Rectangle bulletPosition = bullet.getPosition();
         if(bulletPosition.intersects(tankPosition)){

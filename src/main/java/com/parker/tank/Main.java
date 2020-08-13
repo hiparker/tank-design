@@ -3,9 +3,6 @@ package com.parker.tank;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
-import com.parker.tank.factory.GameFactory;
-import com.parker.tank.factory.base.BaseTank;
-import com.parker.tank.factory.child.DefaultFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +26,7 @@ public class Main {
         // 创建5个敌方坦克
         for (int i = 0; i < badTankCount; i++) {
 
-            BaseTank autoTank = tankFrame.getGf().createAutoTank(50 + i * 80, 200, Dir.DOWN, tankFrame, TankGroup.BLUE, true);
+            Tank autoTank = TankFactory.createAutoTank(50 + i * 80, 200, Dir.DOWN, tankFrame, TankGroup.BLUE, true);
             tankFrame.addBadTank(autoTank);
 
         }

@@ -1,14 +1,14 @@
-package com.parker.tank.entity.tank;
+package com.parker.tank;
 
-import com.parker.tank.TankFrame;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
-import com.parker.tank.factory.base.BaseExplode;
-import com.parker.tank.factory.base.BaseTank;
+import com.parker.tank.fire.TankFire;
+import com.parker.tank.fire.TankFireDefault;
 import com.parker.tank.util.TankImageUtil;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 /**
@@ -18,12 +18,38 @@ import java.util.Random;
  * @CreateTime: 2020-08-10 15:46
  * @Description: 主战坦克
  */
-public class Tank extends BaseTank{
+public class Tank{
 
-    /**
-     * 随机数
-     */
+    /** 随机数 */
     private static final Random random = new Random();
+
+    /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
+    public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
+
+    /** 速度 */
+    private int speed = 5;
+    /** XY坐标 */
+    private int x , y;
+    /** 坦克方向 */
+    private Dir dir = Dir.DOWN;
+    /** 是否是移动的状态 */
+    private boolean moving = false;
+    /** 画布 */
+    private TankFrame tankFrame;
+    /** 存活状态 */
+    private boolean liveFlag = true;
+    /** 当前位置 */
+    private Rectangle rectangle;
+    /** 坦克分组 */
+    private TankGroup group;
+    /** 开火策略模式 */
+    private TankFire tf = null;
+    /** 自动模式 */
+    private boolean autoFlag = false;
+    private Dir[] dirs = {Dir.LEFT,Dir.UP,Dir.RIGHT,Dir.DOWN};
+    private Tank futureTank;
+
+
 
 
     /**
@@ -93,11 +119,47 @@ public class Tank extends BaseTank{
         }
     }
 
+    /**
+     * 初始化开火的策略模式
+     */
+    protected void initFireStrategy(){
+        // 策略模式 不同的开火方案
+        if(TankGroup.BLUE.equals(this.group)){
+            String fireName = PropertiesMgr.getByString("blueFire");
+            try {
+                tf = (TankFire) Class.forName(fireName).getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                //System.out.println("找不到 blueFire 开火策略");
+            }
+        }else if(TankGroup.RED.equals(this.group)){
+            String fireName = PropertiesMgr.getByString("redFire");
+            try {
+                tf = (TankFire) Class.forName(fireName).getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                //System.out.println("找不到 redFire 开火策略");
+            }
+        }
+        // 如果策略为空 则使用默认策略
+        if(tf == null){
+            tf = TankFireDefault.INSTANCE;
+        }
+    }
+
+    /**
+     * 获得当前位置（用于碰撞检测）
+     * @return
+     */
+    public Rectangle getPosition(){
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        return rectangle;
+    }
 
     /**
      * 坦克方向处理
      */
-    @Override
     public void moveHandler(){
         if(!moving){
             return;
@@ -130,7 +192,10 @@ public class Tank extends BaseTank{
         y = yT;
     }
 
-    @Override
+    /**
+     * 描绘
+     * @param g 画笔
+     */
     public void paint(Graphics g) {
         // 坦克阵亡
         if(!liveFlag){
@@ -169,7 +234,6 @@ public class Tank extends BaseTank{
     /**
      * 开火
      */
-    @Override
     public void fired() {
         if(tf != null){
             tf.fire(this);
@@ -179,11 +243,51 @@ public class Tank extends BaseTank{
     /**
      * 死亡
      */
-    @Override
     public void died() {
         this.liveFlag = false;
         // 坦克阵亡新建爆炸
-        BaseExplode explode = tankFrame.getGf().createExplode(this.x, this.y, tankFrame);
+        Explode explode = new Explode(this.x, this.y, tankFrame);
         tankFrame.addExplode(explode);
+    }
+
+    // -----------------------------------------------
+
+    public TankGroup getGroup() {
+        return group;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Tank getFutureTank() {
+        return futureTank;
+    }
+    public void setFutureTank(Tank futureTank) {
+        this.futureTank = futureTank;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public TankFrame getTankFrame() {
+        return tankFrame;
     }
 }

@@ -1,9 +1,6 @@
-package com.parker.tank.entity.explode;
+package com.parker.tank;
 
-import com.parker.tank.Audio;
 import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.TankFrame;
-import com.parker.tank.factory.base.BaseExplode;
 
 import java.awt.*;
 
@@ -14,9 +11,16 @@ import java.awt.*;
  * @CreateTime: 2020-08-11 20:38
  * @Description: 大 爆炸效果
  */
-public class BigExplode extends BaseExplode {
+public class Explode {
 
-    public BigExplode(int x, int y, TankFrame tankFrame) {
+    /** XY坐标 */
+    protected int x , y;
+    /** 画布 */
+    protected TankFrame tankFrame;
+    /** 当前数量 */
+    protected int count = 0;
+
+    public Explode(int x, int y, TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.tankFrame = tankFrame;
@@ -27,7 +31,10 @@ public class BigExplode extends BaseExplode {
         }).start();
     }
 
-    @Override
+    /**
+     * 描绘
+     * @param g 画笔
+     */
     public void paint(Graphics g) {
         g.drawImage(ResourcesMgr.explodesBig[count++],x,y,null);
         if(count >= ResourcesMgr.explodesBig.length){

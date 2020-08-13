@@ -1,7 +1,8 @@
 package com.parker.tank.fire;
 
 import com.parker.tank.Audio;
-import com.parker.tank.factory.base.BaseTank;
+import com.parker.tank.Bullet;
+import com.parker.tank.Tank;
 
 /**
  * @BelongsProject: tank-02
@@ -18,13 +19,12 @@ public enum TankFireDefault implements TankFire{
     INSTANCE;
 
     @Override
-    public void fire(BaseTank tank) {
+    public void fire(Tank tank) {
         if(tank == null || tank.getTankFrame() == null){
             return;
         }
 
-        tank.getTankFrame().getGf().createBullet(
-                tank.getX(),tank.getY(),tank.getDir(),tank.getTankFrame(),tank);
+        new Bullet(tank.getX(),tank.getY(),tank.getDir(),tank.getTankFrame(),tank);
 
         // 开火音效
         new Thread(()->{

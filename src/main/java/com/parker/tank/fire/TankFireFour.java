@@ -1,8 +1,9 @@
 package com.parker.tank.fire;
 
 import com.parker.tank.Audio;
+import com.parker.tank.Bullet;
+import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
-import com.parker.tank.factory.base.BaseTank;
 
 /**
  * @BelongsProject: tank-02
@@ -17,15 +18,14 @@ import com.parker.tank.factory.base.BaseTank;
 public class TankFireFour implements TankFire{
 
     @Override
-    public void fire(BaseTank tank) {
+    public void fire(Tank tank) {
         if(tank == null || tank.getTankFrame() == null){
             return;
         }
 
         Dir[] values = Dir.values();
         for (Dir value : values) {
-            tank.getTankFrame().getGf().createBullet(
-                    tank.getX(),tank.getY(),value,tank.getTankFrame(),tank);
+            new Bullet(tank.getX(),tank.getY(),value,tank.getTankFrame(),tank);
         }
         
         // 开火音效

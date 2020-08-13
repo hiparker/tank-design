@@ -3,11 +3,6 @@ package com.parker.tank;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
-import com.parker.tank.factory.GameFactory;
-import com.parker.tank.factory.base.BaseBullet;
-import com.parker.tank.factory.base.BaseExplode;
-import com.parker.tank.factory.base.BaseTank;
-import com.parker.tank.factory.child.DefaultFactory;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -15,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,37 +24,20 @@ public class TankFrame extends Frame{
 
     private static  String TITLE = "坦克大战 v2.0.0";
 
-    /** 游戏工厂 */
-    private static GameFactory gf = null;
-
     /** 游戏画布宽高 */
     public static int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
     /** 子弹集合 */
-    private final List<BaseBullet> bulletList = new ArrayList<>();
+    private final List<Bullet> bulletList = new ArrayList<>();
 
     /** 爆炸集合 */
-    private final List<BaseExplode> explodeList = new ArrayList<>();
+    private final List<Explode> explodeList = new ArrayList<>();
 
     /** 我方主战坦克 */
-    private final BaseTank myTank = gf.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
+    private final Tank myTank = TankFactory.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
 
     /** 敌方坦克 */
-    private final List<BaseTank> badTanks = new ArrayList<>();
-
-    /** 初始化 游戏工厂 */
-    static{
-        try {
-            gf = (GameFactory) Class.forName(PropertiesMgr.getByString("tankFactory")).getDeclaredConstructor().newInstance();
-        } catch (ClassNotFoundException | InstantiationException |
-                    IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            //System.out.println("找不到 游戏工厂策略");
-        }
-        if(gf == null){
-            gf = new DefaultFactory();
-        }
-    }
-
+    private final List<Tank> badTanks = new ArrayList<>();
 
     public TankFrame(){
 
@@ -255,53 +232,45 @@ public class TankFrame extends Frame{
     // -------------------------------------------------------------------
 
     /**
-     * 获得游戏工厂
-     * @return
-     */
-    public GameFactory getGf() {
-        return gf;
-    }
-
-    /**
      * 添加爆炸
      * @param be
      */
-    public void addExplode(BaseExplode be){
+    public void addExplode(Explode be){
         this.explodeList.add(be);
     }
     /**
      * 删除爆炸
      * @param be
      */
-    public void removeExplode(BaseExplode be){
+    public void removeExplode(Explode be){
         this.explodeList.remove(be);
     }
     /**
      * 添加炮弹
      * @param bb
      */
-    public void addBullet(BaseBullet bb){
+    public void addBullet(Bullet bb){
         this.bulletList.add(bb);
     }
     /**
      * 删除炮弹
      * @param be
      */
-    public void removeBullet(BaseBullet be){
+    public void removeBullet(Bullet be){
         this.bulletList.remove(be);
     }
     /**
      * 添加坦克
      * @param bt
      */
-    public void addBadTank(BaseTank bt){
+    public void addBadTank(Tank bt){
         this.badTanks.add(bt);
     }
     /**
      * 删除坦克
      * @param bt
      */
-    public void removeBadTank(BaseTank bt){
+    public void removeBadTank(Tank bt){
         this.badTanks.remove(bt);
     }
 }
