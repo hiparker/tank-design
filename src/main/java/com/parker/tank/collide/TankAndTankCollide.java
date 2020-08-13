@@ -36,7 +36,7 @@ public enum TankAndTankCollide implements Collide{
                 // 为了防止双方 在回滚时还继续行走 所有坦克 在碰撞时禁止走动
                 // 鉴于 有自动坦克 如果当前状态时 moving 在禁止50毫秒后 放行
                 // 普通坦克直接停止移动
-                if(tank1.isAutoFlag()) tank1.stopAndDelayStart();
+                /*if(tank1.isAutoFlag()) tank1.stopAndDelayStart();
                 else tank1.stop();
 
                 if(tank2.isAutoFlag()) tank2.stopAndDelayStart();
@@ -46,7 +46,7 @@ public enum TankAndTankCollide implements Collide{
                     tank1.rollback();
                 }else{
                     tank2.rollback();
-                }
+                }*/
             }
         }
     }

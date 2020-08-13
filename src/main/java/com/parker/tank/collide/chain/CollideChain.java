@@ -27,7 +27,7 @@ public enum  CollideChain implements Collide {
         this.add(TankAndTankCollide.INSTANCE);
     }
 
-    private void add(Collide collide){
+    public void add(Collide collide){
         this.collides.add(collide);
     }
 
