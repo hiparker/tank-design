@@ -16,9 +16,9 @@ import java.util.List;
  * @CreateTime: 2020-08-13 15:35
  * @Description: GameModel
  *
- * MVC分离
+ * Model 和 View 分离
  *
- * 门面/调停者 设计模式
+ * 门面 Faced 设计模式
  *
  */
 public class GameModel {
