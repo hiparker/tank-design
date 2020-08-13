@@ -9,7 +9,9 @@ import com.parker.tank.util.TankImageUtil;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: tank-01
@@ -18,7 +20,7 @@ import java.util.Random;
  * @CreateTime: 2020-08-10 15:46
  * @Description: 主战坦克
  */
-public class Tank{
+public class Tank extends GameObject {
 
     /** 随机数 */
     private static final Random random = new Random();
@@ -26,14 +28,17 @@ public class Tank{
     /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
     public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
+    /** 旧位置 */
+    private int oldX = 0, oldY = 0;
+    /** 移动时间 */
+    private long moveTime;
+    private long moveOldTime;
     /** 速度 */
-    private int speed = 5;
-    /** XY坐标 */
-    private int x , y;
+    public int speed = 5;
     /** 坦克方向 */
     private Dir dir = Dir.DOWN;
     /** 是否是移动的状态 */
-    private boolean moving = false;
+    private volatile boolean moving = false;
     /** 调停者 */
     private GameModel gm;
     /** 存活状态 */
@@ -47,7 +52,6 @@ public class Tank{
     /** 自动模式 */
     private boolean autoFlag = false;
     private Dir[] dirs = {Dir.LEFT,Dir.UP,Dir.RIGHT,Dir.DOWN};
-    private Tank futureTank;
 
 
 
@@ -65,9 +69,13 @@ public class Tank{
 
         this.x = x;
         this.y = y;
+        this.oldX = x;
+        this.oldY = y;
         this.dir = dir;
         this.gm = gm;
         this.group = group;
+        this.moveTime = System.currentTimeMillis();
+        this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
@@ -93,10 +101,14 @@ public class Tank{
 
         this.x = x;
         this.y = y;
+        this.oldX = x;
+        this.oldY = y;
         this.dir = dir;
         this.gm = gm;
         this.group = group;
         this.autoFlag = autoFlag;
+        this.moveTime = System.currentTimeMillis();
+        this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
@@ -165,41 +177,58 @@ public class Tank{
             return;
         }
 
-        int xT = x;
-        int yT = y;
+        // 未来位置
+        int futureX = x;
+        int futureY = y;
 
         switch (dir) {
             case LEFT:
-                xT -= this.speed;
+                futureX -= this.speed;
                 break;
             case UP:
-                yT -= this.speed;
+                futureY -= this.speed;
                 break;
             case RIGHT:
-                xT += this.speed;
+                futureX += this.speed;
                 break;
             case DOWN:
-                yT += this.speed;
+                futureY += this.speed;
                 break;
         }
 
         // 边缘处理
-        if(xT < 0 || yT < TANK_HEIGHT/2|| xT > TankFrame.GAME_WIDTH-TANK_WIDTH || yT > TankFrame.GAME_HEIGHT-TANK_HEIGHT){
+        if(futureX < 0 || futureY < TANK_HEIGHT/2|| futureX > TankFrame.GAME_WIDTH-TANK_WIDTH || futureY > TankFrame.GAME_HEIGHT-TANK_HEIGHT){
             return;
         }
 
-        x = xT;
-        y = yT;
+        // 保存原始旧位置 回滚使用
+        this.oldX = x;
+        this.oldY = y;
+        x = futureX;
+        y = futureY;
+        this.moveOldTime = this.moveTime;
+        this.moveTime = System.currentTimeMillis();
     }
+
+    /**
+     * 坦克位置回滚
+     */
+    public void rollback(){
+        this.x = this.oldX;
+        this.y = this.oldY;
+        this.moveTime = this.moveOldTime;
+    }
+
 
     /**
      * 描绘
      * @param g 画笔
      */
+    @Override
     public void paint(Graphics g) {
         // 坦克阵亡
         if(!liveFlag){
-            gm.removeBadTank(this);
+            gm.remove(this);
             return;
         }
 
@@ -211,8 +240,8 @@ public class Tank{
 
         // 设置坦克随机开炮 与 行走
         if(this.autoFlag){
-
-            this.setMoving(true);
+            // 坦克移动启动
+            this.start();
 
             // 随机开炮 几率暂定 5%
             int randomBullet = random.nextInt(100);
@@ -247,10 +276,45 @@ public class Tank{
         this.liveFlag = false;
         // 坦克阵亡新建爆炸
         Explode explode = new Explode(this.x, this.y, gm);
-        this.gm.addExplode(explode);
+        this.gm.add(explode);
+    }
+
+    /**
+     * 坦克启动
+     */
+    public void start(){
+        this.moving = true;
+    }
+
+    /**
+     * 坦克停止
+     */
+    public void stop(){
+        this.moving = false;
+    }
+
+    /**
+     * 坦克停止
+     */
+    public void stopAndDelayStart(){
+        this.stop();
+        // 开启新线程 延时 不影响当下判断方法
+        new Thread(()->{
+            // 延时50秒后 解除移动限制
+            try {
+                TimeUnit.MILLISECONDS.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            this.start();
+        });
     }
 
     // -----------------------------------------------
+    public long getMoveTime() {
+        return moveTime;
+    }
 
     public TankGroup getGroup() {
         return group;
@@ -268,17 +332,6 @@ public class Tank{
         return moving;
     }
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public Tank getFutureTank() {
-        return futureTank;
-    }
-    public void setFutureTank(Tank futureTank) {
-        this.futureTank = futureTank;
-    }
-
     public int getX() {
         return x;
     }
@@ -289,5 +342,9 @@ public class Tank{
 
     public GameModel getGameModel() {
         return gm;
+    }
+
+    public boolean isAutoFlag() {
+        return autoFlag;
     }
 }

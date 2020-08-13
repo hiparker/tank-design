@@ -139,6 +139,10 @@ public class TankFrame extends Frame{
                     // 按键抬起时
                     if(!flag){
                         gm.getMainTank().fired();
+                        // 开火音效
+                        new Thread(()->{
+                            new Audio("static/audio/tank_fire.wav").play();
+                        }).start();
                     }
                     break;
                 case KeyEvent.VK_ESCAPE:
@@ -155,7 +159,7 @@ public class TankFrame extends Frame{
          */
         private void setMainTankDir() {
             if(!bL && !bU && !bR && !bD) {
-                gm.getMainTank().setMoving(false);
+                gm.getMainTank().stop();
             }else{
                 if(bL) gm.getMainTank().setDir(Dir.LEFT);
                 if(bU) gm.getMainTank().setDir(Dir.UP);
@@ -167,7 +171,7 @@ public class TankFrame extends Frame{
                     new Audio("static/audio/tank_move.wav").play();
                 }).start();
 
-                gm.getMainTank().setMoving(true);
+                gm.getMainTank().start();
             }
         }
 

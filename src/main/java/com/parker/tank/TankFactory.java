@@ -12,6 +12,15 @@ import com.parker.tank.dist.TankGroup;
  */
 public final class TankFactory {
 
+    /**
+     * 普通坦克数量
+     */
+    public static int usualCount = 0;
+    /**
+     * 自动坦克数量
+     */
+    public static int autoCount = 0;
+
     private TankFactory(){}
 
     /**
@@ -23,7 +32,7 @@ public final class TankFactory {
      */
     public static Tank createTank(int x, int y, Dir dir, GameModel gm, TankGroup group) {
         Tank tank = new Tank(x, y, dir, gm, group);
-        tank.setFutureTank(new Tank(x, y, dir, gm, group));
+        usualCount++;
         return tank;
     }
 
@@ -34,9 +43,9 @@ public final class TankFactory {
      * @param gm tank画布
      * @return
      */
-    public static Tank createAutoTank(int x, int y, Dir dir,GameModel gm,TankGroup group,boolean autoFlag) {
-        Tank tank = new Tank(x, y, dir, gm, group,autoFlag);
-        tank.setFutureTank(new Tank(x, y, dir, gm, group,autoFlag));
+    public static Tank createAutoTank(int x, int y, Dir dir,GameModel gm,TankGroup group) {
+        Tank tank = new Tank(x, y, dir, gm, group,true);
+        autoCount++;
         return tank;
     }
 

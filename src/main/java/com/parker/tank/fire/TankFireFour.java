@@ -29,8 +29,8 @@ public class TankFireFour implements TankFire{
         }
         
         // 开火音效
-        new Thread(()->{
+        /*new Thread(()->{
             new Audio("static/audio/tank_fire.wav").play();
-        }).start();
+        }).start();*/
     }
 }

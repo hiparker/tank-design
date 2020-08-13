@@ -1,9 +1,12 @@
 package com.parker.tank;
 
+import com.parker.tank.collide.BulletAndTankCollide;
+import com.parker.tank.collide.Collide;
+import com.parker.tank.collide.TankAndTankCollide;
+import com.parker.tank.collide.chain.CollideChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
-import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,17 +26,16 @@ import java.util.List;
  */
 public class GameModel {
 
-    /** 子弹集合 */
-    private final java.util.List<Bullet> bulletList = new ArrayList<>();
 
-    /** 爆炸集合 */
-    private final java.util.List<Explode> explodeList = new ArrayList<>();
 
     /** 我方主战坦克 */
-    private final Tank myTank = TankFactory.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
+    private Tank myTank;
 
-    /** 敌方坦克 */
-    private final List<Tank> badTanks = new ArrayList<>();
+    /** 物体集合 */
+    private final List<GameObject> gameObjects = new ArrayList<>();
+
+    /** 碰撞器 责任链 */
+    private final Collide collide = CollideChain.INSTANCE;
 
     public GameModel() {
 
@@ -42,10 +44,15 @@ public class GameModel {
 
         // 创建5个敌方坦克
         for (int i = 0; i < badTankCount; i++) {
-            Tank autoTank = TankFactory.createAutoTank(50 + i * 80, 200, Dir.DOWN, this, TankGroup.BLUE, true);
-            this.addBadTank(autoTank);
+            Tank autoTank = TankFactory.createAutoTank(50 + i * 80, 200, Dir.DOWN, this, TankGroup.BLUE);
+            this.add(autoTank);
         }
 
+        // ----
+
+        // 我方坦克
+        myTank = TankFactory.createTank(200,400, Dir.DOWN,this, TankGroup.RED);
+        this.add(myTank);
     }
 
     /**
@@ -53,17 +60,26 @@ public class GameModel {
      * @param g 画笔
      */
     public void paint(Graphics g) {
-        Color c = g.getColor();
+        /*Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量："+bulletList.size(),10,40);
         g.drawString("敌人的数量："+badTanks.size(),10,60);
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
-        g.setColor(c);
+        g.setColor(c);*/
 
-        // 坦克自动行走
-        myTank.paint(g);
+        // 物体渲染
+        for (int i = 0; i < this.gameObjects.size(); i++) {
+            this.gameObjects.get(i).paint(g);
+        }
 
-        // 敌方坦克渲染
+        // 碰撞检测
+        for (int i = 0; i < this.gameObjects.size(); i++) {
+            for (int j = i+1; j < this.gameObjects.size(); j++) {
+                this.collide.comparator(this.gameObjects.get(i),this.gameObjects.get(j));
+            }
+        }
+
+       /* // 敌方坦克渲染
         for (int i = 0; i < badTanks.size(); i++) {
             badTanks.get(i).paint(g);
         }
@@ -76,15 +92,15 @@ public class GameModel {
         // 坦克爆炸
         for (int i = 0; i < explodeList.size(); i++) {
             explodeList.get(i).paint(g);
-        }
+        }*/
 
         // 子弹与坦克碰撞
-        for (int i = 0; i < bulletList.size(); i++) {
+        /*for (int i = 0; i < bulletList.size(); i++) {
             for (int tk = 0; tk < badTanks.size(); tk++) {
                 TankUtil.collideWith(badTanks.get(tk),bulletList.get(i));
             }
             TankUtil.collideWith(myTank,bulletList.get(i));
-        }
+        }*/
     }
 
     // ---------------------------------------------------------
@@ -98,46 +114,19 @@ public class GameModel {
     }
 
     /**
-     * 添加爆炸
-     * @param be
+     * 添加物体
+     * @param go
      */
-    public void addExplode(Explode be){
-        this.explodeList.add(be);
+    public void add(GameObject go) {
+        this.gameObjects.add(go);
     }
+
     /**
-     * 删除爆炸
-     * @param be
+     * 删除物体
+     * @param go
      */
-    public void removeExplode(Explode be){
-        this.explodeList.remove(be);
-    }
-    /**
-     * 添加炮弹
-     * @param bb
-     */
-    public void addBullet(Bullet bb){
-        this.bulletList.add(bb);
-    }
-    /**
-     * 删除炮弹
-     * @param be
-     */
-    public void removeBullet(Bullet be){
-        this.bulletList.remove(be);
-    }
-    /**
-     * 添加坦克
-     * @param bt
-     */
-    public void addBadTank(Tank bt){
-        this.badTanks.add(bt);
-    }
-    /**
-     * 删除坦克
-     * @param bt
-     */
-    public void removeBadTank(Tank bt){
-        this.badTanks.remove(bt);
+    public void remove(GameObject go) {
+        this.gameObjects.remove(go);
     }
 
 }

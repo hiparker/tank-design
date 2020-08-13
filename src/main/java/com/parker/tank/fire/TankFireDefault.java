@@ -27,8 +27,8 @@ public enum TankFireDefault implements TankFire{
         new Bullet(tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank);
 
         // 开火音效
-        new Thread(()->{
+        /*new Thread(()->{
             new Audio("static/audio/tank_fire.wav").play();
-        }).start();
+        }).start();*/
     }
 }

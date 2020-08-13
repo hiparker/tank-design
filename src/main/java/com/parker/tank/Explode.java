@@ -11,7 +11,7 @@ import java.awt.*;
  * @CreateTime: 2020-08-11 20:38
  * @Description: 大 爆炸效果
  */
-public class Explode {
+public class Explode extends GameObject {
 
     /** XY坐标 */
     protected int x , y;
@@ -35,11 +35,12 @@ public class Explode {
      * 描绘
      * @param g 画笔
      */
+    @Override
     public void paint(Graphics g) {
         g.drawImage(ResourcesMgr.explodesBig[count++],x,y,null);
         if(count >= ResourcesMgr.explodesBig.length){
             // 爆炸消失
-            gm.removeExplode(this);
+            gm.remove(this);
         }
     }
 

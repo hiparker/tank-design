@@ -13,12 +13,10 @@ import java.awt.*;
  * @CreateTime: 2020-08-10 16:18
  * @Description: 炮弹类
  */
-public class Bullet {
+public class Bullet extends GameObject {
 
     /** 速度 */
     private int speed = 10;
-    /** XY坐标 */
-    private int x , y;
     /** 子弹方向 */
     private Dir dir = Dir.DOWN;
     /** 调停者 */
@@ -56,7 +54,7 @@ public class Bullet {
         // 设置 子弹样式
         setBulletStyle();
 
-        gm.addBullet(this);
+        gm.add(this);
     }
 
     /**
@@ -141,11 +139,12 @@ public class Bullet {
      * 描绘
      * @param g 画笔
      */
+    @Override
     public void paint(Graphics g) {
 
         // 炮弹死亡移除
         if(!this.liveFlag){
-            gm.removeBullet(this);
+            gm.remove(this);
         }
 
         switch (dir) {
