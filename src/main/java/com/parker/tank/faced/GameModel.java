@@ -62,7 +62,7 @@ public class GameModel extends BaseGameModel{
 
         // 背景音乐
         new Thread(()->{
-            new Audio("static/audio/war1.wav").play();
+            new Audio("static/audio/war1.wav").loop();
         }).start();
     }
 
