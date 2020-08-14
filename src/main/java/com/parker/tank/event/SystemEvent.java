@@ -40,12 +40,8 @@ public class SystemEvent extends KeyAdapter {
             case KeyEvent.VK_SPACE:
                 // 按键抬起时
                 if(!flag){
-                    if(TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank() == null ) break;
-                    TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().fired();
-                    // 开火音效
-                    new Thread(()->{
-                        new AudioUtil("static/audio/tank_fire.wav").play();
-                    }).start();
+                    ObserverSystemEvent.INSTANCE.mainTankFireHandler(
+                            TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank());
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
@@ -61,11 +57,6 @@ public class SystemEvent extends KeyAdapter {
      * 设置主战坦克方向
      */
     private void setMainTankDir(boolean flag, KeyEvent e) {
-
-        if(TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank() == null){
-            return;
-        }
-
         // 键盘按下时 操作
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
@@ -82,21 +73,9 @@ public class SystemEvent extends KeyAdapter {
                 break;
         }
 
-        if(!bL && !bU && !bR && !bD) {
-            TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().stop();
-        }else{
-            if(bL) TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().setDir(Dir.LEFT);
-            if(bU) TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().setDir(Dir.UP);
-            if(bR) TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().setDir(Dir.RIGHT);
-            if(bD) TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().setDir(Dir.DOWN);
-
-            // 移动音乐
-            new Thread(()->{
-                new AudioUtil("static/audio/tank_move.wav").play();
-            }).start();
-
-            TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().start();
-        }
+        ObserverSystemEvent.INSTANCE.mainTankMoveHandler(
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank(),
+                bL,bU,bR,bD);
     }
 
     @Override
