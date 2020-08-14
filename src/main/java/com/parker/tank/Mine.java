@@ -19,8 +19,6 @@ public class Mine extends GameObject{
 
     /** 存活状态 */
     private boolean liveFlag = true;
-    /** 宽高 */
-    private int width,height;
     /** 当前位置 */
     private Rectangle rectangle;
     /** 调停者 */

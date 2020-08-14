@@ -24,8 +24,6 @@ public class Wall extends GameObject{
     private int offX = 0,offY = 0;
     private boolean offFlag = false;
     private int hp = 1;
-    /** 宽高 */
-    private int width,height;
     private WallGroup group;
     /** 当前位置 */
     private Rectangle rectangle;

@@ -20,9 +20,6 @@ public class Special extends GameObject{
 
     /** 存活状态 */
     private boolean liveFlag = true;
-    /** 宽高 */
-    private int width,height;
-    private WallGroup group;
     /** 当前位置 */
     private Rectangle rectangle;
     /** 调停者 */

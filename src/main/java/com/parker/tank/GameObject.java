@@ -17,6 +17,9 @@ public abstract class GameObject {
     /** XY坐标 */
     protected int x , y;
 
+    /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
+    protected int width = 50, height = 50;
+
     /**
      * 描绘
      * @param g 画笔
@@ -29,5 +32,29 @@ public abstract class GameObject {
 
     public int getY() {
         return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

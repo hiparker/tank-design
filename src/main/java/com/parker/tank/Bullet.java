@@ -55,8 +55,6 @@ public class Bullet extends GameObject {
 
         // 设置 子弹样式
         setBulletStyle();
-
-        gm.add(this);
     }
 
     /**
@@ -81,13 +79,13 @@ public class Bullet extends GameObject {
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
 
                 // 设置子弹方向
-                this.y += belongTank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.y += belongTank.height/2 - this.bulletHeight/2;
                 this.x -= this.bulletWidth/2;
 
                 break;
             case UP:
                 // 设置子弹方向
-                this.x += belongTank.TANK_WIDTH/2 - this.bulletWidth/2;
+                this.x += belongTank.width/2 - this.bulletWidth/2;
                 this.y -= this.bulletHeight/2;
 
                 break;
@@ -98,14 +96,14 @@ public class Bullet extends GameObject {
                 this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
 
                 // 设置子弹方向
-                this.x += + belongTank.TANK_WIDTH - this.bulletWidth/2;
-                this.y += + belongTank.TANK_HEIGHT/2 - this.bulletHeight/2;
+                this.x += + belongTank.width - this.bulletWidth/2;
+                this.y += + belongTank.height/2 - this.bulletHeight/2;
 
                 break;
             case DOWN:
                 // 设置子弹方向
-                this.x += belongTank.TANK_WIDTH/2 - this.bulletWidth/2;
-                this.y += belongTank.TANK_HEIGHT - this.bulletHeight/2;
+                this.x += belongTank.width/2 - this.bulletWidth/2;
+                this.y += belongTank.height - this.bulletHeight/2;
 
                 break;
         }

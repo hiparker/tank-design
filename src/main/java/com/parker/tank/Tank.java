@@ -25,9 +25,6 @@ public class Tank extends GameObject {
     /** 随机数 */
     private static final Random random = new Random();
 
-    /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
-    public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
-
     /** 旧位置 */
     private int oldX = 0, oldY = 0;
     /** 移动时间 */
@@ -78,11 +75,11 @@ public class Tank extends GameObject {
         this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
-        this.rectangle = new Rectangle(x,y,TANK_WIDTH,TANK_HEIGHT);
+        this.rectangle = new Rectangle(x,y,width,height);
 
         // 赋值坦克宽高
-        this.TANK_WIDTH = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
-        this.TANK_HEIGHT = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
+        this.width = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
+        this.height = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
 
         // 初始化开火的策略模式
         this.initFireStrategy();
@@ -111,11 +108,11 @@ public class Tank extends GameObject {
         this.moveOldTime = this.moveTime;
 
         // 设置碰撞检测位置
-        this.rectangle = new Rectangle(x,y,TANK_WIDTH,TANK_HEIGHT);
+        this.rectangle = new Rectangle(x,y,width,height);
 
         // 赋值坦克宽高
-        this.TANK_WIDTH = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
-        this.TANK_HEIGHT = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
+        this.width = TankImageUtil.getTankImage(group,Dir.UP).getWidth();
+        this.height = TankImageUtil.getTankImage(group,Dir.UP).getHeight();
 
         // 初始化开火的策略模式
         this.initFireStrategy();
@@ -197,7 +194,7 @@ public class Tank extends GameObject {
         }
 
         // 边缘处理
-        if(futureX < 0 || futureY < TANK_HEIGHT/2|| futureX > TankFrame.GAME_WIDTH-TANK_WIDTH || futureY > TankFrame.GAME_HEIGHT-TANK_HEIGHT){
+        if(futureX < 0 || futureY < width/2|| futureX > TankFrame.GAME_WIDTH-width || futureY > TankFrame.GAME_HEIGHT-height){
             return;
         }
 

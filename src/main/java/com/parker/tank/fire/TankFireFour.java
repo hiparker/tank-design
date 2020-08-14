@@ -2,6 +2,7 @@ package com.parker.tank.fire;
 
 import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
+import com.parker.tank.decortor.TailWDecortor;
 import com.parker.tank.dist.Dir;
 
 /**
@@ -24,7 +25,12 @@ public class TankFireFour implements TankFire{
 
         Dir[] values = Dir.values();
         for (Dir value : values) {
-            new Bullet(tank.getX(),tank.getY(),value,tank.getGameModel(),tank);
+
+            tank.getGameModel().add(
+                    new Bullet(
+                            tank.getX(),tank.getY(),value,tank.getGameModel(),tank)
+            );
+
         }
         
         // 开火音效

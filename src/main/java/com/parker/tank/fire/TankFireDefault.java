@@ -2,6 +2,8 @@ package com.parker.tank.fire;
 
 import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
+import com.parker.tank.decortor.TailWDecortor;
+import com.parker.tank.decortor.TailYDecortor;
 
 /**
  * @BelongsProject: tank-02
@@ -23,7 +25,18 @@ public enum TankFireDefault implements TankFire{
             return;
         }
 
-        new Bullet(tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank);
+        tank.getGameModel().add(
+
+                new Bullet(
+                        tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank)
+
+                /*new TailWDecortor(
+                        new TailYDecortor(
+                                new Bullet(
+                                        tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank)
+                        )
+                )*/
+        );
 
         // 开火音效
         /*new Thread(()->{
