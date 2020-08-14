@@ -1,7 +1,7 @@
 package com.parker.tank.chain.other;
 
 import com.parker.tank.StringG;
-import com.parker.tank.WallFactory;
+import com.parker.tank.factory.WallFactory;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.PropertiesMgr;

@@ -1,13 +1,9 @@
 package com.parker.tank.chain.gate;
 
-import com.parker.tank.TankFactory;
+import com.parker.tank.factory.TankFactory;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
-import com.parker.tank.faced.TitleModel;
-import com.parker.tank.map.Gate1Map;
-import com.parker.tank.map.GateMap;
 
 import java.util.concurrent.TimeUnit;
 

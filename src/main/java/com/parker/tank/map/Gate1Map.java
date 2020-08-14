@@ -3,7 +3,7 @@ package com.parker.tank.map;
 import com.parker.tank.Mine;
 import com.parker.tank.Special;
 import com.parker.tank.TankFrame;
-import com.parker.tank.WallFactory;
+import com.parker.tank.factory.WallFactory;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.factory.TankFrameFactory;
 

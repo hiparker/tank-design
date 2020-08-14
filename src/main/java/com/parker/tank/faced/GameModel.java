@@ -2,7 +2,7 @@ package com.parker.tank.faced;
 
 import com.parker.tank.util.AudioUtil;
 import com.parker.tank.Tank;
-import com.parker.tank.TankFactory;
+import com.parker.tank.factory.TankFactory;
 import com.parker.tank.collide.Collide;
 import com.parker.tank.collide.chain.CollideChain;
 import com.parker.tank.config.PropertiesMgr;

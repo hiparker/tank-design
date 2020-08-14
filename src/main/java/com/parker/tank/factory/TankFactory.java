@@ -1,5 +1,6 @@
-package com.parker.tank;
+package com.parker.tank.factory;
 
+import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.GameModel;

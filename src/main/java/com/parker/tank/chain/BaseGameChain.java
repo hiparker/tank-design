@@ -4,7 +4,6 @@ import com.parker.tank.chain.gate.Gate;
 import com.parker.tank.chain.other.CoverChain;
 import com.parker.tank.chain.other.OverChain;
 import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.GameModel;
 import com.parker.tank.map.Gate1Map;
 import com.parker.tank.map.Gate2Map;
@@ -41,12 +40,12 @@ public class BaseGameChain extends GameChain{
 
         GateGameChain gateGameChain = new GateGameChain(count);
         gateGameChain.add(new Gate()
-                .setGameModel(GameModel.class).setNum1(count)
+                .setGameModel(GameModel.class)
                 .setGateMap(Gate1Map.INSTANCE)
                 .setNum(1)
         );
         gateGameChain.add(new Gate()
-                .setGameModel(GameModel.class).setNum1(count)
+                .setGameModel(GameModel.class)
                 .setGateMap(Gate2Map.INSTANCE)
                 .setNum(2)
         );

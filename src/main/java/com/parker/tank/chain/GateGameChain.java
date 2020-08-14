@@ -42,7 +42,7 @@ public class GateGameChain extends GameChain{
             GameChain titleChain = new TitleChain().setText(this.getNum() + " - " + gate.getNum());
             titleChain.handler();
 
-            gate.setNum1(pauseCountTemp);
+            gate.setNum1(pauseCountTemp-1);
             boolean handler = gate.handler();
             pauseCountTemp--;
             // 第一次 关卡任务失败
