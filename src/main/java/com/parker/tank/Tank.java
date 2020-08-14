@@ -4,7 +4,6 @@ import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireDefault;
 import com.parker.tank.util.TankImageUtil;
