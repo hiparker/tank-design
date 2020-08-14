@@ -51,12 +51,6 @@ public class TankFrame extends Frame{
 
         // window 按键监听
         this.addKeyListener(new SystemEvent());
-
-        // 背景音乐
-        /*new Thread(()->{
-            new Audio("static/audio/war1.wav").loop();
-        }).start();*/
-
     }
 
     /**
@@ -106,6 +100,9 @@ public class TankFrame extends Frame{
     }
 
     public void setBgm(BaseGameModel bgm) {
+        if(this.bgm != null){
+            this.bgm.stopModel();
+        }
         this.bgm = bgm;
     }
 }

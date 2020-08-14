@@ -1,6 +1,6 @@
 package com.parker.tank.event;
 
-import com.parker.tank.Audio;
+import com.parker.tank.util.AudioUtil;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.factory.TankFrameFactory;
 
@@ -43,7 +43,7 @@ public class SystemEvent extends KeyAdapter {
                     TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().fired();
                     // 开火音效
                     new Thread(()->{
-                        new Audio("static/audio/tank_fire.wav").play();
+                        new AudioUtil("static/audio/tank_fire.wav").play();
                     }).start();
                 }
                 break;
@@ -87,7 +87,7 @@ public class SystemEvent extends KeyAdapter {
 
             // 移动音乐
             new Thread(()->{
-                new Audio("static/audio/tank_move.wav").play();
+                new AudioUtil("static/audio/tank_move.wav").play();
             }).start();
 
             TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().start();

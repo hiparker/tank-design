@@ -14,7 +14,7 @@ import com.parker.tank.factory.TankFrameFactory;
  * @CreateTime: 2020-08-14 04:08
  * @Description: 地图
  */
-public enum Gate1Map implements GateMap{
+public enum Gate2Map  implements GateMap{
 
     INSTANCE;
 

@@ -1,10 +1,13 @@
 package com.parker.tank.chain;
 
-import com.parker.tank.chain.gate.Gate1;
-import com.parker.tank.chain.gate.GateTest;
+import com.parker.tank.chain.gate.Gate;
 import com.parker.tank.chain.other.CoverChain;
 import com.parker.tank.chain.other.OverChain;
 import com.parker.tank.config.PropertiesMgr;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
+import com.parker.tank.map.Gate1Map;
+import com.parker.tank.map.Gate2Map;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,13 +40,19 @@ public class BaseGameChain extends GameChain{
 
 
         GateGameChain gateGameChain = new GateGameChain(count);
-        gateGameChain.add(new Gate1().setNum(1));
-        gateGameChain.add(new GateTest().setNum(2));
+        gateGameChain.add(new Gate()
+                .setGameModel(GameModel.class).setNum1(count)
+                .setGateMap(Gate1Map.INSTANCE)
+                .setNum(1)
+        );
+        gateGameChain.add(new Gate()
+                .setGameModel(GameModel.class).setNum1(count)
+                .setGateMap(Gate2Map.INSTANCE)
+                .setNum(2)
+        );
 
         this.add(gateGameChain.setNum(1));
 
-        // 游戏结束
-        this.add(new OverChain());
     }
 
     /**
@@ -67,7 +76,7 @@ public class BaseGameChain extends GameChain{
         }
 
         // 游戏结束
-        gates.get(gates.size()-1).handler();
+        new OverChain().handler();
 
         return true;
     }

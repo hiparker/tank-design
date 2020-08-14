@@ -3,6 +3,7 @@ package com.parker.tank.faced;
 
 import com.parker.tank.GameObject;
 import com.parker.tank.Tank;
+import com.parker.tank.util.AudioUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,6 +23,22 @@ public abstract class BaseGameModel {
 
     /** 我方主战坦克 */
     private Tank mainTank;
+
+    /**
+     * 声音
+     */
+    protected AudioUtil audioUtil;
+    /**
+     * 声音线程
+     */
+    protected Thread musicThread;
+
+    protected int tempNum;
+
+    /**
+     * 构建
+     */
+    public abstract BaseGameModel builder();
 
     /**
      * 描绘
@@ -47,6 +64,13 @@ public abstract class BaseGameModel {
     // ---------------------------------------------------------
 
 
+    public int getTempNum() {
+        return tempNum;
+    }
+
+    public void setTempNum(int tempNum) {
+        this.tempNum = tempNum;
+    }
 
     /**
      * 添加物体
@@ -62,6 +86,33 @@ public abstract class BaseGameModel {
      */
     public void remove(GameObject go) {
         this.gameObjects.remove(go);
+    }
+
+    /**
+     * 关闭模型
+     */
+    public void stopModel(){
+        this.stopMusic();
+    }
+
+
+    /**
+     * 关闭声音
+     */
+    public void stopMusic(){
+        if(this.musicThread != null && this.audioUtil != null){
+            this.audioUtil.close();
+            this.musicThread.stop();
+        }
+    }
+
+    /**
+     * 开启声音
+     */
+    public void startMusic(){
+        if(this.musicThread != null && this.audioUtil != null){
+            this.musicThread.start();
+        }
     }
 
 }

@@ -2,7 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
+import com.parker.tank.util.AudioUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,7 +35,7 @@ public class Explode extends GameObject {
 
         // 爆炸音效
         new Thread(()->{
-            new Audio("static/audio/explode.wav").play();
+            new AudioUtil("static/audio/explode.wav").play();
         }).start();
     }
 

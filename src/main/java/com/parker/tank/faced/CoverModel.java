@@ -1,13 +1,7 @@
 package com.parker.tank.faced;
 
 import com.parker.tank.*;
-import com.parker.tank.collide.Collide;
-import com.parker.tank.collide.chain.CollideChain;
-import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.dist.Dir;
-import com.parker.tank.dist.TankGroup;
-import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.util.AudioUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,17 +26,27 @@ public class CoverModel extends BaseGameModel{
     private final List<GameObject> gameObjects = new ArrayList<>();
 
 
-    public CoverModel() {
+    public CoverModel() {}
+
+    @Override
+    public BaseGameModel builder() {
+
         // 背景音乐
-        new Thread(()->{
+        this.audioUtil = new AudioUtil("static/audio/tank_cover.wav");
+        this.musicThread = new Thread(()->{
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            new Audio("static/audio/tank_cover.wav").play();
-        }).start();
+            this.audioUtil.play();
+        });
+
+        super.startMusic();
+
+        return this;
     }
+
 
     /**
      * 描绘

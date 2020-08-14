@@ -1,12 +1,10 @@
 package com.parker.tank.faced;
 
-import com.parker.tank.Audio;
 import com.parker.tank.GameObject;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: tank-design
@@ -28,6 +26,11 @@ public class TitleModel extends BaseGameModel{
 
     public TitleModel() {
 
+    }
+
+    @Override
+    public BaseGameModel builder() {
+        return this;
     }
 
     /**

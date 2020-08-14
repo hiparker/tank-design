@@ -27,9 +27,11 @@ public class TitleChain extends GameChain {
         ChainStack.INSTANCE.put(this);
         super.remake();
         try {
+            BaseGameModel gameModel = new TitleModel();
+            gameModel.builder();
 
             // 开始标题运作
-            tankFrame.setBgm(new TitleModel());
+            tankFrame.setBgm(gameModel);
 
             int gameWidth = 800, gameHeight = 600;
             if(PropertiesMgr.getByInteger("gameWidth") != null){
@@ -42,7 +44,7 @@ public class TitleChain extends GameChain {
             // 背景图
             BaseGameModel bgm = tankFrame.getBgm();
             // 文字
-            bgm.add(new StringG(gameWidth/2-30,gameHeight/2-100,this.getText()));
+            bgm.add(new StringG(gameWidth/2-35,gameHeight/2-100,this.getText()));
 
             // 2 秒后 停止
             int count = 2;

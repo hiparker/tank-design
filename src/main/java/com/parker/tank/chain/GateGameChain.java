@@ -39,12 +39,12 @@ public class GateGameChain extends GameChain{
             pauseCountTemp = pauseCount;
 
             // 标题
-            GameChain titleChain = new TitleChain().setText(this.getNum() + "-" + gate.getNum());
+            GameChain titleChain = new TitleChain().setText(this.getNum() + " - " + gate.getNum());
             titleChain.handler();
 
             gate.setNum1(pauseCountTemp);
             boolean handler = gate.handler();
-
+            pauseCountTemp--;
             // 第一次 关卡任务失败
             if(!handler){
                 this.recourseHandler(gate,false);

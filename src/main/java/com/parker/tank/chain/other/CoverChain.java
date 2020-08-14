@@ -39,8 +39,11 @@ public class CoverChain extends GameChain {
             System.out.println("----------------------------------------------------");
             System.out.println();
 
+            BaseGameModel gameModel = new CoverModel();
+            gameModel.builder();
+
             // 开始封面运作
-            tankFrame.setBgm(new CoverModel());
+            tankFrame.setBgm(gameModel);
 
             int gameWidth = 800, gameHeight = 600;
             if(PropertiesMgr.getByInteger("gameWidth") != null){

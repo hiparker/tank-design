@@ -1,6 +1,6 @@
 package com.parker.tank.faced;
 
-import com.parker.tank.Audio;
+import com.parker.tank.util.AudioUtil;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFactory;
 import com.parker.tank.collide.Collide;
@@ -10,7 +10,6 @@ import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,6 +26,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class GameModel extends BaseGameModel{
 
+    /**
+     * 内部类
+     */
+    static class GameModelBudiler{
+
+    }
+
     /** 碰撞器 责任链 */
     private final Collide collide = CollideChain.INSTANCE;
     /** 失败重试次数 */
@@ -34,9 +40,18 @@ public class GameModel extends BaseGameModel{
     /** hp */
     public AtomicInteger mainHp = new AtomicInteger(3);
 
-    public GameModel(int pauseCount) {
+    public GameModel() {
 
-        this.pauseCount.set(pauseCount);
+    }
+
+    /**
+     * 开始构建
+     * @return
+     */
+    @Override
+    public BaseGameModel builder(){
+
+        this.pauseCount.set(super.getTempNum());
 
         if(PropertiesMgr.getByInteger("mainHp") != null){
             mainHp.set(PropertiesMgr.getByInteger("mainHp"));
@@ -61,9 +76,13 @@ public class GameModel extends BaseGameModel{
 
 
         // 背景音乐
-        new Thread(()->{
-            new Audio("static/audio/war1.wav").loop();
-        }).start();
+        this.audioUtil = new AudioUtil("static/audio/war1.wav");
+        this.musicThread = new Thread(()->{
+            audioUtil.loop();
+        });
+        super.startMusic();
+
+        return this;
     }
 
     /**

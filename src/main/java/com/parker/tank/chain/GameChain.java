@@ -1,7 +1,10 @@
 package com.parker.tank.chain;
 
 import com.parker.tank.TankFrame;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
 import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.map.GateMap;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,6 +30,9 @@ public abstract class GameChain {
     protected int num1;
     protected int num2;
     protected String text;
+
+    private Class<?> gameModelClazz;
+    private GateMap gateMap;
 
     /**
      * 执行游戏
@@ -78,16 +84,18 @@ public abstract class GameChain {
         return num1;
     }
 
-    public void setNum1(int num1) {
+    public GameChain setNum1(int num1) {
         this.num1 = num1;
+        return this;
     }
 
     public int getNum2() {
         return num2;
     }
 
-    public void setNum2(int num2) {
+    public GameChain setNum2(int num2) {
         this.num2 = num2;
+        return this;
     }
 
     public String getText() {
@@ -96,6 +104,24 @@ public abstract class GameChain {
 
     public GameChain setText(String text) {
         this.text = text;
+        return this;
+    }
+    public BaseGameModel getGameModel() throws IllegalAccessException, InstantiationException {
+        BaseGameModel baseGameModel = (BaseGameModel) gameModelClazz.newInstance();
+        baseGameModel.setTempNum(this.getNum1());
+        return baseGameModel;
+    }
+    public GameChain setGameModel(Class<?> clazz){
+        this.gameModelClazz = clazz;
+        return this;
+    }
+
+    public GateMap getGateMap() {
+        return gateMap;
+    }
+
+    public GameChain setGateMap(GateMap gateMap) {
+        this.gateMap = gateMap;
         return this;
     }
 }
