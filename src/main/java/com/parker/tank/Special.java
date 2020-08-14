@@ -5,11 +5,8 @@ import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.util.WallmageUtil;
-import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -79,8 +76,9 @@ public class Special extends GameObject{
             }
             // 结束责任链
             GameChain gc = ChainStack.INSTANCE.peek();
-            gc.errorStop();
-
+            if(gc != null){
+                gc.errorStop();
+            }
         }).start();
     }
 

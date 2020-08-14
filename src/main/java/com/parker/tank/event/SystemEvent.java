@@ -40,6 +40,7 @@ public class SystemEvent extends KeyAdapter {
             case KeyEvent.VK_SPACE:
                 // 按键抬起时
                 if(!flag){
+                    if(TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank() == null ) break;
                     TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank().fired();
                     // 开火音效
                     new Thread(()->{
@@ -60,6 +61,10 @@ public class SystemEvent extends KeyAdapter {
      * 设置主战坦克方向
      */
     private void setMainTankDir(boolean flag, KeyEvent e) {
+
+        if(TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank() == null){
+            return;
+        }
 
         // 键盘按下时 操作
         switch (e.getKeyCode()) {

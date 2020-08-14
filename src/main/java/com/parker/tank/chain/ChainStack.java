@@ -20,7 +20,10 @@ public enum ChainStack {
     }
 
     public GameChain peek(){
-        return this.stack.peek();
+        if(!this.stack.empty()){
+            return this.stack.peek();
+        }
+        return null;
     }
 
     public void clear(){
