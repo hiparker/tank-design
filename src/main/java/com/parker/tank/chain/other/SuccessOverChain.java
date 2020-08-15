@@ -1,13 +1,13 @@
 package com.parker.tank.chain.other;
 
 import com.parker.tank.StringG;
-import com.parker.tank.factory.WallFactory;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.CoverModel;
+import com.parker.tank.factory.WallFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @CreateTime: 2020-08-14 00:06
  * @Description: 封面
  */
-public class OverChain extends GameChain {
+public class SuccessOverChain extends GameChain {
 
     @Override
     public boolean handler() {
@@ -28,7 +28,7 @@ public class OverChain extends GameChain {
         super.remake();
         try {
             System.out.println("=========================");
-            System.out.println("=  任务失败 ！！！ =");
+            System.out.println("= 任务执行完毕 您获得了成功 =");
             System.out.println("=========================");
             System.out.println();
             System.out.println("----------------------------------------------------");

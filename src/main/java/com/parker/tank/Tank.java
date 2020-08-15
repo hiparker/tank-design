@@ -4,6 +4,7 @@ import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.faced.GameModel;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireDefault;
 import com.parker.tank.observer.factory.TankObserverFactory;
@@ -336,8 +337,8 @@ public class Tank extends GameObject {
         return y;
     }
 
-    public BaseGameModel getGameModel() {
-        return gm;
+    public GameModel getGameModel() {
+        return (GameModel) gm;
     }
 
     public boolean isAutoFlag() {

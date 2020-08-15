@@ -1,7 +1,9 @@
 package com.parker.tank.chain;
 
 import com.parker.tank.chain.gate.Gate;
-import com.parker.tank.chain.other.OverChain;
+import com.parker.tank.chain.other.CoverChain;
+import com.parker.tank.chain.other.ErrorOverChain;
+import com.parker.tank.chain.other.SuccessOverChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.faced.GameModel;
 import com.parker.tank.map.Gate1Map;
@@ -60,6 +62,9 @@ public class BaseGameChain extends GameChain{
     @Override
     public boolean handler() {
         ChainStack.INSTANCE.put(this);
+
+        boolean flag = true;
+
         for (GameChain gate : gates) {
 
             long totalTimeStart = System.currentTimeMillis();
@@ -69,14 +74,21 @@ public class BaseGameChain extends GameChain{
 
             // 关卡任务失败
             if(!handler){
+                flag = false;
                 break;
             }
         }
 
-        // 游戏结束
-        new OverChain().handler();
+        if(flag){
+            // 游戏成功结束
+            new SuccessOverChain().handler();
+            return true;
+        }
 
-        return true;
+        // 游戏错误结束
+        new ErrorOverChain().handler();
+
+        return false;
     }
 
 

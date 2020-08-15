@@ -5,6 +5,7 @@ import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.GateFactory;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
@@ -62,21 +63,8 @@ public class Special extends GameObject{
      */
     public void died() {
         this.liveFlag = false;
-
-        this.gm.add(new StringG(100,100,"GAME OVER!"));
-
-        new Thread(()->{
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            // 结束责任链
-            GameChain gc = ChainStack.INSTANCE.peek();
-            if(gc != null){
-                gc.errorStop();
-            }
-        }).start();
+        // 关卡错误结束
+        GateFactory.INSTANCE.chainErrorGameOver();
     }
 
     public BaseGameModel getGm() {

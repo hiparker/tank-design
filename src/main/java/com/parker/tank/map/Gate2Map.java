@@ -3,6 +3,8 @@ package com.parker.tank.map;
 import com.parker.tank.Mine;
 import com.parker.tank.Special;
 import com.parker.tank.TankFrame;
+import com.parker.tank.faced.GameModel;
+import com.parker.tank.factory.TankFactory;
 import com.parker.tank.factory.WallFactory;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.factory.TankFrameFactory;
@@ -18,12 +20,18 @@ public enum Gate2Map  implements GateMap{
 
     INSTANCE;
 
+    /** 敌方坦克数量 */
+    private int badCount = 10;
+
+    /** 墙宽高 */
     private int width = 58, height = 22;
 
     private TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
 
     @Override
     public void getMap(){
+
+        GameModel bgm =(GameModel) tankFrame.getBgm();
 
         // 上
         this.setWall(0,120,2,2,WallGroup.BRICK);
@@ -32,7 +40,7 @@ public enum Gate2Map  implements GateMap{
 
         this.setWall(280,120,1,8,WallGroup.BRICK);
 
-        this.setWall(440,180,2,4,WallGroup.STEEl);
+        this.setWall(440,180,2,4,WallGroup.BRICK);
 
         this.setWall(660,120,1,8,WallGroup.BRICK);
 
@@ -66,12 +74,20 @@ public enum Gate2Map  implements GateMap{
         this.setWall(567,650,1,7,WallGroup.STEEl);
 
         // 创建鸟巢
-        tankFrame.getBgm().add(new Special(432, 695, 135, 118, tankFrame.getBgm()));
+        bgm.add(new Special(432, 695, 135, 118, bgm));
 
         // 地雷
-        tankFrame.getBgm().add(new Mine(942, 180, 50, 50, tankFrame.getBgm()));
-        tankFrame.getBgm().add(new Mine(0,424, 58, 58, tankFrame.getBgm()));
-        tankFrame.getBgm().add(new Mine(942, 180, 50, 50, tankFrame.getBgm()));
+        bgm.add(new Mine(942, 180, 50, 50, bgm));
+        bgm.add(new Mine(0,424, 58, 58, bgm));
+        bgm.add(new Mine(942, 180, 50, 50, bgm));
+        bgm.add(new Mine(120, 180, 50, 50, bgm));
+        bgm.add(new Mine(350, 126, 50, 50, bgm));
+        bgm.add(new Mine(852, 60, 50, 50, bgm));
+
+        // 设置敌方坦克
+        bgm.createBadTank(badCount);
+
+        System.out.println("普通坦克数量["+ TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
     }
 
     /**

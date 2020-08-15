@@ -38,17 +38,6 @@ public class Gate extends GameChain {
             // 加载地图
             super.getGateMap().getMap();
 
-            // 3 秒后 停止
-            int count = 100000;
-            new Thread(()->{
-                try {
-                    TimeUnit.SECONDS.sleep(count);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                this.successStop();
-            }).start();
-
             // 卡死进程  -----------------
             while (super.state.get()){}
         }catch (Exception e){

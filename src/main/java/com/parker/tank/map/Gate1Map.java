@@ -3,6 +3,8 @@ package com.parker.tank.map;
 import com.parker.tank.Mine;
 import com.parker.tank.Special;
 import com.parker.tank.TankFrame;
+import com.parker.tank.faced.GameModel;
+import com.parker.tank.factory.TankFactory;
 import com.parker.tank.factory.WallFactory;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.factory.TankFrameFactory;
@@ -18,12 +20,18 @@ public enum Gate1Map implements GateMap{
 
     INSTANCE;
 
+    /** 敌方坦克数量 */
+    private int badCount = 8;
+
+    /** 墙宽高 */
     private int width = 58, height = 22;
 
     private TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
 
     @Override
     public void getMap(){
+
+        GameModel bgm =(GameModel) tankFrame.getBgm();
 
         // 上
         this.setWall(0,120,2,2,WallGroup.BRICK);
@@ -71,7 +79,12 @@ public enum Gate1Map implements GateMap{
         // 地雷
         tankFrame.getBgm().add(new Mine(942, 180, 50, 50, tankFrame.getBgm()));
         tankFrame.getBgm().add(new Mine(0,424, 58, 58, tankFrame.getBgm()));
-        tankFrame.getBgm().add(new Mine(942, 180, 50, 50, tankFrame.getBgm()));
+        tankFrame.getBgm().add(new Mine(942, 280, 50, 50, tankFrame.getBgm()));
+
+        // 设置敌方坦克
+        bgm.createBadTank(badCount);
+
+        System.out.println("普通坦克数量["+ TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
     }
 
     /**

@@ -39,6 +39,8 @@ public class GameModel extends BaseGameModel{
     public AtomicInteger pauseCount = new AtomicInteger(0);
     /** hp */
     public AtomicInteger mainHp = new AtomicInteger(3);
+    /** 敌方坦克数量 */
+    public AtomicInteger badTankCount = new AtomicInteger(0);
 
     public GameModel() {
 
@@ -54,26 +56,12 @@ public class GameModel extends BaseGameModel{
         this.pauseCount.set(super.getTempNum());
 
         if(PropertiesMgr.getByInteger("mainHp") != null){
-            mainHp.set(PropertiesMgr.getByInteger("mainHp"));
-        }
-
-        // 敌方坦克数量
-        int badTankCount = PropertiesMgr.getByInteger("badTankCount");
-
-        // 创建5个敌方坦克
-        for (int i = 0; i < badTankCount; i++) {
-            Tank autoTank = TankFactory.createAutoTank(50 + i * 100, 30, Dir.DOWN, this, TankGroup.BLUE);
-            this.add(autoTank);
+            mainHp.set(PropertiesMgr.getByInteger("mainHp")-1);
         }
 
         // ----
-
         // 单机主战坦克
         super.setMainTank(TankFactory.createTank(300,710, Dir.UP,this, TankGroup.RED));
-        this.add(super.getMainTank());
-
-        System.out.println("普通坦克数量["+TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
-
 
         // 背景音乐
         this.audioUtil = new AudioUtil("static/audio/war1.wav");
@@ -94,15 +82,10 @@ public class GameModel extends BaseGameModel{
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("HP的数量："+mainHp.get()+"  剩余重试次数："+pauseCount.get(),10,40);
+        g.drawString(
+                "HP的数量："+mainHp.get()+" , 剩余重试次数："+pauseCount.get()+" , 敌人的数量："+badTankCount.get()+" , 全部消灭后过关！"
+                ,10,40);
         g.setColor(c);
-
-        /*Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹的数量："+bulletList.size(),10,40);
-        g.drawString("敌人的数量："+badTanks.size(),10,60);
-        g.drawString("爆炸的数量："+explodeList.size(),10,80);
-        g.setColor(c);*/
 
         // 物体渲染
         for (int i = 0; i < this.gameObjects.size(); i++) {
@@ -115,8 +98,35 @@ public class GameModel extends BaseGameModel{
                 this.collide.comparator(this.gameObjects.get(i),this.gameObjects.get(j));
             }
         }
+    }
 
+    /**
+     * 创建敌方坦克
+     * @param count
+     */
+    public void createBadTank(int count){
+        this.badTankCount.set(count);
+        // 创建5个敌方坦克
+        for (int i = 0; i < count; i++) {
+            Tank autoTank = TankFactory.createAutoTank(50 + i * 100, 30, Dir.DOWN, this, TankGroup.BLUE);
+            this.add(autoTank);
+        }
+    }
+
+    /**
+     * 敌方坦克 消亡记录
+     * @return
+     */
+    public int subBadTankCount(){
+        return badTankCount.decrementAndGet();
     }
 
 
+    /**
+     * 主战坦克 减HP
+     * @return
+     */
+    public int subMainTankHP(){
+        return mainHp.decrementAndGet();
+    }
 }

@@ -52,6 +52,7 @@ public abstract class BaseGameModel {
      */
     public void setMainTank(Tank mainTank){
         this.mainTank = mainTank;
+        this.add(this.mainTank);
     }
     /**
      * 获得主战坦克
