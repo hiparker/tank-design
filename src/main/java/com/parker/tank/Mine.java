@@ -1,9 +1,7 @@
 package com.parker.tank;
 
 import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

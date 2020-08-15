@@ -4,7 +4,6 @@ import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
 import com.parker.tank.flyweight.BulletPool;
 
 import java.awt.*;

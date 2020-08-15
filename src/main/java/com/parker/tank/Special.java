@@ -1,14 +1,10 @@
 package com.parker.tank;
 
-import com.parker.tank.chain.ChainStack;
-import com.parker.tank.chain.GameChain;
 import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.factory.GateFactory;
 
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: tank-design

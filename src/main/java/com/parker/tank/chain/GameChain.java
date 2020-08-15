@@ -2,7 +2,6 @@ package com.parker.tank.chain;
 
 import com.parker.tank.TankFrame;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
 import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.map.GateMap;
 

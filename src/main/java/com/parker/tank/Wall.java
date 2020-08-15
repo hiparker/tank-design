@@ -1,9 +1,7 @@
 package com.parker.tank;
 
-import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
 import com.parker.tank.util.WallmageUtil;
 import com.sun.istack.internal.NotNull;
 

@@ -1,13 +1,11 @@
 package com.parker.tank.util;
 
 import com.parker.tank.config.ResourcesMgr;
-import com.parker.tank.dist.TankGroup;
 import com.parker.tank.dist.WallGroup;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * @BelongsProject: tank-01

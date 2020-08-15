@@ -3,7 +3,6 @@ package com.parker.tank.factory;
 import com.parker.tank.Wall;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.faced.GameModel;
 import com.sun.istack.internal.NotNull;
 
 import java.awt.image.BufferedImage;

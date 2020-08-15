@@ -4,11 +4,6 @@ import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**

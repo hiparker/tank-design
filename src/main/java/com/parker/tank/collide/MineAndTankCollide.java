@@ -1,10 +1,8 @@
 package com.parker.tank.collide;
 
-import com.parker.tank.Bullet;
 import com.parker.tank.GameObject;
 import com.parker.tank.Mine;
 import com.parker.tank.Tank;
-import com.parker.tank.dist.TankGroup;
 
 import java.awt.*;
 

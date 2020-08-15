@@ -2,7 +2,6 @@ package com.parker.tank.observer.event.impl.tank;
 
 import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
-import com.parker.tank.dist.GameObjectState;
 import com.sun.istack.internal.NotNull;
 
 /**

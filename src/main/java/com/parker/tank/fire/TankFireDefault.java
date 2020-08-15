@@ -1,9 +1,6 @@
 package com.parker.tank.fire;
 
-import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
-import com.parker.tank.decortor.TailWDecortor;
-import com.parker.tank.decortor.TailYDecortor;
 import com.parker.tank.flyweight.BulletPool;
 
 /**
