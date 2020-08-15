@@ -3,7 +3,6 @@ package com.parker.tank.observer;
 import com.parker.tank.observer.event.impl.tank.TankDiedEvent;
 import com.parker.tank.observer.event.impl.tank.TankFireEvent;
 import com.parker.tank.observer.event.impl.tank.TankMoveEvent;
-import com.sun.istack.internal.NotNull;
 
 /**
  * @BelongsProject: tank-design
@@ -18,18 +17,18 @@ public interface TankObserver{
      * 开火
      * @param gameEvent
      */
-    void actionOnFire(@NotNull TankFireEvent gameEvent);
+    void actionOnFire(TankFireEvent gameEvent);
 
     /**
      * 移动
      * @param gameEvent
      */
-    void actionOnMove(@NotNull TankMoveEvent gameEvent);
+    void actionOnMove(TankMoveEvent gameEvent);
 
     /**
      * 死亡
      * @param gameEvent
      */
-    void actionOnDied(@NotNull TankDiedEvent gameEvent);
+    void actionOnDied(TankDiedEvent gameEvent);
 
 }

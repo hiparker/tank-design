@@ -3,7 +3,6 @@ package com.parker.tank.factory;
 import com.parker.tank.Wall;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
-import com.sun.istack.internal.NotNull;
 
 import java.awt.image.BufferedImage;
 
@@ -19,19 +18,19 @@ public enum WallFactory {
     /** 实例 */
     INSTANCE;
 
-    public Wall createWall(int x, int y, int width, int height, @NotNull WallGroup group, BaseGameModel gm) {
+    public Wall createWall(int x, int y, int width, int height, WallGroup group, BaseGameModel gm) {
         return new Wall(x,y,width,height,group,gm);
     }
 
-    public Wall createWall(int x, int y, int width, int height, @NotNull BufferedImage image, BaseGameModel gm) {
+    public Wall createWall(int x, int y, int width, int height, BufferedImage image, BaseGameModel gm) {
         return new Wall(x,y,width,height,image,gm);
     }
 
-    public Wall createWallByHp(int x, int y, int width, int height,int hp, @NotNull WallGroup group, BaseGameModel gm) {
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, WallGroup group, BaseGameModel gm) {
         return new Wall(x,y,width,height,hp,group,gm);
     }
 
-    public Wall createWallByHp(int x, int y, int width, int height,int hp, @NotNull BufferedImage image, BaseGameModel gm) {
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, BufferedImage image, BaseGameModel gm) {
         return new Wall(x,y,width,height,hp,image,gm);
     }
 }

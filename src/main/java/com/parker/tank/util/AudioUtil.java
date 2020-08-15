@@ -59,7 +59,7 @@ public class AudioUtil {
             //volctrl.setValue(-40);//
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("音源无法找到");
         }
     }
 

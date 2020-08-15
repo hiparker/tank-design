@@ -4,20 +4,87 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <packaging>jar</packaging>
+    <groupId>com.parker</groupId>
     <artifactId>tank-design</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v3.0</version>
+
+    <!--项目开发者列表 -->
+    <developers>
+        <!--项目开发者的信息 -->
+        <developer>
+            <!--SCM里项目开发者的唯一标识符 -->
+            <id>parker</id>
+            <!--项目开发者的全名 -->
+            <name>Parker Zhou</name>
+            <!--项目开发者的email -->
+            <email>meet.parker@foxmail.com</email>
+            <!--项目开发者的主页的URL -->
+            <url>http://www.arcinbj.com</url>
+            <!--项目开发者在项目中扮演的角色，角色元素描述了各种角色 -->
+            <roles>
+                <role>Project Manager</role>
+                <role>Architect</role>
+            </roles>
+            <!--项目开发者所属组织 -->
+            <organization>personal</organization>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!-- 指定Main入口 -->
+                            <mainClass>com.parker.tank.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--指定JDK编译版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!-- 打包跳过测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 
 

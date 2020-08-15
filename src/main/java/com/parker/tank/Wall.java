@@ -3,7 +3,6 @@ package com.parker.tank;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.util.WallmageUtil;
-import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,7 +28,7 @@ public class Wall extends GameObject{
     /** 调停者 */
     private BaseGameModel gm;
 
-    public Wall(int x, int y, int width, int height, @NotNull WallGroup group, BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, WallGroup group, BaseGameModel gm) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -42,7 +41,7 @@ public class Wall extends GameObject{
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height, @NotNull BufferedImage image,BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, BufferedImage image,BaseGameModel gm) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -56,7 +55,7 @@ public class Wall extends GameObject{
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height,int hp, @NotNull WallGroup group, BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height,int hp,WallGroup group, BaseGameModel gm) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -70,7 +69,7 @@ public class Wall extends GameObject{
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height, int hp, @NotNull BufferedImage image,BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, int hp, BufferedImage image,BaseGameModel gm) {
         this.x = x;
         this.y = y;
         this.sx = x;

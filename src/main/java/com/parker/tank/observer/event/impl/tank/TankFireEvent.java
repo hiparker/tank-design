@@ -1,7 +1,6 @@
 package com.parker.tank.observer.event.impl.tank;
 
 import com.parker.tank.Tank;
-import com.sun.istack.internal.NotNull;
 
 /**
  * @BelongsProject: tank-design
@@ -12,7 +11,7 @@ import com.sun.istack.internal.NotNull;
  */
 public class TankFireEvent extends TankEvent {
 
-    public TankFireEvent(@NotNull Tank tank){
+    public TankFireEvent(Tank tank){
         super.tank = tank;
     }
 

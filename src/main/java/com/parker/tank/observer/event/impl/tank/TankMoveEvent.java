@@ -2,7 +2,6 @@ package com.parker.tank.observer.event.impl.tank;
 
 import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
-import com.sun.istack.internal.NotNull;
 
 /**
  * @BelongsProject: tank-design
@@ -16,7 +15,7 @@ public class TankMoveEvent extends TankEvent {
     private boolean isMove;
     private Dir dir;
 
-    public TankMoveEvent(@NotNull Tank tank,@NotNull Dir dir, boolean isMove){
+    public TankMoveEvent(Tank tank,Dir dir, boolean isMove){
         this.tank = tank;
         this.isMove = isMove;
         this.dir = dir;

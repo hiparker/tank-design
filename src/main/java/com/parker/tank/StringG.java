@@ -1,6 +1,5 @@
 package com.parker.tank;
 
-import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
 
@@ -22,7 +21,7 @@ public class StringG extends GameObject{
         this.str = str;
     }
 
-    public StringG(int x, int y, String str,@NotNull Color color) {
+    public StringG(int x, int y, String str, Color color) {
         this.x = x;
         this.y = y;
         this.str = str;
