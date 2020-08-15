@@ -2,8 +2,6 @@ package com.parker.tank.observer;
 
 import com.parker.tank.Explode;
 import com.parker.tank.Tank;
-import com.parker.tank.chain.ChainStack;
-import com.parker.tank.chain.GameChain;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 import com.parker.tank.factory.GateFactory;
@@ -12,8 +10,6 @@ import com.parker.tank.observer.event.impl.tank.TankDiedEvent;
 import com.parker.tank.observer.event.impl.tank.TankFireEvent;
 import com.parker.tank.observer.event.impl.tank.TankMoveEvent;
 import com.parker.tank.util.AudioUtil;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: tank-design
