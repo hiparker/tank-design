@@ -6,6 +6,7 @@ import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireDefault;
+import com.parker.tank.observer.factory.TankObserverFactory;
 import com.parker.tank.util.TankImageUtil;
 
 import java.awt.*;
@@ -271,9 +272,7 @@ public class Tank extends GameObject {
      */
     public void died() {
         this.liveFlag = false;
-        // 坦克阵亡新建爆炸
-        Explode explode = new Explode(this.x, this.y, gm);
-        this.gm.add(explode);
+        TankObserverFactory.INSTANCE.tankDiedHandler(this);
     }
 
     /**

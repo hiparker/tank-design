@@ -1,7 +1,6 @@
 package com.parker.tank.chain;
 
 import com.parker.tank.chain.gate.Gate;
-import com.parker.tank.chain.other.CoverChain;
 import com.parker.tank.chain.other.OverChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.faced.GameModel;
@@ -29,7 +28,7 @@ public class BaseGameChain extends GameChain{
 
     public BaseGameChain(){
         // 加载封面责任 ----------
-        this.add(new CoverChain());
+        //this.add(new CoverChain());
 
         // 加载关卡责任链 --------
         int count = 3;

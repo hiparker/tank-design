@@ -1,8 +1,7 @@
-package com.parker.tank.event;
+package com.parker.tank.systemevent;
 
-import com.parker.tank.util.AudioUtil;
-import com.parker.tank.dist.Dir;
 import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.observer.factory.TankObserverFactory;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -40,7 +39,7 @@ public class SystemEvent extends KeyAdapter {
             case KeyEvent.VK_SPACE:
                 // 按键抬起时
                 if(!flag){
-                    ObserverSystemEvent.INSTANCE.mainTankFireHandler(
+                    TankObserverFactory.INSTANCE.mainTankFireHandler(
                             TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank());
                 }
                 break;
@@ -73,7 +72,7 @@ public class SystemEvent extends KeyAdapter {
                 break;
         }
 
-        ObserverSystemEvent.INSTANCE.mainTankMoveHandler(
+        TankObserverFactory.INSTANCE.mainTankMoveHandler(
                 TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank(),
                 bL,bU,bR,bD);
     }

@@ -1,5 +1,8 @@
 package com.parker.tank.observer;
 
+import com.parker.tank.observer.event.impl.tank.TankDiedEvent;
+import com.parker.tank.observer.event.impl.tank.TankFireEvent;
+import com.parker.tank.observer.event.impl.tank.TankMoveEvent;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -9,18 +12,24 @@ import com.sun.istack.internal.NotNull;
  * @CreateTime: 2020-08-15 00:49
  * @Description: 坦克观察者
  */
-public interface TankObserver {
+public interface TankObserver{
 
     /**
      * 开火
-     * @param tankEvent
+     * @param gameEvent
      */
-    void actionOnFire(@NotNull TankEvent tankEvent);
+    void actionOnFire(@NotNull TankFireEvent gameEvent);
 
     /**
      * 移动
-     * @param tankEvent
+     * @param gameEvent
      */
-    void actionOnMove(boolean flag,@NotNull TankEvent tankEvent);
+    void actionOnMove(@NotNull TankMoveEvent gameEvent);
+
+    /**
+     * 死亡
+     * @param gameEvent
+     */
+    void actionOnDied(@NotNull TankDiedEvent gameEvent);
 
 }

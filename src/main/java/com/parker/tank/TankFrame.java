@@ -1,7 +1,7 @@
 package com.parker.tank;
 
 import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.event.SystemEvent;
+import com.parker.tank.systemevent.SystemEvent;
 import com.parker.tank.faced.BaseGameModel;
 
 import java.awt.*;
