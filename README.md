@@ -12,39 +12,7 @@
 
 
 
-## Tank-Factory-Model 单机版 - 主工厂 设计模式
-
-
-坦克大战练习23种设计模式
-
-用于对象设计技能提升
-
-1.单例模式（Single）
-	1). final + private 构造函数方法
-	2). enum 枚举单例
-	3). 内部类单例
-	3). 双重判断+synchronize+volatile
-	...
-
-2.策略模式（Strategy）
-	坦克Fire策略
-
-3.抽象工厂（Abstract Factory）
-	抽象工厂一键换肤换主题 - 产品一族
-
-4.工厂方法（Factory Method）
-	具体抽象工厂下 - 产品
-
-5.模版模式/原型模式（Model / Prototype）
-	BaseTank定义了 fire move 等方法,子类去具体的实现,否则报错	
-
-
-
-
 ## Tank-Desin-Model 单机版 - 设计模式
-
-<font color="red">**未解决问题：自身Main坦克死亡后，还可以发射子弹**</font>
-
 
 
 ++一个设计模式的出现一定有它特殊的价值++
@@ -85,7 +53,6 @@
             4.为什么有了new之后，还要有工厂？
                * 灵活的控制生产过程
                * 全县、修饰、日志
-            5.   
             
         用途：
             1.对Tank的创建
