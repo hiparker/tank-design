@@ -89,7 +89,7 @@ public class TankObserverHandler implements TankObserver {
             // 如果小于0 则该关卡失败
             if(badTankCount <= 0){
                 // 关卡错误结束
-                //GateFactory.INSTANCE.chainSuccessGameOver();
+                GateFactory.INSTANCE.chainSuccessGameOver();
             }
         }
     }
