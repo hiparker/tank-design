@@ -30,7 +30,7 @@ public class BaseGameChain extends GameChain{
 
     public BaseGameChain(){
         // 加载封面责任 ----------
-        //this.add(new CoverChain());
+        this.add(new CoverChain());
 
         // 加载关卡责任链 --------
         int count = 3;
