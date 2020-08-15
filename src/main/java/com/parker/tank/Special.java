@@ -62,6 +62,9 @@ public class Special extends GameObject{
      * 鸟巢死亡
      */
     public void died() {
+        if(!this.liveFlag){
+            return;
+        }
         this.liveFlag = false;
         // 关卡错误结束
         GateFactory.INSTANCE.chainErrorGameOver();

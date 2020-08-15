@@ -4,6 +4,7 @@ import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
 import com.parker.tank.decortor.TailWDecortor;
 import com.parker.tank.decortor.TailYDecortor;
+import com.parker.tank.flyweight.BulletPool;
 
 /**
  * @BelongsProject: tank-02
@@ -27,15 +28,21 @@ public enum TankFireDefault implements TankFire{
 
         tank.getGameModel().add(
 
-                new Bullet(
-                        tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank)
+                // 原始子弹
+                /*new Bullet(
+                        tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank)*/
 
+                // 装饰器子弹
                 /*new TailWDecortor(
                         new TailYDecortor(
                                 new Bullet(
                                         tank.getX(),tank.getY(),tank.getDir(),tank.getGameModel(),tank)
                         )
                 )*/
+
+                // 享元获取子弹
+                BulletPool.INSTANCE.getLiveBullet(tank,tank.getDir())
+
         );
 
         // 开火音效

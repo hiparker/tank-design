@@ -5,6 +5,7 @@ import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.Dir;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.GameModel;
+import com.parker.tank.flyweight.BulletPool;
 
 import java.awt.*;
 
@@ -29,8 +30,6 @@ public class Bullet extends GameObject {
     private Rectangle rectangle;
     /** 归属坦克 */
     private Tank belongTank;
-    /** 宽度 高度 */
-    private int bulletWidth = ResourcesMgr.bulletBigU.getWidth(), bulletHeight = ResourcesMgr.bulletBigU.getHeight();
 
 
     /**
@@ -51,11 +50,37 @@ public class Bullet extends GameObject {
         this.belongTank = belongTank;
 
         // 设置碰撞检测位置
-        this.rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);
+        this.rectangle = new Rectangle(this.x,this.y,this.width,this.height);
 
         // 设置 子弹样式
         setBulletStyle();
     }
+
+    /**
+     * 重制子弹
+     * @param x
+     * @param y
+     * @param dir
+     */
+    public void revertBullet(int x, int y, Dir dir, BaseGameModel gm, Tank belongTank) {
+
+        // 初始化
+        this.init();
+        this.liveFlag = true;
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.gm = gm;
+        this.belongTank = belongTank;
+        this.rectangle.x = this.x;
+        this.rectangle.y = this.y;
+        this.rectangle.width = this.width;
+        this.rectangle.height = this.height;
+
+        // 设置 子弹样式
+        setBulletStyle();
+    }
+
 
     /**
      * 初始化
@@ -65,6 +90,8 @@ public class Bullet extends GameObject {
         if(PropertiesMgr.getByInteger("bulletSpeed") != null){
             this.speed = PropertiesMgr.getByInteger("bulletSpeed");
         }
+        this.width = ResourcesMgr.bulletBigU.getWidth();
+        this.height = ResourcesMgr.bulletBigU.getHeight();
     }
 
     /**
@@ -74,36 +101,36 @@ public class Bullet extends GameObject {
         switch (this.dir) {
             case LEFT:
                 // 设置子弹 方向大小样式
-                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
-                this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
-                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                this.width = this.width ^ this.height;
+                this.height = this.width ^ this.height;
+                this.width = this.width ^ this.height;
 
                 // 设置子弹方向
-                this.y += belongTank.height/2 - this.bulletHeight/2;
-                this.x -= this.bulletWidth/2;
+                this.y += belongTank.height/2 - this.height/2;
+                this.x -= this.width/2;
 
                 break;
             case UP:
                 // 设置子弹方向
-                this.x += belongTank.width/2 - this.bulletWidth/2;
-                this.y -= this.bulletHeight/2;
+                this.x += belongTank.width/2 - this.width/2;
+                this.y -= this.height/2;
 
                 break;
             case RIGHT:
                 // 设置子弹 方向大小样式
-                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
-                this.bulletHeight = this.bulletWidth ^ this.bulletHeight;
-                this.bulletWidth = this.bulletWidth ^ this.bulletHeight;
+                this.width = this.width ^ this.height;
+                this.height = this.width ^ this.height;
+                this.width = this.width ^ this.height;
 
                 // 设置子弹方向
-                this.x += + belongTank.width - this.bulletWidth/2;
-                this.y += + belongTank.height/2 - this.bulletHeight/2;
+                this.x += + belongTank.width - this.width/2;
+                this.y += + belongTank.height/2 - this.height/2;
 
                 break;
             case DOWN:
                 // 设置子弹方向
-                this.x += belongTank.width/2 - this.bulletWidth/2;
-                this.y += belongTank.height - this.bulletHeight/2;
+                this.x += belongTank.width/2 - this.width/2;
+                this.y += belongTank.height - this.height/2;
 
                 break;
         }
@@ -129,8 +156,8 @@ public class Bullet extends GameObject {
         }
 
         // 边缘处理
-        if(x < 0 || y < bulletHeight/2 || x > TankFrame.GAME_WIDTH-bulletWidth || y > TankFrame.GAME_HEIGHT-bulletHeight){
-            liveFlag = false;
+        if(x < 0 || y < height/2 || x > TankFrame.GAME_WIDTH-width || y > TankFrame.GAME_HEIGHT-height){
+            this.died();
         }
 
     }
@@ -188,7 +215,14 @@ public class Bullet extends GameObject {
      * 炮弹死亡
      */
     public void died() {
+
+        if(!this.liveFlag){
+            return;
+        }
+
         this.liveFlag = false;
+        // 归还子弹
+        BulletPool.INSTANCE.revertBullet(this);
     }
 
     // -----------

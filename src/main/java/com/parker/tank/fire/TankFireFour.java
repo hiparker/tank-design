@@ -4,6 +4,7 @@ import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
 import com.parker.tank.decortor.TailWDecortor;
 import com.parker.tank.dist.Dir;
+import com.parker.tank.flyweight.BulletPool;
 
 /**
  * @BelongsProject: tank-02
@@ -27,8 +28,13 @@ public class TankFireFour implements TankFire{
         for (Dir value : values) {
 
             tank.getGameModel().add(
-                    new Bullet(
-                            tank.getX(),tank.getY(),value,tank.getGameModel(),tank)
+                    // 原始子弹
+                    /*new Bullet(
+                            tank.getX(),tank.getY(),value,tank.getGameModel(),tank)*/
+
+                    // 享元子弹
+                    // 享元获取子弹
+                    BulletPool.INSTANCE.getLiveBullet(tank,value)
             );
 
         }

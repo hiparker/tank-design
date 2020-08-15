@@ -272,6 +272,9 @@ public class Tank extends GameObject {
      * 死亡
      */
     public void died() {
+        if(!this.liveFlag){
+            return;
+        }
         this.liveFlag = false;
         TankObserverFactory.INSTANCE.tankDiedHandler(this);
     }
