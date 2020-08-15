@@ -3,6 +3,7 @@ package com.parker.tank.collide;
 import com.parker.tank.Bullet;
 import com.parker.tank.GameObject;
 import com.parker.tank.Tank;
+import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.dist.TankGroup;
 
 import java.awt.*;
@@ -21,6 +22,13 @@ public enum BulletAndTankCollide implements Collide{
      */
     INSTANCE;
 
+    /** 队友伤害 */
+    private boolean enableTameHarm = PropertiesMgr.getByBoolean("enableTameHarm");
+
+    /** 自身无敌 */
+    private boolean enableMainTankInvincibly = PropertiesMgr.getByBoolean("enableMainTankInvincibly");
+
+
     @Override
     public boolean comparator(GameObject go1, GameObject go2) {
         boolean flag = true;
@@ -32,18 +40,42 @@ public enum BulletAndTankCollide implements Collide{
             Rectangle tankPosition = tank.getPosition();
             Rectangle bulletPosition = bullet.getPosition();
             if(bulletPosition.intersects(tankPosition)){
-                // 自己不能打自己 并且 默认关闭队友伤害
-                if(!tank.equals(bulletBelongTank) &&
-                    !tank.getGroup().equals(bulletBelongTank.getGroup())
-                    ){
 
-                    // 暂时设置自身无敌
-                    if(!tank.getGroup().equals(TankGroup.RED)){
-                        tank.died();
-                        bullet.died();
-                        flag = false;
+                boolean overFlag = false;
+
+                // 队友伤害
+                if(enableTameHarm){
+                    // 自身无敌
+                    if(!enableMainTankInvincibly){
+                        overFlag = true;
+                    }else{
+                        // 暂时设置自身无敌
+                        if(!tank.getGroup().equals(TankGroup.RED)){
+                            overFlag = true;
+                        }
+                    }
+                }else{
+                    if(!tank.equals(bulletBelongTank) &&
+                            !tank.getGroup().equals(bulletBelongTank.getGroup())
+                    ){
+                        // 自身无敌
+                        if(!enableMainTankInvincibly){
+                            overFlag = true;
+                        }else{
+                            // 暂时设置自身无敌
+                            if(!tank.getGroup().equals(TankGroup.RED)){
+                                overFlag = true;
+                            }
+                        }
                     }
                 }
+
+                if(overFlag){
+                    tank.died();
+                    bullet.died();
+                    flag = false;
+                }
+
             }
         }else if(go1 instanceof Tank && go2 instanceof Bullet){
             return this.comparator(go2,go1);

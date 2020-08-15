@@ -59,7 +59,7 @@ public class SuccessOverChain extends GameChain {
                     WallFactory.INSTANCE.createWall(
                             (gameWidth-800)/2,(gameHeight-600)/2,800,600, ResourcesMgr.over,bgm));
             // 文字
-            bgm.add(new StringG(180,560,"任务失败，请再次尝试 "));
+            bgm.add(new StringG(180,560,"任务执行完毕 您获得了成功！"));
             // 文字
             bgm.add(new StringG(180,600,"作者：Parker "));
             // 文字

@@ -42,9 +42,9 @@ public final class PropertiesMgr {
         return Integer.parseInt(PROPERTIES.getProperty(key,""));
     }
 
-    public static Boolean getByBoolean(String key){
+    public static boolean getByBoolean(String key){
         if(PROPERTIES == null){
-            return null;
+            return false;
         }
         return Boolean.parseBoolean(PROPERTIES.getProperty(key,""));
     }
