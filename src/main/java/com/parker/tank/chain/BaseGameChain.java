@@ -66,12 +66,7 @@ public class BaseGameChain extends GameChain{
         boolean flag = true;
 
         for (GameChain gate : gates) {
-
-            long totalTimeStart = System.currentTimeMillis();
             boolean handler = gate.handler();
-            long totalTimeEnd = System.currentTimeMillis();
-            System.out.println("总执行时间(秒)："+(totalTimeEnd/1000-totalTimeStart/1000));
-
             // 关卡任务失败
             if(!handler){
                 flag = false;

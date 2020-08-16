@@ -3,6 +3,7 @@ package com.parker.tank;
 import com.parker.tank.chain.BaseGameChain;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.proxy.BaseGameChainProxy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,10 @@ public class Main {
 
         // 调用完整责任链
         new Thread(()->{
-            GameChain gameChain = new BaseGameChain();
+            // 静态代理 BaseGameChain 责任链
+            GameChain gameChain = new BaseGameChainProxy(
+                    new BaseGameChain()
+            );
             gameChain.handler();
         }).start();
 
