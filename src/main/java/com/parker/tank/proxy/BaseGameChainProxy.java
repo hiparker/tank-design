@@ -1,19 +1,7 @@
 package com.parker.tank.proxy;
 
-import com.parker.tank.chain.ChainStack;
+import com.parker.tank.chain.BaseGameChain;
 import com.parker.tank.chain.GameChain;
-import com.parker.tank.chain.GateGameChain;
-import com.parker.tank.chain.gate.Gate;
-import com.parker.tank.chain.other.CoverChain;
-import com.parker.tank.chain.other.ErrorOverChain;
-import com.parker.tank.chain.other.SuccessOverChain;
-import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.faced.GameModel;
-import com.parker.tank.map.Gate1Map;
-import com.parker.tank.map.Gate2Map;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @BelongsProject: tank-design
@@ -25,16 +13,16 @@ import java.util.List;
  * 责任链 的 静态代理 ，用于记录游戏总执行时间
  *
  */
-public class BaseGameChainProxy extends GameChain {
+public class BaseGameChainProxy extends BaseGameChain {
 
-    private GameChain gameChai;
+    private GameChain gameChain;
 
     /**
      * 构造函数
      */
 
     public BaseGameChainProxy(GameChain gameChain){
-        this.gameChai = gameChain;
+        this.gameChain = gameChain;
     }
 
     /**
@@ -46,10 +34,14 @@ public class BaseGameChainProxy extends GameChain {
         long totalTimeStart = System.currentTimeMillis();
 
         // 执行
-        this.gameChai.handler();
+        this.gameChain.handler();
 
         long totalTimeEnd = System.currentTimeMillis();
+
+        System.out.println();
         System.out.println("游戏 - 总执行时间(秒)："+(totalTimeEnd/1000-totalTimeStart/1000));
+        System.out.println();
+
         return true;
     }
 }

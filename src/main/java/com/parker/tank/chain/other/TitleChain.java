@@ -2,7 +2,7 @@ package com.parker.tank.chain.other;
 
 import com.parker.tank.StringG;
 import com.parker.tank.chain.ChainStack;
-import com.parker.tank.chain.GameChain;
+import com.parker.tank.chain.BaseGameChain;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.TitleModel;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @CreateTime: 2020-08-14 00:06
  * @Description: 封面
  */
-public class TitleChain extends GameChain {
+public class TitleChain extends BaseGameChain {
 
     @Override
     public boolean handler() {

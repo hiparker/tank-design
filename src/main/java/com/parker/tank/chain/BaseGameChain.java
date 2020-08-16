@@ -1,95 +1,126 @@
 package com.parker.tank.chain;
 
-import com.parker.tank.chain.gate.Gate;
-import com.parker.tank.chain.other.CoverChain;
-import com.parker.tank.chain.other.ErrorOverChain;
-import com.parker.tank.chain.other.SuccessOverChain;
-import com.parker.tank.config.PropertiesMgr;
-import com.parker.tank.faced.GameModel;
-import com.parker.tank.map.Gate1Map;
-import com.parker.tank.map.Gate2Map;
+import com.parker.tank.TankFrame;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.map.GateMap;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @BelongsProject: tank-design
  * @BelongsPackage: com.parker.tank.chain
  * @Author: Parker
- * @CreateTime: 2020-08-13 22:01
- * @Description: 关卡 总实现
+ * @CreateTime: 2020-08-13 21:57
+ * @Description: 游戏责任链
+ *
+ * 关卡
+ *
  */
-public class BaseGameChain extends GameChain{
+public abstract class BaseGameChain implements GameChain {
 
-    private List<GameChain> gates = new LinkedList<>();
+    protected TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
 
+    /** 执行状态 */
+    protected AtomicBoolean state = new AtomicBoolean(true);
+    /** 执行结果状态 */
+    protected AtomicBoolean result = new AtomicBoolean(true);
+    protected int num;
+    protected int num1;
+    protected int num2;
+    protected String text;
 
-    /**
-     * 构造函数
-     */
-
-    public BaseGameChain(){
-        // 加载封面责任 ----------
-        this.add(new CoverChain());
-
-        // 加载关卡责任链 --------
-        int count = 3;
-        if(PropertiesMgr.getByInteger("pauseCount") != null){
-            count = PropertiesMgr.getByInteger("pauseCount");
-        }
-
-
-        GateGameChain gateGameChain = new GateGameChain(count);
-        gateGameChain.add(new Gate()
-                .setGameModel(GameModel.class)
-                .setGateMap(Gate1Map.INSTANCE)
-                .setNum(1)
-        );
-        gateGameChain.add(new Gate()
-                .setGameModel(GameModel.class)
-                .setGateMap(Gate2Map.INSTANCE)
-                .setNum(2)
-        );
-
-        this.add(gateGameChain.setNum(1));
-
-    }
+    private Class<?> gameModelClazz;
+    private GateMap gateMap;
 
     /**
-     * 执行
+     * 执行游戏
      * @return
      */
-    @Override
-    public boolean handler() {
-        ChainStack.INSTANCE.put(this);
+    public abstract boolean handler();
 
-        boolean flag = true;
-
-        for (GameChain gate : gates) {
-            boolean handler = gate.handler();
-            // 关卡任务失败
-            if(!handler){
-                flag = false;
-                break;
-            }
-        }
-
-        if(flag){
-            // 游戏成功结束
-            new SuccessOverChain().handler();
-            return true;
-        }
-
-        // 游戏错误结束
-        new ErrorOverChain().handler();
-
-        return false;
-    }
-
-
-    @Override
+    /**
+     * 添加责任
+     * @return
+     */
     public void add(GameChain gameChain){
-        this.gates.add(gameChain);
+        throw new RuntimeException("为初始化添加功能！");
     }
 
+
+    /**
+     * 错误停止
+     */
+    public void errorStop() {
+        result.set(false);
+        state.set(false);
+    }
+    /**
+     * 正常停止
+     */
+    public void successStop() {
+        result.set(true);
+        state.set(false);
+    }
+    /**
+     * 重制
+     */
+    public void remake() {
+        result.set(true);
+        state.set(true);
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public GameChain setNum(int num) {
+        this.num = num;
+        return this;
+    }
+
+    public int getNum1() {
+        return num1;
+    }
+
+    public GameChain setNum1(int num1) {
+        this.num1 = num1;
+        return this;
+    }
+
+    public int getNum2() {
+        return num2;
+    }
+
+    public GameChain setNum2(int num2) {
+        this.num2 = num2;
+        return this;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public GameChain setText(String text) {
+        this.text = text;
+        return this;
+    }
+    public BaseGameModel getGameModel() throws IllegalAccessException, InstantiationException {
+        BaseGameModel baseGameModel = (BaseGameModel) gameModelClazz.newInstance();
+        baseGameModel.setTempNum(this.getNum1());
+        return baseGameModel;
+    }
+    public GameChain setGameModel(Class<?> clazz){
+        this.gameModelClazz = clazz;
+        return this;
+    }
+
+    public GateMap getGateMap() {
+        return gateMap;
+    }
+
+    public GameChain setGateMap(GateMap gateMap) {
+        this.gateMap = gateMap;
+        return this;
+    }
 }

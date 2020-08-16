@@ -1,7 +1,7 @@
 package com.parker.tank.chain.gate;
 
 import com.parker.tank.chain.ChainStack;
-import com.parker.tank.chain.GameChain;
+import com.parker.tank.chain.BaseGameChain;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.factory.TankFactory;
 
@@ -12,10 +12,9 @@ import com.parker.tank.factory.TankFactory;
  * @CreateTime: 2020-08-13 22:17
  * @Description: 第一关
  */
-public class Gate extends GameChain {
+public class Gate extends BaseGameChain {
 
     private int count = 0;
-
 
 
     @Override

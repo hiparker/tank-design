@@ -1,6 +1,6 @@
 package com.parker.tank;
 
-import com.parker.tank.chain.BaseGameChain;
+import com.parker.tank.chain.MainGameChain;
 import com.parker.tank.chain.GameChain;
 import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.proxy.BaseGameChainProxy;
@@ -23,7 +23,7 @@ public class Main {
         new Thread(()->{
             // 静态代理 BaseGameChain 责任链
             GameChain gameChain = new BaseGameChainProxy(
-                    new BaseGameChain()
+                    new MainGameChain()
             );
             gameChain.handler();
         }).start();

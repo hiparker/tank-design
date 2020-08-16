@@ -12,7 +12,7 @@ import java.util.List;
  * @CreateTime: 2020-08-13 22:01
  * @Description: 关卡 总实现
  */
-public class GateGameChain extends GameChain{
+public class GateGameChain extends BaseGameChain {
 
     /** 这里使用 arrayList 是为了 关卡号 正常用 LinkedList */
     private List<GameChain> gates = new ArrayList<>();
@@ -35,7 +35,7 @@ public class GateGameChain extends GameChain{
     public boolean handler() {
         ChainStack.INSTANCE.put(this);
         for (GameChain gate : gates) {
-            long totalTimeStart = System.currentTimeMillis();
+
             pauseCountTemp = pauseCount;
 
             // 标题
@@ -43,15 +43,14 @@ public class GateGameChain extends GameChain{
             titleChain.handler();
 
             gate.setNum1(pauseCountTemp-1);
+            gate.setNum2(this.getNum());
+
             boolean handler = gate.handler();
             pauseCountTemp--;
             // 第一次 关卡任务失败
             if(!handler){
                 this.recourseHandler(gate,false);
             }
-
-            long totalTimeEnd = System.currentTimeMillis();
-            System.out.println("关卡任务总执行时间(秒)："+(totalTimeEnd/1000-totalTimeStart/1000));
 
             // 判断执行失败
             if(pauseCountTemp <= 0){
@@ -66,7 +65,7 @@ public class GateGameChain extends GameChain{
      * 递归执行
      * @return boolean
      */
-    private boolean recourseHandler(GameChain g,boolean resultFlag){
+    private boolean recourseHandler(GameChain g, boolean resultFlag){
         //System.out.println("进入递归："+pauseCountTemp);
         pauseCountTemp--;
         g.setNum1(pauseCountTemp);

@@ -13,13 +13,13 @@ public enum ChainStack {
 
     INSTANCE;
 
-    private Stack<GameChain> stack = new Stack<>();
+    private Stack<BaseGameChain> stack = new Stack<>();
 
-    public void put(GameChain gc){
+    public void put(BaseGameChain gc){
         this.stack.push(gc);
     }
 
-    public GameChain peek(){
+    public BaseGameChain peek(){
         if(!this.stack.empty()){
             return this.stack.peek();
         }

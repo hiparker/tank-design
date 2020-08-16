@@ -1,7 +1,7 @@
 package com.parker.tank.chain.gate;
 
 import com.parker.tank.chain.ChainStack;
-import com.parker.tank.chain.GameChain;
+import com.parker.tank.chain.BaseGameChain;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @CreateTime: 2020-08-13 22:17
  * @Description: 第一关
  */
-public class GateTest extends GameChain {
+public class GateTest extends BaseGameChain {
 
 
     @Override

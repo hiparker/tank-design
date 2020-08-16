@@ -1,126 +1,85 @@
 package com.parker.tank.chain;
 
-import com.parker.tank.TankFrame;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.map.GateMap;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @BelongsProject: tank-design
  * @BelongsPackage: com.parker.tank.chain
  * @Author: Parker
- * @CreateTime: 2020-08-13 21:57
- * @Description: 游戏责任链
+ * @CreateTime: 2020-08-17 00:12
+ * @Description: 责任链总接口
  *
- * 关卡
+ * 原先没有设计 总接口 用抽象类代替
+ * 结果使用 动态代理模式 必须有一个接口才可以运行 没办法了
+ *
+ * cglib 对抽象类 有点没问题 暂时还没搞懂
  *
  */
-public abstract class GameChain {
-
-    protected TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
-
-    /** 执行状态 */
-    protected AtomicBoolean state = new AtomicBoolean(true);
-    /** 执行结果状态 */
-    protected AtomicBoolean result = new AtomicBoolean(true);
-    protected int num;
-    protected int num1;
-    protected int num2;
-    protected String text;
-
-    private Class<?> gameModelClazz;
-    private GateMap gateMap;
+public interface GameChain {
 
     /**
      * 执行游戏
      * @return
      */
-    public abstract boolean handler();
+    boolean handler();
 
     /**
      * 添加责任
      * @return
      */
-    public void add(GameChain gameChain){
-        throw new RuntimeException("为初始化添加功能！");
-    }
-
+    void add(GameChain gameChain);
 
     /**
-     * 停止
+     * 错误停止
      */
-    public void errorStop() {
-        result.set(false);
-        state.set(false);
-    }
+    void errorStop();
+
     /**
-     * 停止
+     * 正常停止
      */
-    public void successStop() {
-        result.set(true);
-        state.set(false);
-    }
+    void successStop();
+
     /**
      * 重制
      */
-    protected void remake() {
-        result.set(true);
-        state.set(true);
-    }
+    void remake();
 
-    public int getNum() {
-        return num;
-    }
+    /**
+     * 获得游戏模型
+     */
+    BaseGameModel getGameModel()  throws IllegalAccessException, InstantiationException;
 
-    public GameChain setNum(int num) {
-        this.num = num;
-        return this;
-    }
+    /**
+     * 设置游戏模型
+     */
+    GameChain setGameModel(Class<?> clazz);
 
-    public int getNum1() {
-        return num1;
-    }
+    /**
+     * 获得地图
+     */
+    GateMap getGateMap();
+    /**
+     * 设置地图
+     */
+    GameChain setGateMap(GateMap gateMap);
 
-    public GameChain setNum1(int num1) {
-        this.num1 = num1;
-        return this;
-    }
+    // ----------------
 
-    public int getNum2() {
-        return num2;
-    }
+    int getNum();
 
-    public GameChain setNum2(int num2) {
-        this.num2 = num2;
-        return this;
-    }
+    GameChain setNum(int num);
 
-    public String getText() {
-        return text;
-    }
+    int getNum1();
 
-    public GameChain setText(String text) {
-        this.text = text;
-        return this;
-    }
-    public BaseGameModel getGameModel() throws IllegalAccessException, InstantiationException {
-        BaseGameModel baseGameModel = (BaseGameModel) gameModelClazz.newInstance();
-        baseGameModel.setTempNum(this.getNum1());
-        return baseGameModel;
-    }
-    public GameChain setGameModel(Class<?> clazz){
-        this.gameModelClazz = clazz;
-        return this;
-    }
+    GameChain setNum1(int num);
 
-    public GateMap getGateMap() {
-        return gateMap;
-    }
+    int getNum2();
 
-    public GameChain setGateMap(GateMap gateMap) {
-        this.gateMap = gateMap;
-        return this;
-    }
+    GameChain setNum2(int num);
+
+    String getText();
+
+    GameChain setText(String text);
+
 }
