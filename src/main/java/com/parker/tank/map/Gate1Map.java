@@ -121,6 +121,8 @@ public enum Gate1Map implements GateMap{
             bgm.add(this.goList.get(i));
         }
 
+        TankFactory.autoCount = 0;
+        TankFactory.usualCount = 0;
         // 设置敌方坦克
         bgm.createBadTank(badCount);
 

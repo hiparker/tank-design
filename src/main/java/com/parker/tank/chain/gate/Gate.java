@@ -23,9 +23,6 @@ public class Gate extends BaseGameChain {
 
         super.remake();
         try {
-            TankFactory.autoCount = 0;
-            TankFactory.usualCount = 0;
-
             BaseGameModel gameModel = super.getGameModel();
             gameModel.builder();
 
