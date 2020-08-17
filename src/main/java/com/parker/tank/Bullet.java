@@ -3,7 +3,7 @@ package com.parker.tank;
 import com.parker.tank.config.PropertiesMgr;
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.dist.Dir;
-import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.flyweight.BulletPool;
 
 import java.awt.*;
@@ -21,8 +21,6 @@ public class Bullet extends GameObject {
     private int speed = 10;
     /** 子弹方向 */
     private Dir dir = Dir.DOWN;
-    /** 调停者 */
-    private BaseGameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -37,7 +35,7 @@ public class Bullet extends GameObject {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir, BaseGameModel gm, Tank belongTank) {
+    public Bullet(int x, int y, Dir dir, Tank belongTank) {
 
         // 初始化
         this.init();
@@ -45,7 +43,6 @@ public class Bullet extends GameObject {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.belongTank = belongTank;
 
         // 设置碰撞检测位置
@@ -61,7 +58,7 @@ public class Bullet extends GameObject {
      * @param y
      * @param dir
      */
-    public void revertBullet(int x, int y, Dir dir, BaseGameModel gm, Tank belongTank) {
+    public void revertBullet(int x, int y, Dir dir, Tank belongTank) {
 
         // 初始化
         this.init();
@@ -69,7 +66,6 @@ public class Bullet extends GameObject {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.belongTank = belongTank;
         this.rectangle.x = this.x;
         this.rectangle.y = this.y;
@@ -170,7 +166,9 @@ public class Bullet extends GameObject {
 
         // 炮弹死亡移除
         if(!this.liveFlag){
-            gm.remove(this);
+            if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() != null){
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().remove(this);
+            }
         }
 
         switch (dir) {
@@ -222,13 +220,6 @@ public class Bullet extends GameObject {
         this.liveFlag = false;
         // 归还子弹
         BulletPool.INSTANCE.revertBullet(this);
-    }
-
-    // -----------
-
-
-    public BaseGameModel getGm() {
-        return gm;
     }
 
 

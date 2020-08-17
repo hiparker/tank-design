@@ -30,7 +30,7 @@ public enum BulletPool {
         // 如果为空则在使用栈里新加子弹
         if(waitBullet.isEmpty()){
             //System.out.println("新建开始子弹 ----------------------- 当前等待池中子弹数量："+waitBullet.size()+"  当前使用池中子弹的数量："+usedBullet.size());
-            bullet = new Bullet(tank.getX(),tank.getY(),dir,tank.getGameModel(),tank);
+            bullet = new Bullet(tank.getX(),tank.getY(),dir,tank);
             try {
                 usedBullet.put(bullet);
             }catch (Exception e){
@@ -50,10 +50,10 @@ public enum BulletPool {
                 bullet = waitBullet.take();
             }catch (Exception e){
                 System.out.println("子弹从等待池删除失败！");
-                bullet = new Bullet(tank.getX(),tank.getY(),dir,tank.getGameModel(),tank);
+                bullet = new Bullet(tank.getX(),tank.getY(),dir,tank);
             }
             // 重制子弹
-            bullet.revertBullet(tank.getX(),tank.getY(),dir,tank.getGameModel(),tank);
+            bullet.revertBullet(tank.getX(),tank.getY(),dir,tank);
             // 如果put不进去子弹，则放弃这颗子弹
             try {
                 usedBullet.put(bullet);

@@ -1,6 +1,7 @@
 package com.parker.tank.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -15,7 +16,7 @@ import javax.sound.sampled.SourceDataLine;
  * @CreateTime: 2020-08-11 20:27
  * @Description: 声音处理
  */
-public class AudioUtil {
+public class AudioUtil implements Serializable {
 
     byte[] b = new byte[1024 * 1024 * 15];
 

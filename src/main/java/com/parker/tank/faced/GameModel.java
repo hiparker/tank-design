@@ -26,15 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class GameModel extends BaseGameModel{
 
-    /**
-     * 内部类
-     */
-    static class GameModelBudiler{
-
-    }
 
     /** 碰撞器 责任链 */
-    private final Collide collide = CollideChain.INSTANCE;
+    private transient final Collide collide = CollideChain.INSTANCE;
     /** 失败重试次数 */
     public AtomicInteger pauseCount = new AtomicInteger(0);
     /** hp */
@@ -61,12 +55,12 @@ public class GameModel extends BaseGameModel{
 
         // ----
         // 单机主战坦克
-        super.setMainTank(TankFactory.createTank(300,710, Dir.UP,this, TankGroup.RED));
+        super.setMainTank(TankFactory.createTank(300,710, Dir.UP,TankGroup.RED));
 
         // 背景音乐
         this.audioUtil = new AudioUtil("static/audio/war1.wav");
         this.musicThread = new Thread(()->{
-            audioUtil.loop();
+            audioUtil.play();
         });
         super.startMusic();
 
@@ -83,7 +77,8 @@ public class GameModel extends BaseGameModel{
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString(
-                "HP的数量："+mainHp.get()+" , 剩余重试次数："+pauseCount.get()+" , 敌人的数量："+badTankCount.get()+" , 全部消灭后过关！"
+                "HP的数量："+mainHp.get()+" , 剩余重试次数："+pauseCount.get()+" , 敌人的数量："+badTankCount.get()+" , 全部消灭后过关！"+
+                        " ESC关闭游戏 ，S 存档 , L 恢复存档 ，R 重玩"
                 ,10,40);
         g.setColor(c);
 
@@ -108,7 +103,7 @@ public class GameModel extends BaseGameModel{
         this.badTankCount.set(count);
         // 创建5个敌方坦克
         for (int i = 0; i < count; i++) {
-            Tank autoTank = TankFactory.createAutoTank(50 + i * 100, 30, Dir.DOWN, this, TankGroup.BLUE);
+            Tank autoTank = TankFactory.createAutoTank(50 + i * 100, 30, Dir.DOWN, TankGroup.BLUE);
             this.add(autoTank);
         }
     }
@@ -128,5 +123,24 @@ public class GameModel extends BaseGameModel{
      */
     public int subMainTankHP(){
         return mainHp.decrementAndGet();
+    }
+
+    // ------
+
+
+    public int getMainHp() {
+        return mainHp.get();
+    }
+
+    public void setMainHp(int mainHp) {
+        this.mainHp.set(mainHp);
+    }
+
+    public int getBadTankCount() {
+        return badTankCount.get();
+    }
+
+    public void setBadTankCount(int badTankCount) {
+        this.badTankCount.set(badTankCount);
     }
 }

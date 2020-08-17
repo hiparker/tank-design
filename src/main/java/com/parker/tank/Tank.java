@@ -5,6 +5,7 @@ import com.parker.tank.dist.Dir;
 import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.faced.GameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.fire.TankFire;
 import com.parker.tank.fire.TankFireDefault;
 import com.parker.tank.observer.factory.TankObserverFactory;
@@ -38,8 +39,6 @@ public class Tank extends GameObject {
     private Dir dir = Dir.DOWN;
     /** 是否是移动的状态 */
     private volatile boolean moving = false;
-    /** 调停者 */
-    private BaseGameModel gm;
     /** 存活状态 */
     private boolean liveFlag = true;
     /** 当前位置 */
@@ -47,12 +46,10 @@ public class Tank extends GameObject {
     /** 坦克分组 */
     private TankGroup group;
     /** 开火策略模式 */
-    private TankFire tf = null;
+    private transient TankFire tf = null;
     /** 自动模式 */
     private boolean autoFlag = false;
     private Dir[] dirs = {Dir.LEFT,Dir.UP,Dir.RIGHT,Dir.DOWN};
-
-
 
 
     /**
@@ -61,7 +58,7 @@ public class Tank extends GameObject {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, BaseGameModel gm, TankGroup group) {
+    public Tank(int x, int y, Dir dir, TankGroup group) {
 
         // 初始化
         this.init();
@@ -71,7 +68,6 @@ public class Tank extends GameObject {
         this.oldX = x;
         this.oldY = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
         this.moveTime = System.currentTimeMillis();
         this.moveOldTime = this.moveTime;
@@ -93,7 +89,7 @@ public class Tank extends GameObject {
      * @param y
      * @param dir
      */
-    public Tank(int x, int y, Dir dir, BaseGameModel gm, TankGroup group, boolean autoFlag) {
+    public Tank(int x, int y, Dir dir, TankGroup group, boolean autoFlag) {
 
         // 初始化
         this.init();
@@ -103,7 +99,6 @@ public class Tank extends GameObject {
         this.oldX = x;
         this.oldY = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
         this.autoFlag = autoFlag;
         this.moveTime = System.currentTimeMillis();
@@ -133,7 +128,7 @@ public class Tank extends GameObject {
     /**
      * 初始化开火的策略模式
      */
-    protected void initFireStrategy(){
+    public void initFireStrategy(){
         // 策略模式 不同的开火方案
         if(TankGroup.BLUE.equals(this.group)){
             String fireName = PropertiesMgr.getByString("blueFire");
@@ -227,7 +222,9 @@ public class Tank extends GameObject {
     public void paint(Graphics g) {
         // 坦克阵亡
         if(!liveFlag){
-            gm.remove(this);
+            if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() != null){
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().remove(this);
+            }
             return;
         }
 
@@ -306,7 +303,6 @@ public class Tank extends GameObject {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             this.start();
         });
     }
@@ -340,11 +336,8 @@ public class Tank extends GameObject {
         return y;
     }
 
-    public GameModel getGameModel() {
-        return (GameModel) gm;
-    }
-
     public boolean isAutoFlag() {
         return autoFlag;
     }
+
 }

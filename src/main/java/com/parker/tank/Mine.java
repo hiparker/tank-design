@@ -2,6 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,17 +20,14 @@ public class Mine extends GameObject{
     private boolean liveFlag = true;
     /** 当前位置 */
     private Rectangle rectangle;
-    /** 调停者 */
-    private BaseGameModel gm;
     /** 当前数量 */
     protected int count = 0;
 
-    public Mine(int x, int y, int width, int height, BaseGameModel gm) {
+    public Mine(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.gm = gm;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
     }
@@ -50,7 +48,9 @@ public class Mine extends GameObject{
 
         // 地雷死亡移除
         if(!this.liveFlag){
-            gm.remove(this);
+            if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() != null){
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().remove(this);
+            }
         }
 
         BufferedImage image = ResourcesMgr.mines[count++];
@@ -70,7 +70,4 @@ public class Mine extends GameObject{
         this.liveFlag = false;
     }
 
-    public BaseGameModel getGm() {
-        return gm;
-    }
 }

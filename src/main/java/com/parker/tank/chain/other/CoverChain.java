@@ -57,7 +57,9 @@ public class CoverChain extends BaseGameChain {
             BaseGameModel bgm = tankFrame.getBgm();
             bgm.add(
                     WallFactory.INSTANCE.createWall(
-                            (gameWidth-800)/2,(gameHeight-600)/2,800,600, ResourcesMgr.bg,bgm));
+                            (gameWidth-800)/2,(gameHeight-600)/2,800,600, ResourcesMgr.bg));
+            // 文字
+            bgm.add(new StringG(10,40," ESC关闭游戏 ，S 存档 , L 恢复存档 ，R 重玩"));
             // 文字
             bgm.add(new StringG(180,540,"欢迎来到 坦克大战 "));
             // 文字

@@ -2,6 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.util.WallmageUtil;
 
 import java.awt.*;
@@ -24,11 +25,9 @@ public class Wall extends GameObject{
     private WallGroup group;
     /** 当前位置 */
     private Rectangle rectangle;
-    private BufferedImage bufferedImage;
-    /** 调停者 */
-    private BaseGameModel gm;
+    private transient BufferedImage bufferedImage;
 
-    public Wall(int x, int y, int width, int height, WallGroup group, BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, WallGroup group) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -36,12 +35,11 @@ public class Wall extends GameObject{
         this.width = width;
         this.height = height;
         this.group = group;
-        this.gm = gm;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height, BufferedImage image,BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, BufferedImage image) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -50,12 +48,11 @@ public class Wall extends GameObject{
         this.height = height;
         this.group = WallGroup.BRICK;
         this.bufferedImage = image;
-        this.gm = gm;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height,int hp,WallGroup group, BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height,int hp,WallGroup group) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -63,13 +60,12 @@ public class Wall extends GameObject{
         this.width = width;
         this.height = height;
         this.group = group;
-        this.gm = gm;
         this.hp = hp;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
     }
 
-    public Wall(int x, int y, int width, int height, int hp, BufferedImage image,BaseGameModel gm) {
+    public Wall(int x, int y, int width, int height, int hp, BufferedImage image) {
         this.x = x;
         this.y = y;
         this.sx = x;
@@ -78,7 +74,6 @@ public class Wall extends GameObject{
         this.height = height;
         this.group = WallGroup.BRICK;
         this.bufferedImage = image;
-        this.gm = gm;
         this.hp = hp;
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,width,height);
@@ -108,7 +103,9 @@ public class Wall extends GameObject{
     public void paint(Graphics g) {
 
         if(hp <= 0){
-            gm.remove(this);
+            if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() != null){
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().remove(this);
+            }
         }
 
         BufferedImage temp = bufferedImage;
@@ -137,4 +134,7 @@ public class Wall extends GameObject{
     public void subHp(){
         this.hp--;
     }
+
+    // ---
+
 }

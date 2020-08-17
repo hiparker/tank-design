@@ -10,6 +10,7 @@ import com.parker.tank.map.Gate1Map;
 import com.parker.tank.map.Gate2Map;
 import com.parker.tank.proxy.GateChainProxy;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,8 +23,9 @@ import java.util.List;
  */
 public class MainGameChain extends BaseGameChain {
 
-    private List<GameChain> gates = new LinkedList<>();
+    private final List<GameChain> gates = new LinkedList<>();
 
+    private GateGameChain gateGameChain;
 
     /**
      * 构造函数
@@ -40,7 +42,7 @@ public class MainGameChain extends BaseGameChain {
         }
 
         // 关卡责任链加载 （关卡使用动态代理 来记录执行时间）
-        GameChain gateGameChain = new GateGameChain(count);
+        gateGameChain = new GateGameChain(count);
 
         GameChain gate1Proxy = GateChainProxy.INSTANCE.createGate(
                 new Gate()
@@ -76,28 +78,106 @@ public class MainGameChain extends BaseGameChain {
     @Override
     public boolean handler() {
         ChainStack.INSTANCE.put(this);
+        super.remake();
 
-        boolean flag = true;
+        boolean handler;
+        try {
 
-        for (GameChain gate : gates) {
-            boolean handler = gate.handler();
-            // 关卡任务失败
-            if(!handler){
-                flag = false;
-                break;
+            // 重制 关卡
+            for (GameChain gate : gates) {
+                // 如果是关卡类型的责任链 则加入 关卡位置
+                if(gate instanceof GateGameChain){
+                    ((GateGameChain) gate).setGatePosition(1);
+                }
             }
+
+            for (GameChain gate : gates) {
+                handler = gate.handler();
+                // 关卡任务失败
+                if(!handler){
+                    break;
+                }
+            }
+
+            // 卡死进程  -----------------
+            while (super.state.get()){}
+        }catch (Exception e){
+            super.result.set(false);
         }
 
-        if(flag){
-            // 游戏成功结束
+        // 强制退出
+        if(super.forceState.get()){
+            System.out.println("强制退出主责任链");
+            return super.result.get();
+        }
+
+        // 游戏成功结束
+        if(super.result.get()){
             new SuccessOverChain().handler();
-            return true;
+            return super.result.get();
         }
 
         // 游戏错误结束
         new ErrorOverChain().handler();
 
-        return false;
+        return super.result.get();
+    }
+
+    /**
+     * 执行 回档
+     * @return
+     */
+    public boolean handlerLoad(int gatePosition) {
+        System.out.println("进入回档责任链");
+        ChainStack.INSTANCE.put(this);
+        super.remake();
+
+        boolean handler;
+        try {
+            // 拷贝责任链 去掉开头
+            List<GameChain> gatesLoad = new ArrayList<>();
+            gatesLoad.addAll(gates);
+            for (int i = 0; i < gatesLoad.size(); i++) {
+                if(gatesLoad.get(i) instanceof CoverChain){
+                    gatesLoad.remove(gatesLoad.get(i));
+                }
+            }
+            for (GameChain gate : gatesLoad) {
+
+                // 如果是关卡类型的责任链 则加入 关卡位置
+                if(gate instanceof GateGameChain){
+                    ((GateGameChain) gate).setGatePosition(gatePosition);
+                }
+
+                handler = gate.handler();
+                // 关卡任务失败
+                if(!handler){
+                    break;
+                }
+            }
+
+            // 卡死进程  -----------------
+            while (super.state.get()){}
+        }catch (Exception e){
+            super.result.set(false);
+        }
+
+        // 强制退出
+        if(super.forceState.get()){
+            return super.result.get();
+        }
+
+        // 游戏成功结束
+        if(super.result.get()){
+            System.out.println("强制退出主回档责任链");
+            new SuccessOverChain().handler();
+            return super.result.get();
+        }
+
+        // 游戏错误结束
+        new ErrorOverChain().handler();
+
+        return super.result.get();
     }
 
 
@@ -105,5 +185,11 @@ public class MainGameChain extends BaseGameChain {
     public void add(GameChain gameChain){
         this.gates.add(gameChain);
     }
+
+
+    public GateGameChain getGateGameChain(){
+        return gateGameChain;
+    }
+
 
 }

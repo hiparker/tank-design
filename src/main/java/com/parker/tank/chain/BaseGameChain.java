@@ -27,6 +27,8 @@ public abstract class BaseGameChain implements GameChain {
     protected AtomicBoolean state = new AtomicBoolean(true);
     /** 执行结果状态 */
     protected AtomicBoolean result = new AtomicBoolean(true);
+    /** 执行结果状态 */
+    protected AtomicBoolean forceState = new AtomicBoolean(false);
     /** 当前责任链编号 */
     protected int selfNum;
     /** 父责任链编号 */
@@ -35,7 +37,8 @@ public abstract class BaseGameChain implements GameChain {
     protected int pauseCount;
     /** 敌方坦克数量 */
     protected int badTankCount;
-
+    /** 关卡位置 */
+    protected int gatePosition;
 
     protected String text;
 
@@ -49,13 +52,18 @@ public abstract class BaseGameChain implements GameChain {
     @Override
     public abstract boolean handler();
 
+    @Override
+    public boolean handlerLoad(int count) {
+        throw new RuntimeException("未重写该方法");
+    }
+
     /**
      * 添加责任
      * @return
      */
     @Override
     public void add(GameChain gameChain){
-        throw new RuntimeException("为初始化添加功能！");
+        throw new RuntimeException("未初始化添加功能！");
     }
 
 
@@ -66,6 +74,7 @@ public abstract class BaseGameChain implements GameChain {
     public void errorStop() {
         result.set(false);
         state.set(false);
+        forceState.set(false);
     }
     /**
      * 正常停止
@@ -74,6 +83,16 @@ public abstract class BaseGameChain implements GameChain {
     public void successStop() {
         result.set(true);
         state.set(false);
+        forceState.set(false);
+    }
+    /**
+     * 强制退出
+     */
+    @Override
+    public void forceEnd() {
+        result.set(false);
+        state.set(false);
+        forceState.set(true);
     }
     /**
      * 重制
@@ -82,8 +101,20 @@ public abstract class BaseGameChain implements GameChain {
     public void remake() {
         result.set(true);
         state.set(true);
+        forceState.set(false);
+    }
+    @Override
+    public boolean getForceState() {
+        return forceState.get();
     }
 
+    /**
+     * 关卡当前位置
+     * @param gatePosition
+     */
+    public void setGatePosition(int gatePosition) {
+        this.gatePosition = gatePosition;
+    }
 
     /**
      * 获得敌方Tank数量
@@ -112,11 +143,15 @@ public abstract class BaseGameChain implements GameChain {
      * @throws InstantiationException
      */
     @Override
-    public BaseGameModel getGameModel() throws IllegalAccessException, InstantiationException {
+    public BaseGameModel createGameModel() throws IllegalAccessException, InstantiationException {
         BaseGameModel baseGameModel = (BaseGameModel) gameModelClazz.newInstance();
         // 设置失败重试次数
         baseGameModel.setTempNum(this.getPauseCount());
         return baseGameModel;
+    }
+
+    public BaseGameModel getGameModel(){
+        throw new RuntimeException("未实现获取游戏模型类");
     }
 
     /**

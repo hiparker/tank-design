@@ -44,4 +44,29 @@ public class BaseGameChainProxy extends BaseGameChain {
 
         return true;
     }
+
+    @Override
+    public void forceEnd() {
+        gameChain.forceEnd();
+    }
+
+    @Override
+    public boolean handlerLoad(int count) {
+        return gameChain.handlerLoad(count);
+    }
+
+    @Override
+    public void errorStop() {
+        gameChain.errorStop();
+    }
+
+    @Override
+    public void successStop() {
+        gameChain.successStop();
+    }
+
+    @Override
+    public void remake() {
+        gameChain.remake();
+    }
 }

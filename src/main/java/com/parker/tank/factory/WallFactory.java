@@ -18,19 +18,19 @@ public enum WallFactory {
     /** 实例 */
     INSTANCE;
 
-    public Wall createWall(int x, int y, int width, int height, WallGroup group, BaseGameModel gm) {
-        return new Wall(x,y,width,height,group,gm);
+    public Wall createWall(int x, int y, int width, int height, WallGroup group) {
+        return new Wall(x,y,width,height,group);
     }
 
-    public Wall createWall(int x, int y, int width, int height, BufferedImage image, BaseGameModel gm) {
-        return new Wall(x,y,width,height,image,gm);
+    public Wall createWall(int x, int y, int width, int height, BufferedImage image) {
+        return new Wall(x,y,width,height,image);
     }
 
-    public Wall createWallByHp(int x, int y, int width, int height,int hp, WallGroup group, BaseGameModel gm) {
-        return new Wall(x,y,width,height,hp,group,gm);
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, WallGroup group) {
+        return new Wall(x,y,width,height,hp,group);
     }
 
-    public Wall createWallByHp(int x, int y, int width, int height,int hp, BufferedImage image, BaseGameModel gm) {
-        return new Wall(x,y,width,height,hp,image,gm);
+    public Wall createWallByHp(int x, int y, int width, int height,int hp, BufferedImage image) {
+        return new Wall(x,y,width,height,hp,image);
     }
 }

@@ -16,17 +16,20 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main {
 
+    /** 责任链
+     *  静态代理 BaseGameChain 责任链
+     *
+     *  静态化处理 供 备忘录模式 存盘读盘使用
+     *
+     * */
+    public static final GameChain GAMECHAIN = new BaseGameChainProxy(
+            new MainGameChain()
+    );
 
     public static void main(String[] args) throws InterruptedException {
 
         // 调用完整责任链
-        new Thread(()->{
-            // 静态代理 BaseGameChain 责任链
-            GameChain gameChain = new BaseGameChainProxy(
-                    new MainGameChain()
-            );
-            gameChain.handler();
-        }).start();
+        new Thread(GAMECHAIN::handler).start();
 
         TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
 

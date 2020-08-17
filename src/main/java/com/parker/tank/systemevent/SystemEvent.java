@@ -1,6 +1,7 @@
 package com.parker.tank.systemevent;
 
 import com.parker.tank.factory.TankFrameFactory;
+import com.parker.tank.memento.SaveData;
 import com.parker.tank.observer.factory.TankObserverFactory;
 
 import java.awt.event.KeyAdapter;
@@ -44,10 +45,32 @@ public class SystemEvent extends KeyAdapter {
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
-                // 关闭程序
-                System.exit(0);
+                // 按键抬起时
+                if(!flag){
+                    // 关闭程序
+                    System.exit(0);
+                }
                 break;
-            default:
+            case KeyEvent.VK_S:
+                // 按键抬起时
+                if(!flag){
+                    // 存盘
+                    SaveData.INSTANCE.save();
+                }
+                break;
+            case KeyEvent.VK_L:
+                // 按键抬起时
+                if(!flag){
+                    // 读盘
+                    SaveData.INSTANCE.load();
+                }
+                break;
+            case KeyEvent.VK_R:
+                // 按键抬起时
+                if(!flag){
+                    // 重玩
+                    SaveData.INSTANCE.reboot();
+                }
                 break;
         }
     }

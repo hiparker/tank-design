@@ -2,6 +2,8 @@ package com.parker.tank.fire;
 
 import com.parker.tank.Tank;
 import com.parker.tank.dist.Dir;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.flyweight.BulletPool;
 
 /**
@@ -18,14 +20,16 @@ public class TankFireFour implements TankFire{
 
     @Override
     public void fire(Tank tank) {
-        if(tank == null || tank.getGameModel() == null){
+        BaseGameModel bgm = TankFrameFactory.INSTANCE.getTankFrame().getBgm();
+        if(bgm == null){
             return;
         }
+
 
         Dir[] values = Dir.values();
         for (Dir value : values) {
 
-            tank.getGameModel().add(
+            bgm.add(
                     // 原始子弹
                     /*new Bullet(
                             tank.getX(),tank.getY(),value,tank.getGameModel(),tank)*/

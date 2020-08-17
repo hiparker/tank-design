@@ -3,6 +3,8 @@ package com.parker.tank.chain;
 import com.parker.tank.faced.BaseGameModel;
 import com.parker.tank.map.GateMap;
 
+import java.io.Serializable;
+
 /**
  * @BelongsProject: tank-design
  * @BelongsPackage: com.parker.tank.chain
@@ -16,13 +18,20 @@ import com.parker.tank.map.GateMap;
  * cglib 对抽象类 有点没问题 暂时还没搞懂
  *
  */
-public interface GameChain {
+public interface GameChain extends Serializable {
 
     /**
      * 执行游戏
      * @return
      */
     boolean handler();
+
+    /**
+     * 执行游戏 - 回档 - 只允许 Main 运行
+     * @param count
+     * @return
+     */
+    boolean handlerLoad(int count);
 
     /**
      * 添加责任
@@ -41,6 +50,12 @@ public interface GameChain {
     void successStop();
 
     /**
+     * 终止
+     */
+    void forceEnd();
+    boolean getForceState();
+
+    /**
      * 重制
      */
     void remake();
@@ -48,7 +63,8 @@ public interface GameChain {
     /**
      * 获得游戏模型
      */
-    BaseGameModel getGameModel()  throws IllegalAccessException, InstantiationException;
+    BaseGameModel createGameModel() throws IllegalAccessException, InstantiationException;
+    BaseGameModel getGameModel();
 
     /**
      * 设置游戏模型

@@ -2,6 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.config.ResourcesMgr;
 import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.util.AudioUtil;
 
 import java.awt.*;
@@ -18,17 +19,14 @@ public class Explode extends GameObject {
 
     /** XY坐标 */
     protected int x , y;
-    /** 画布 */
-    protected BaseGameModel gm;
     /** 当前位置 */
     private Rectangle rectangle;
     /** 当前数量 */
     protected int count = 0;
 
-    public Explode(int x, int y, BaseGameModel gm) {
+    public Explode(int x, int y) {
         this.x = x;
         this.y = y;
-        this.gm = gm;
 
         // 设置碰撞检测位置
         this.rectangle = new Rectangle(x,y,0,0);
@@ -62,8 +60,11 @@ public class Explode extends GameObject {
         g.drawImage(image,x,y,null);
         if(count >= ResourcesMgr.explodesBig.length){
             // 爆炸消失
-            gm.remove(this);
+            if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() != null){
+                TankFrameFactory.INSTANCE.getTankFrame().getBgm().remove(this);
+            }
         }
     }
+
 
 }

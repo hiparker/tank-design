@@ -6,6 +6,7 @@ import com.parker.tank.Tank;
 import com.parker.tank.util.AudioUtil;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,24 +17,24 @@ import java.util.List;
  * @CreateTime: 2020-08-14 01:04
  * @Description: Base
  */
-public abstract class BaseGameModel {
+public abstract class BaseGameModel implements Serializable {
 
     /** 物体集合 */
-    protected final List<GameObject> gameObjects = new ArrayList<>();
+    protected volatile List<GameObject> gameObjects = new ArrayList<>();
 
     /** 我方主战坦克 */
-    private Tank mainTank;
+    private volatile Tank mainTank;
 
     /**
      * 声音
      */
-    protected AudioUtil audioUtil;
+    protected volatile AudioUtil audioUtil;
     /**
      * 声音线程
      */
-    protected Thread musicThread;
+    protected volatile Thread musicThread;
 
-    protected int tempNum;
+    protected volatile int tempNum;
 
     /**
      * 构建
@@ -88,6 +89,19 @@ public abstract class BaseGameModel {
     public void remove(GameObject go) {
         this.gameObjects.remove(go);
     }
+
+    public List<GameObject> getGameObjects() {
+        return this.gameObjects;
+    }
+
+    /**
+     * 清空对象集合
+     */
+    public void clearGameObjects(){
+        this.gameObjects.clear();
+    }
+
+
 
     /**
      * 关闭模型

@@ -3,7 +3,6 @@ package com.parker.tank.chain.gate;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.BaseGameChain;
 import com.parker.tank.faced.BaseGameModel;
-import com.parker.tank.factory.TankFactory;
 
 /**
  * @BelongsProject: tank-design
@@ -16,6 +15,7 @@ public class Gate extends BaseGameChain {
 
     private int count = 0;
 
+    private BaseGameModel gameModel;
 
     @Override
     public boolean handler() {
@@ -23,7 +23,7 @@ public class Gate extends BaseGameChain {
 
         super.remake();
         try {
-            BaseGameModel gameModel = super.getGameModel();
+            gameModel = this.createGameModel();
             gameModel.builder();
 
             // 设置调停者
@@ -44,4 +44,8 @@ public class Gate extends BaseGameChain {
         return super.result.get();
     }
 
+    @Override
+    public BaseGameModel getGameModel() {
+        return this.gameModel;
+    }
 }

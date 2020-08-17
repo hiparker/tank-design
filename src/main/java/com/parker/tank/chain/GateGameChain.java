@@ -1,5 +1,6 @@
 package com.parker.tank.chain;
 
+import com.parker.tank.Main;
 import com.parker.tank.chain.other.TitleChain;
 
 import java.util.ArrayList;
@@ -34,13 +35,19 @@ public class GateGameChain extends BaseGameChain {
     @Override
     public boolean handler() {
         ChainStack.INSTANCE.put(this);
-        for (GameChain gate : gates) {
+        for (int i = 0; i < gates.size(); i++) {
+            // 如果小于传入关卡位置 直接跳过
+            if(i < this.gatePosition-1){
+                continue;
+            }
 
+            GameChain gate = gates.get(i);
             pauseCountTemp = pauseCount;
 
             // 标题
             GameChain titleChain = new TitleChain().setText(this.getSelfNum() + " - " + gate.getSelfNum());
             titleChain.handler();
+
             // 设置
             gate.setPauseCount(pauseCountTemp-1);
             // 设置父编号
@@ -48,6 +55,10 @@ public class GateGameChain extends BaseGameChain {
 
             boolean handler = gate.handler();
             pauseCountTemp--;
+            // 强制终止责任链
+            if(gate.getForceState()){
+                return handler;
+            }
             // 第一次 关卡任务失败
             if(!handler){
                 this.recourseHandler(gate,false);
@@ -55,10 +66,15 @@ public class GateGameChain extends BaseGameChain {
 
             // 判断执行失败
             if(pauseCountTemp <= 0){
+                // 唤醒父责任链
+                Main.GAMECHAIN.errorStop();
                 return false;
             }
             pauseCountTemp = pauseCount;
+            
         }
+        // 唤醒父责任链
+        Main.GAMECHAIN.successStop();
         return true;
     }
 

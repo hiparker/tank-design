@@ -88,7 +88,7 @@ public enum Gate2Map implements GateMap{
 
         // 创建鸟巢
         this.goList.add(
-                new Special(432, 695, 135, 118, tankFrame.getBgm())
+                new Special(432, 695, 135, 118)
         );
 
         return this;
@@ -99,24 +99,24 @@ public enum Gate2Map implements GateMap{
 
         // 创建地雷
         this.goList.add(
-                new Mine(942, 180, 50, 50, tankFrame.getBgm())
+                new Mine(942, 180, 50, 50)
         );
         this.goList.add(
-                new Mine(0,424, 58, 58, tankFrame.getBgm())
+                new Mine(0,424, 58, 58)
         );
         this.goList.add(
-                new Mine(942, 180, 50, 50, tankFrame.getBgm())
+                new Mine(942, 180, 50, 50)
         );
         this.goList.add(
-                new Mine(120, 180, 50, 50, tankFrame.getBgm())
-        );
-
-        this.goList.add(
-                new Mine(350, 126, 50, 50, tankFrame.getBgm())
+                new Mine(120, 180, 50, 50)
         );
 
         this.goList.add(
-                new Mine(852, 60, 50, 50, tankFrame.getBgm())
+                new Mine(350, 126, 50, 50)
+        );
+
+        this.goList.add(
+                new Mine(852, 60, 50, 50)
         );
 
 
@@ -164,7 +164,7 @@ public enum Gate2Map implements GateMap{
 
                 this.goList.add(
                         WallFactory.INSTANCE.createWallByHp(
-                                x + width * i, y + height * j, width, height,a, group,tankFrame.getBgm())
+                                x + width * i, y + height * j, width, height,a, group)
                 );
             }
         }

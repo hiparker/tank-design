@@ -2,6 +2,8 @@ package com.parker.tank.fire;
 
 import com.parker.tank.Tank;
 
+import java.io.Serializable;
+
 /**
  * @BelongsProject: tank-02
  * @BelongsPackage: com.parker.tank.fire
@@ -12,7 +14,7 @@ import com.parker.tank.Tank;
  * 策略模式
  *
  */
-public interface TankFire {
+public interface TankFire extends Serializable {
 
     /**
      * 坦克开火

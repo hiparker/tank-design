@@ -1,6 +1,8 @@
 package com.parker.tank.fire;
 
 import com.parker.tank.Tank;
+import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.flyweight.BulletPool;
 
 /**
@@ -19,11 +21,12 @@ public enum TankFireDefault implements TankFire{
 
     @Override
     public void fire(Tank tank) {
-        if(tank == null || tank.getGameModel() == null){
+        BaseGameModel bgm = TankFrameFactory.INSTANCE.getTankFrame().getBgm();
+        if(bgm == null){
             return;
         }
 
-        tank.getGameModel().add(
+        bgm.add(
 
                 // 原始子弹
                 /*new Bullet(
