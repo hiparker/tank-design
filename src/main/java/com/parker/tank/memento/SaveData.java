@@ -241,7 +241,7 @@ public enum SaveData {
         new Thread(Main.GAMECHAIN::handler).start();
     }
 
-    public boolean isGateChain(){
+    private boolean isGateChain(){
         if(ChainStack.INSTANCE.peek() == null){
             return true;
         }
@@ -252,7 +252,7 @@ public enum SaveData {
     }
 
 
-    public boolean isGameModel(){
+    private boolean isGameModel(){
         if(TankFrameFactory.INSTANCE.getTankFrame().getBgm() == null){
             return true;
         }
