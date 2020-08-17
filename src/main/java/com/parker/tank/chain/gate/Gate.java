@@ -32,8 +32,12 @@ public class Gate extends BaseGameChain {
             // 设置调停者
             tankFrame.setBgm(gameModel);
 
-            // 加载地图
-            super.getGateMap().getMap();
+            // 构建地图
+            super.getGateMap()
+                    .builderWall()
+                    .builderSpecial()
+                    .builderMine()
+                    .builder(this.getBadTankCount());
 
             // 卡死进程  -----------------
             while (super.state.get()){}

@@ -66,17 +66,49 @@ public interface GameChain {
 
     // ----------------
 
-    int getNum();
+    /**
+     * 获得当前责任链编号
+     * @return
+     */
+    int getSelfNum();
 
-    GameChain setNum(int num);
+    /**
+     * 设置当前责任链编号
+     * @param selfNum
+     * @return
+     */
+    GameChain setSelfNum(int selfNum);
 
-    int getNum1();
+    /**
+     * 获得父责任链编号
+     * @param
+     * @return
+     */
+    int getParentNum();
 
-    GameChain setNum1(int num);
+    /**
+     * 设置父责任链编号
+     * @param parentNum
+     * @return
+     */
+    GameChain setParentNum(int parentNum);
 
-    int getNum2();
+    /**
+     * 获得失败尝试次数
+     * @return
+     */
+    int getPauseCount();
 
-    GameChain setNum2(int num);
+    /**
+     * 设置失败尝试次数
+     * @param pauseCount
+     * @return
+     */
+    GameChain setPauseCount(int pauseCount);
+
+    int getBadTankCount();
+
+    GameChain setBadTankCount(int num);
 
     String getText();
 

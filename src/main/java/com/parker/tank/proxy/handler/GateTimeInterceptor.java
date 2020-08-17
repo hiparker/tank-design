@@ -39,7 +39,7 @@ public class GateTimeInterceptor implements MethodInterceptor {
         Object invokeO = method.invoke(gate, objects);
         long endTime = System.currentTimeMillis();
         if(METHOD_NAME.endsWith(method.getName())){
-            System.out.println("["+gate.getNum2()+" - "+gate.getNum()+
+            System.out.println("["+gate.getParentNum()+" - "+gate.getSelfNum()+
                     " ]关卡执行时间(秒)："+(endTime/1000-beginTime/1000));
         }
         return invokeO;

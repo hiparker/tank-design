@@ -35,7 +35,7 @@ public class GateTimeHandler implements InvocationHandler {
         Object o = method.invoke(gameChain, args);
         long endTime = System.currentTimeMillis();
         if(METHOD_NAME.endsWith(method.getName())){
-            System.out.println("["+gameChain.getNum2()+" - "+gameChain.getNum()+
+            System.out.println("["+gameChain.getParentNum()+" - "+gameChain.getSelfNum()+
                     " ]关卡执行时间(秒)："+(endTime/1000-beginTime/1000));
         }
         return o;

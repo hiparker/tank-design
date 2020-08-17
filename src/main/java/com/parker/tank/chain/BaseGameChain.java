@@ -25,9 +25,16 @@ public abstract class BaseGameChain implements GameChain {
     protected AtomicBoolean state = new AtomicBoolean(true);
     /** 执行结果状态 */
     protected AtomicBoolean result = new AtomicBoolean(true);
-    protected int num;
-    protected int num1;
-    protected int num2;
+    /** 当前责任链编号 */
+    protected int selfNum;
+    /** 父责任链编号 */
+    protected int parentNum;
+    /** 失败重试次数 */
+    protected int pauseCount;
+    /** 敌方坦克数量 */
+    protected int badTankCount;
+
+
     protected String text;
 
     private Class<?> gameModelClazz;
@@ -37,12 +44,14 @@ public abstract class BaseGameChain implements GameChain {
      * 执行游戏
      * @return
      */
+    @Override
     public abstract boolean handler();
 
     /**
      * 添加责任
      * @return
      */
+    @Override
     public void add(GameChain gameChain){
         throw new RuntimeException("为初始化添加功能！");
     }
@@ -51,6 +60,7 @@ public abstract class BaseGameChain implements GameChain {
     /**
      * 错误停止
      */
+    @Override
     public void errorStop() {
         result.set(false);
         state.set(false);
@@ -58,6 +68,7 @@ public abstract class BaseGameChain implements GameChain {
     /**
      * 正常停止
      */
+    @Override
     public void successStop() {
         result.set(true);
         state.set(false);
@@ -65,62 +76,149 @@ public abstract class BaseGameChain implements GameChain {
     /**
      * 重制
      */
+    @Override
     public void remake() {
         result.set(true);
         state.set(true);
     }
 
-    public int getNum() {
-        return num;
+
+    /**
+     * 获得敌方Tank数量
+     * @return
+     */
+    @Override
+    public int getBadTankCount() {
+        return badTankCount;
     }
 
-    public GameChain setNum(int num) {
-        this.num = num;
+    /**
+     * 设置敌方坦克数量
+     * @param badTankCount
+     * @return
+     */
+    @Override
+    public GameChain setBadTankCount(int badTankCount) {
+        this.badTankCount = badTankCount;
         return this;
     }
 
-    public int getNum1() {
-        return num1;
-    }
-
-    public GameChain setNum1(int num1) {
-        this.num1 = num1;
-        return this;
-    }
-
-    public int getNum2() {
-        return num2;
-    }
-
-    public GameChain setNum2(int num2) {
-        this.num2 = num2;
-        return this;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public GameChain setText(String text) {
-        this.text = text;
-        return this;
-    }
+    /**
+     * 获得游戏模型 - 反射
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    @Override
     public BaseGameModel getGameModel() throws IllegalAccessException, InstantiationException {
         BaseGameModel baseGameModel = (BaseGameModel) gameModelClazz.newInstance();
-        baseGameModel.setTempNum(this.getNum1());
+        // 设置失败重试次数
+        baseGameModel.setTempNum(this.getPauseCount());
         return baseGameModel;
     }
+
+    /**
+     * 设置游戏模型
+     * @param clazz
+     * @return
+     */
+    @Override
     public GameChain setGameModel(Class<?> clazz){
         this.gameModelClazz = clazz;
         return this;
     }
 
+    /**
+     * 获得地图
+     * @return
+     */
+    @Override
     public GateMap getGateMap() {
         return gateMap;
     }
 
+    /**
+     * 设置地图
+     * @param gateMap
+     * @return
+     */
+    @Override
     public GameChain setGateMap(GateMap gateMap) {
         this.gateMap = gateMap;
         return this;
     }
+
+    /**
+     * 获得当前责任链编号
+     * @return
+     */
+    @Override
+    public int getSelfNum() {
+        return selfNum;
+    }
+
+    /**
+     * 设置当前责任链编号
+     * @param selfNum
+     * @return
+     */
+    @Override
+    public GameChain setSelfNum(int selfNum) {
+        this.selfNum = selfNum;
+        return this;
+    }
+
+    /**
+     * 获得父责任链编号
+     * @param
+     * @return
+     */
+    @Override
+    public int getParentNum() {
+        return parentNum;
+    }
+
+    /**
+     * 设置父责任链编号
+     * @param parentNum
+     * @return
+     */
+    @Override
+    public GameChain setParentNum(int parentNum) {
+        this.parentNum = parentNum;
+        return this;
+    }
+
+    /**
+     * 获得失败尝试次数
+     * @return
+     */
+    @Override
+    public int getPauseCount() {
+        return pauseCount;
+    }
+
+    /**
+     * 设置失败尝试次数
+     * @param pauseCount
+     * @return
+     */
+    @Override
+    public GameChain setPauseCount(int pauseCount) {
+        this.pauseCount = pauseCount;
+        return this;
+    }
+
+    @Override
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public GameChain setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+
 }

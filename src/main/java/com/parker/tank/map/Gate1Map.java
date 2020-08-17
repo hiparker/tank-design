@@ -1,5 +1,6 @@
 package com.parker.tank.map;
 
+import com.parker.tank.GameObject;
 import com.parker.tank.Mine;
 import com.parker.tank.Special;
 import com.parker.tank.TankFrame;
@@ -8,6 +9,9 @@ import com.parker.tank.factory.TankFactory;
 import com.parker.tank.factory.WallFactory;
 import com.parker.tank.dist.WallGroup;
 import com.parker.tank.factory.TankFrameFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @BelongsProject: tank-design
@@ -26,12 +30,15 @@ public enum Gate1Map implements GateMap{
     /** 墙宽高 */
     private int width = 58, height = 22;
 
+    /** 构建对象集合 */
+    private List<GameObject> goList = new ArrayList<>();
+
     private TankFrame tankFrame = TankFrameFactory.INSTANCE.getTankFrame();
 
     @Override
-    public void getMap(){
+    public GateMap builderWall() {
 
-        GameModel bgm =(GameModel) tankFrame.getBgm();
+        // 创建墙
 
         // 上
         this.setWall(0,120,2,2,WallGroup.BRICK);
@@ -66,25 +73,60 @@ public enum Gate1Map implements GateMap{
 
         this.setWall(860,580,1,7,WallGroup.BRICK);
 
-        // 老巢
+        // 老巢 墙
         this.setWall(374,650,1,7,WallGroup.STEEl);
 
         this.setWall(432,650,3,2,WallGroup.STEEl);
 
         this.setWall(567,650,1,7,WallGroup.STEEl);
 
-        // 创建鸟巢
-        tankFrame.getBgm().add(new Special(432, 695, 135, 118, tankFrame.getBgm()));
+        return this;
+    }
 
-        // 地雷
-        tankFrame.getBgm().add(new Mine(942, 180, 50, 50, tankFrame.getBgm()));
-        tankFrame.getBgm().add(new Mine(0,424, 58, 58, tankFrame.getBgm()));
-        tankFrame.getBgm().add(new Mine(942, 280, 50, 50, tankFrame.getBgm()));
+    @Override
+    public GateMap builderSpecial() {
+
+        // 创建鸟巢
+        this.goList.add(
+                new Special(432, 695, 135, 118, tankFrame.getBgm())
+        );
+
+        return this;
+    }
+
+    @Override
+    public GateMap builderMine() {
+
+        // 创建地雷
+        this.goList.add(
+                new Mine(942, 180, 50, 50, tankFrame.getBgm())
+        );
+        this.goList.add(
+                new Mine(0,424, 58, 58, tankFrame.getBgm())
+        );
+        this.goList.add(
+                new Mine(942, 280, 50, 50, tankFrame.getBgm())
+        );
+
+        return this;
+    }
+
+    @Override
+    public GateMap builder(int badCount) {
+
+        GameModel bgm =(GameModel) tankFrame.getBgm();
+
+        // 真正创建墙\碉堡\地雷
+        for (int i = 0; i < this.goList.size(); i++) {
+            bgm.add(this.goList.get(i));
+        }
 
         // 设置敌方坦克
         bgm.createBadTank(badCount);
 
         System.out.println("普通坦克数量["+ TankFactory.usualCount+"]  自动坦克数量["+TankFactory.autoCount+"]");
+
+        return this;
     }
 
     /**
@@ -105,11 +147,14 @@ public enum Gate1Map implements GateMap{
                 }else if(WallGroup.TREE.equals(group)){
                     a = 1000;
                 }
-                tankFrame.getBgm().add(
+
+                this.goList.add(
                         WallFactory.INSTANCE.createWallByHp(
-                                x + width * i, y + height * j, width, height,a, group,tankFrame.getBgm()));
+                                x + width * i, y + height * j, width, height,a, group,tankFrame.getBgm())
+                );
             }
         }
     }
+
 
 }

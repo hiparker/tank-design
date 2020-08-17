@@ -39,11 +39,12 @@ public class GateGameChain extends BaseGameChain {
             pauseCountTemp = pauseCount;
 
             // 标题
-            GameChain titleChain = new TitleChain().setText(this.getNum() + " - " + gate.getNum());
+            GameChain titleChain = new TitleChain().setText(this.getSelfNum() + " - " + gate.getSelfNum());
             titleChain.handler();
-
-            gate.setNum1(pauseCountTemp-1);
-            gate.setNum2(this.getNum());
+            // 设置
+            gate.setPauseCount(pauseCountTemp-1);
+            // 设置父编号
+            gate.setParentNum(this.getSelfNum());
 
             boolean handler = gate.handler();
             pauseCountTemp--;
@@ -68,7 +69,7 @@ public class GateGameChain extends BaseGameChain {
     private boolean recourseHandler(GameChain g, boolean resultFlag){
         //System.out.println("进入递归："+pauseCountTemp);
         pauseCountTemp--;
-        g.setNum1(pauseCountTemp);
+        g.setPauseCount(pauseCountTemp);
         boolean handlerResult = false;
         if(pauseCountTemp >= 0 && !resultFlag){
             handlerResult = g.handler();

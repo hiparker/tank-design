@@ -47,14 +47,16 @@ public class MainGameChain extends BaseGameChain {
         );
         gate1Proxy.setGameModel(GameModel.class);
         gate1Proxy.setGateMap(Gate1Map.INSTANCE);
-        gate1Proxy.setNum(1);
+        gate1Proxy.setSelfNum(1);
+        gate1Proxy.setBadTankCount(8);
 
         GameChain gate2Proxy = GateChainProxy.INSTANCE.createGate(
                 new Gate()
         );
         gate2Proxy.setGameModel(GameModel.class);
         gate2Proxy.setGateMap(Gate2Map.INSTANCE);
-        gate2Proxy.setNum(2);
+        gate2Proxy.setSelfNum(2);
+        gate2Proxy.setBadTankCount(10);
 
         gateGameChain.add(
                 gate1Proxy
@@ -63,7 +65,7 @@ public class MainGameChain extends BaseGameChain {
                 gate2Proxy
         );
 
-        this.add(gateGameChain.setNum(1));
+        this.add(gateGameChain.setSelfNum(1));
 
     }
 
