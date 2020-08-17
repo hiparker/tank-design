@@ -16,6 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * 关卡
  *
+ * 起到Adapter作用
+ *
  */
 public abstract class BaseGameChain implements GameChain {
 
