@@ -62,7 +62,10 @@ public class SystemEvent extends KeyAdapter {
         }
 
         // 其他操作
-        STATE_MAP.get(e.getKeyCode()).handler(flag,e);
+        SystemEventState systemEventState = STATE_MAP.get(e.getKeyCode());
+        if(systemEventState != null){
+            STATE_MAP.get(e.getKeyCode()).handler(flag,e);
+        }
     }
 
 
