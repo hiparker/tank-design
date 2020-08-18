@@ -8,7 +8,7 @@ import java.util.Date;
  * @BelongsPackage: com.parker.tank.util
  * @Author: Parker
  * @CreateTime: 2020-08-17 18:21
- * @Description: TODO
+ * @Description: 时间工具类
  */
 public final class DateUtil {
 
