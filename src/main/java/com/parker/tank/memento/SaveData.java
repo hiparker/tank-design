@@ -1,22 +1,19 @@
 package com.parker.tank.memento;
 
-import com.parker.tank.*;
+import com.parker.tank.GameObject;
+import com.parker.tank.Main;
+import com.parker.tank.Tank;
 import com.parker.tank.chain.ChainStack;
 import com.parker.tank.chain.GameChain;
-import com.parker.tank.chain.GateGameChain;
-import com.parker.tank.chain.MainGameChain;
 import com.parker.tank.chain.gate.Gate;
-import com.parker.tank.faced.BaseGameModel;
+import com.parker.tank.chain.other.CoverChain;
 import com.parker.tank.faced.GameModel;
 import com.parker.tank.factory.TankFrameFactory;
 import com.parker.tank.util.DateUtil;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @BelongsProject: tank-design
@@ -237,6 +234,10 @@ public enum SaveData {
      * 重玩
      */
     public void reboot() {
+        GameChain gameChain = ChainStack.INSTANCE.peek();
+        if(gameChain instanceof CoverChain){
+            return;
+        }
         // 调用完整责任链
         new Thread(Main.GAMECHAIN::handler).start();
     }
