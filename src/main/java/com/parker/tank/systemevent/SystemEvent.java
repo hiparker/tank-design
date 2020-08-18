@@ -1,11 +1,14 @@
 package com.parker.tank.systemevent;
 
-import com.parker.tank.factory.TankFrameFactory;
-import com.parker.tank.memento.SaveData;
-import com.parker.tank.observer.factory.TankObserverFactory;
+import com.parker.tank.systemevent.state.SystemEventState;
+import com.parker.tank.util.PackageUtil;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @BelongsProject: tank-design
@@ -16,10 +19,33 @@ import java.awt.event.KeyEvent;
  */
 public class SystemEvent extends KeyAdapter {
 
-    private boolean bL = false;
-    private boolean bU = false;
-    private boolean bR = false;
-    private boolean bD = false;
+    private static final Map<Integer, SystemEventState> STATE_MAP = new HashMap<>();
+
+    static {
+        // 拿到state包下 实现了 SystemEventState 接口的,所有子类
+        Set<Class<?>> clazzSet = PackageUtil.listSubClazz(SystemEventState.class.getPackage().getName(),
+                true,
+                SystemEventState.class
+        );
+
+        for (Class<?> aClass : clazzSet) {
+            // 位运算 去除抽象类
+            if((aClass.getModifiers() & Modifier.ABSTRACT) != 0){
+                continue;
+            }
+
+            // 通过反射 加载所有的 键盘处理类
+            try {
+                SystemEventState handler = (SystemEventState) aClass.newInstance();
+                int state = handler.getState();
+                STATE_MAP.put(state,handler);
+
+            } catch (Exception e) {
+                System.out.println("反射失败");
+            }
+            
+        }
+    }
 
     /**
      * 键盘按键事件处理
@@ -31,74 +57,15 @@ public class SystemEvent extends KeyAdapter {
         // 按下方向键
         if(KeyEvent.VK_LEFT == e.getKeyCode() || KeyEvent.VK_UP == e.getKeyCode() ||
                 KeyEvent.VK_RIGHT == e.getKeyCode() || KeyEvent.VK_DOWN == e.getKeyCode() ){
-            this.setMainTankDir(flag,e);
+            STATE_MAP.get(KeyEvent.VK_UP).handler(flag,e);
             return;
         }
 
-        // 键盘按下时 操作
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_SPACE:
-                // 按键抬起时
-                if(!flag){
-                    TankObserverFactory.INSTANCE.mainTankFireHandler(
-                            TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank());
-                }
-                break;
-            case KeyEvent.VK_ESCAPE:
-                // 按键抬起时
-                if(!flag){
-                    // 关闭程序
-                    System.exit(0);
-                }
-                break;
-            case KeyEvent.VK_S:
-                // 按键抬起时
-                if(!flag){
-                    // 存盘
-                    SaveData.INSTANCE.save();
-                }
-                break;
-            case KeyEvent.VK_L:
-                // 按键抬起时
-                if(!flag){
-                    // 读盘
-                    SaveData.INSTANCE.load();
-                }
-                break;
-            case KeyEvent.VK_R:
-                // 按键抬起时
-                if(!flag){
-                    // 重玩
-                    SaveData.INSTANCE.reboot();
-                }
-                break;
-        }
+        // 其他操作
+        STATE_MAP.get(e.getKeyCode()).handler(flag,e);
     }
 
-    /**
-     * 设置主战坦克方向
-     */
-    private void setMainTankDir(boolean flag, KeyEvent e) {
-        // 键盘按下时 操作
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_LEFT:
-                bL = flag;
-                break;
-            case KeyEvent.VK_UP:
-                bU = flag;
-                break;
-            case KeyEvent.VK_RIGHT:
-                bR = flag;
-                break;
-            case KeyEvent.VK_DOWN:
-                bD = flag;
-                break;
-        }
 
-        TankObserverFactory.INSTANCE.mainTankMoveHandler(
-                TankFrameFactory.INSTANCE.getTankFrame().getBgm().getMainTank(),
-                bL,bU,bR,bD);
-    }
 
     @Override
     public void keyPressed(KeyEvent e) {
