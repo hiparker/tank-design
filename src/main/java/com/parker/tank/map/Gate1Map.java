@@ -4,6 +4,8 @@ import com.parker.tank.GameObject;
 import com.parker.tank.Mine;
 import com.parker.tank.Special;
 import com.parker.tank.TankFrame;
+import com.parker.tank.dist.Dir;
+import com.parker.tank.dist.TankGroup;
 import com.parker.tank.faced.GameModel;
 import com.parker.tank.factory.TankFactory;
 import com.parker.tank.factory.WallFactory;
@@ -123,6 +125,13 @@ public enum Gate1Map implements GateMap{
 
         TankFactory.autoCount = 0;
         TankFactory.usualCount = 0;
+
+
+        // 设置主战坦克
+        bgm.setMainTank(
+                TankFactory.createTank(300,710, Dir.UP, TankGroup.RED)
+        );
+
         // 设置敌方坦克
         bgm.createBadTank(badCount);
 

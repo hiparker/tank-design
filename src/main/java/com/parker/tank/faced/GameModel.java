@@ -54,8 +54,6 @@ public class GameModel extends BaseGameModel{
         }
 
         // ----
-        // 单机主战坦克
-        super.setMainTank(TankFactory.createTank(300,710, Dir.UP,TankGroup.RED));
 
         // 背景音乐
         this.audioUtil = new AudioUtil("static/audio/war1.wav");
