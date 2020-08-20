@@ -1,5 +1,6 @@
 package com.parker.tank;
 
+import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -7,7 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -17,12 +18,18 @@ import java.util.List;
  * @CreateTime: 2020-08-10 01:14
  * @Description: 坦克 认识 Frame
  */
-public class TankFrame extends Frame{
+public final class TankFrame extends Frame{
+
+    public static final TankFrame INSTANCE = new TankFrame();
 
     private static final String TITLE = "坦克大战 v1.0.0";
 
+    private Random r = new Random();
+
     /** 游戏画布宽高 */
     public static final int GAME_WIDTH = 900,GAME_HEIGHT = 700;
+
+    Map<UUID,Tank> tanks = new HashMap<>();
 
     /** 子弹集合 */
     List<Bullet> bulletList = new ArrayList<Bullet>();
@@ -31,12 +38,21 @@ public class TankFrame extends Frame{
     List<Explode> explodeList = new ArrayList<Explode>();
 
     /** 我方主战坦克 */
-    Tank myTank = TankFactory.createTank(200,400,Dir.DOWN,this,TankGroup.RED);
+    Tank myTank = TankFactory.createTank(
+            r.nextInt(GAME_WIDTH-50),r.nextInt(GAME_HEIGHT-50),
+            Dir.values()[r.nextInt(Dir.values().length)],
+            this,
+            TankGroup.values()[r.nextInt(TankGroup.values().length)], UUID.randomUUID());
 
-    /** 敌方坦克 */
-    List<Tank> enemyTanks = new ArrayList<Tank>();
 
-    public TankFrame(){
+    private TankJoinMsg myTankMsg = new TankJoinMsg(myTank);
+
+    private TankFrame(){}
+
+    /**
+     * 初始化
+     */
+    public TankFrame init(){
         // 可见
         this.setVisible(true);
         // 设置窗口大小
@@ -64,6 +80,7 @@ public class TankFrame extends Frame{
             new Audio("static/audio/war1.wav").loop();
         }).start();
 
+        return this;
     }
 
     Image offScreenImage = null;
@@ -82,23 +99,44 @@ public class TankFrame extends Frame{
         g.drawImage(offScreenImage,0,0,null);
     }
 
+    public Tank getMyTank() {
+        return myTank;
+    }
+
+    public TankJoinMsg getMyTankMsg() {
+        this.myTankMsg.setX(myTank.getX());
+        this.myTankMsg.setY(myTank.getY());
+        this.myTankMsg.setDir(myTank.getDir());
+        this.myTankMsg.setMoving(myTank.isMoving());
+        return myTankMsg;
+    }
+
+    public void addTank(Tank t){
+        this.tanks.put(t.getId(),t);
+    }
+
+    public boolean hasTank(UUID id){
+        if(this.tanks.get(id) != null){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void paint(Graphics g) {
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量："+bulletList.size(),10,40);
-        g.drawString("敌人的数量："+enemyTanks.size(),10,60);
+        g.drawString("敌人的数量："+tanks.size(),10,60);
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
 
-        // 坦克自动行走
+        // 主战坦克
         myTank.paint(g);
 
-        // 敌方坦克渲染
-        for (int i = 0; i < enemyTanks.size(); i++) {
-            enemyTanks.get(i).paint(g);
-        }
+        // 坦克渲染
+        tanks.values().stream().forEach((e) -> e.paint(g));
 
         // 子弹自动行走
         for (int i = 0; i < bulletList.size(); i++) {
@@ -112,14 +150,13 @@ public class TankFrame extends Frame{
 
         // 子弹与坦克碰撞
         for (int i = 0; i < bulletList.size(); i++) {
-            for (int tk = 0; tk < enemyTanks.size(); tk++) {
-                TankUtil.collideWith(enemyTanks.get(tk),bulletList.get(i));
+            for (int tk = 0; tk < tanks.size(); tk++) {
+                TankUtil.collideWith(tanks.get(tk),bulletList.get(i));
             }
 
             TankUtil.collideWith(myTank,bulletList.get(i));
         }
 
-        
     }
 
     /**

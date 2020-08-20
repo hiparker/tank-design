@@ -1,10 +1,8 @@
 package com.parker.tank;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @BelongsProject: tank-01
@@ -20,6 +18,8 @@ public class Tank {
     /** 宽高 将静态宽高 改为动态，但是引用比较多 暂时还是 大写的*/
     public int TANK_WIDTH = 50, TANK_HEIGHT = 50;
 
+    /** ID */
+    private UUID id;
     /** XY坐标 */
     private int x , y;
     /** 坦克方向 */
@@ -33,7 +33,7 @@ public class Tank {
     /** 当前位置 */
     private Rectangle rectangle;
     /** 坦克分组 */
-    public TankGroup group;
+    private TankGroup group;
     /** 自动模式 */
     private boolean autoFlag = false;
     private Dir[] dirs = {Dir.LEFT,Dir.UP,Dir.RIGHT,Dir.DOWN};
@@ -55,6 +55,28 @@ public class Tank {
         this.dir = dir;
         this.tankFrame = tankFrame;
         this.group = group;
+
+        // 设置碰撞检测位置
+        rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
+
+        // 赋值坦克宽高
+        this.TANK_WIDTH = TankImage.getTankImage(this.group).get("tankU").getWidth();
+        this.TANK_HEIGHT = TankImage.getTankImage(this.group).get("tankU").getHeight();
+    }
+
+    /**
+     * 构造函数
+     * @param x
+     * @param y
+     * @param dir
+     */
+    public Tank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group,UUID id) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.tankFrame = tankFrame;
+        this.group = group;
+        this.id = id;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,TANK_WIDTH,TANK_HEIGHT);
@@ -120,6 +142,20 @@ public class Tank {
         return y;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public TankGroup getGroup() {
+        return group;
+    }
+
+
+
     /**
      * 坦克方向处理
      */
@@ -158,9 +194,14 @@ public class Tank {
     public void paint(Graphics g) {
         // 坦克阵亡
         if(!liveFlag){
-            tankFrame.enemyTanks.remove(this);
+            tankFrame.tanks.remove(this);
             return;
         }
+
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawString(this.id.toString(),this.x,this.y-10);
+        g.setColor(c);
 
         switch (dir) {
             case LEFT:

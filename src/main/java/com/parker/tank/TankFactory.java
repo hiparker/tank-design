@@ -1,6 +1,7 @@
 package com.parker.tank;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * @BelongsProject: tank-01
@@ -13,9 +14,9 @@ public final class TankFactory {
 
     private TankFactory(){};
 
-    public static Tank createTank(int x, int y, Dir dir,TankFrame tankFrame,TankGroup group) {
-        Tank tank = new Tank(x, y, dir, tankFrame, group);
-        tank.setFutureTank(new Tank(x, y, dir, tankFrame, group));
+    public static Tank createTank(int x, int y, Dir dir, TankFrame tankFrame, TankGroup group, UUID id) {
+        Tank tank = new Tank(x, y, dir, tankFrame, group,id);
+        tank.setFutureTank(new Tank(x, y, dir, tankFrame, group,id));
         return tank;
     }
 

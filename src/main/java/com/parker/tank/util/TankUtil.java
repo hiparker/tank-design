@@ -32,11 +32,11 @@ public final class TankUtil {
         if(bulletPosition.intersects(tankPosition)){
             // 自己不能打自己 并且 默认关闭队友伤害
             if(!tank.equals(bulletBelongTank) &&
-                !tank.group.equals(bulletBelongTank.group)
+                !tank.getGroup().equals(bulletBelongTank.getGroup())
                 ){
 
                 // 暂时设置自身无敌
-                if(!tank.group.equals(TankGroup.RED)){
+                if(!tank.getGroup().equals(TankGroup.RED)){
                     tank.died();
                     bullet.died();
                     flag = false;

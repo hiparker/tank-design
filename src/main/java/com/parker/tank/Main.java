@@ -1,5 +1,7 @@
 package com.parker.tank;
 
+import com.parker.tank.net.Client;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,18 +15,29 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
-        TankFrame t = new TankFrame();
 
-        // 创建5个敌方坦克
+        TankFrame t = TankFrame.INSTANCE.init();
+
+        /*// 创建5个敌方坦克
         for (int i = 0; i < 5; i++) {
             t.enemyTanks.add(TankFactory.createTank(50+i*80,200,Dir.DOWN,t,TankGroup.BLUE,true));
-        }
+        }*/
 
         // 自动刷新 window
-        while (true){
-            t.repaint();
-            TimeUnit.MILLISECONDS.sleep(50);
-        }
+        new Thread(()-> {
+            while(true) {
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                t.repaint();
+            }
+        }).start();
+
+
+        // 客户端
+        Client.INSTANCE.connect();
     }
 
 }
