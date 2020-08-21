@@ -56,6 +56,7 @@ public class TankJoinMsg implements BaseMsg{
      * @param tank
      */
     public TankJoinMsg(Tank tank, TankType tankType) {
+        if(tank == null) return;
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
@@ -70,6 +71,7 @@ public class TankJoinMsg implements BaseMsg{
      * @param tank
      */
     public TankJoinMsg(Tank tank,boolean moving, TankType tankType) {
+        if(tank == null) return;
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
