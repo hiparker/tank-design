@@ -27,7 +27,7 @@ public class Main {
         new Thread(()-> {
             while(true) {
                 try {
-                    Thread.sleep(25);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

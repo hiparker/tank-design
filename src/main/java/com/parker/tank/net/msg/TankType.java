@@ -7,7 +7,7 @@ package com.parker.tank.net.msg;
  * @CreateTime: 2020-08-21 00:14
  * @Description: TODO
  */
-public enum Type {
+public enum TankType {
 
     CREATE,
 
@@ -15,6 +15,8 @@ public enum Type {
 
     FIRE,
 
-    MOVE;
+    MOVE,
+
+    DIED;
 
 }

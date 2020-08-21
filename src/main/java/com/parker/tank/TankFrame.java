@@ -1,6 +1,8 @@
 package com.parker.tank;
 
+import com.parker.tank.net.Client;
 import com.parker.tank.net.msg.TankJoinMsg;
+import com.parker.tank.net.msg.TankType;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -45,7 +47,7 @@ public final class TankFrame extends Frame{
             TankGroup.values()[r.nextInt(TankGroup.values().length)], UUID.randomUUID());
 
 
-    private TankJoinMsg myTankMsg = new TankJoinMsg(myTank);
+    private TankJoinMsg myTankMsg = new TankJoinMsg(myTank, TankType.CREATE);
 
     private TankFrame(){}
 
@@ -80,6 +82,8 @@ public final class TankFrame extends Frame{
             new Audio("static/audio/war1.wav").loop();
         }).start();
 
+        // 将自身加入 坦克队列
+        this.addTank(myTank);
         return this;
     }
 
@@ -103,6 +107,10 @@ public final class TankFrame extends Frame{
         return myTank;
     }
 
+    public void setMyTank(Tank myTank) {
+        this.myTank = myTank;
+    }
+
     public TankJoinMsg getMyTankMsg() {
         this.myTankMsg.setX(myTank.getX());
         this.myTankMsg.setY(myTank.getY());
@@ -122,18 +130,23 @@ public final class TankFrame extends Frame{
         return false;
     }
 
+    public Tank getTanks(UUID id) {
+        return tanks.get(id);
+    }
+
+    public void removeTanks(UUID id) {
+        tanks.remove(id);
+    }
+
     @Override
     public void paint(Graphics g) {
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量："+bulletList.size(),10,40);
-        g.drawString("敌人的数量："+tanks.size(),10,60);
+        g.drawString("敌人的数量："+(tanks.size()-1),10,60);
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
-
-        // 主战坦克
-        myTank.paint(g);
 
         // 坦克渲染
         tanks.values().stream().forEach((e) -> e.paint(g));
@@ -150,11 +163,11 @@ public final class TankFrame extends Frame{
 
         // 子弹与坦克碰撞
         for (int i = 0; i < bulletList.size(); i++) {
-            for (int tk = 0; tk < tanks.size(); tk++) {
-                TankUtil.collideWith(tanks.get(tk),bulletList.get(i));
-            }
 
-            TankUtil.collideWith(myTank,bulletList.get(i));
+            Set<Map.Entry<UUID, Tank>> entries = tanks.entrySet();
+            for (Map.Entry<UUID, Tank> entry : entries) {
+                TankUtil.collideWith(entry.getValue(),bulletList.get(i));
+            }
         }
 
     }
@@ -200,7 +213,9 @@ public final class TankFrame extends Frame{
                 case KeyEvent.VK_SPACE:
                     // 按键抬起时
                     if(!flag){
-                        myTank.fired();
+                        // 发送开火通知到服务器
+                        Client.INSTANCE.send(new TankJoinMsg(myTank, TankType.FIRE));
+                        //myTank.fired();
                     }
                     break;
                 case KeyEvent.VK_ESCAPE:
@@ -216,21 +231,19 @@ public final class TankFrame extends Frame{
          * 设置主战坦克方向
          */
         private void setMainTankDir() {
-            if(!bL && !bU && !bR && !bD) {
-                myTank.setMoving(false);
-            }else{
+            boolean moving = false;
+
+            if(bL || bU || bR || bD){
                 if(bL) myTank.setDir(Dir.LEFT);
                 if(bU) myTank.setDir(Dir.UP);
                 if(bR) myTank.setDir(Dir.RIGHT);
                 if(bD) myTank.setDir(Dir.DOWN);
-
-                // 移动音乐
-                new Thread(()->{
-                    new Audio("static/audio/tank_move.wav").play();
-                }).start();
-
-                myTank.setMoving(true);
+                moving = true;
+                //myTank.setMoving(true);
             }
+
+            // 发送开火通知到服务器
+            Client.INSTANCE.send(new TankJoinMsg(myTank,moving ,TankType.MOVE));
         }
 
         @Override

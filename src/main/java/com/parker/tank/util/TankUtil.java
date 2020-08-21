@@ -3,6 +3,9 @@ package com.parker.tank.util;
 import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
 import com.parker.tank.TankGroup;
+import com.parker.tank.net.Client;
+import com.parker.tank.net.msg.TankJoinMsg;
+import com.parker.tank.net.msg.TankType;
 
 import java.awt.*;
 
@@ -30,17 +33,20 @@ public final class TankUtil {
         Rectangle tankPosition = tank.getPosition();
         Rectangle bulletPosition = bullet.getPosition();
         if(bulletPosition.intersects(tankPosition)){
-            // 自己不能打自己 并且 默认关闭队友伤害
-            if(!tank.equals(bulletBelongTank) &&
-                !tank.getGroup().equals(bulletBelongTank.getGroup())
-                ){
+            // 自己不能打自己
+            if(!tank.equals(bulletBelongTank)){
 
                 // 暂时设置自身无敌
-                if(!tank.getGroup().equals(TankGroup.RED)){
-                    tank.died();
-                    bullet.died();
-                    flag = false;
-                }
+                //if(!tank.getGroup().equals(TankGroup.RED)){
+                // 坦克死亡
+                Client.INSTANCE.send(new TankJoinMsg(tank, TankType.DIED));
+                // 子弹死亡
+
+                flag = false;
+                    /*tank.died();
+                    bullet.died();*/
+
+                //}
             }
         }
         return flag;

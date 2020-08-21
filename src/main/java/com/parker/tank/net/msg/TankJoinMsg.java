@@ -2,11 +2,9 @@ package com.parker.tank.net.msg;
 
 import com.parker.tank.*;
 
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -16,7 +14,7 @@ import java.util.UUID;
  * @CreateTime: 2020-08-10 15:46
  * @Description: 主战坦克
  */
-public class TankJoinMsg {
+public class TankJoinMsg implements BaseMsg{
 
 
     /** XY坐标 */
@@ -30,7 +28,7 @@ public class TankJoinMsg {
     /** ID */
     private UUID id;
     /** 消息类型 */
-    private Type type;
+    private TankType tankType;
 
     public TankJoinMsg() {
     }
@@ -43,29 +41,57 @@ public class TankJoinMsg {
      * @param group
      * @param id
      */
-    public TankJoinMsg(int x, int y, Dir dir,TankGroup group,boolean moving,UUID id,Type type) {
+    public TankJoinMsg(int x, int y, Dir dir, TankGroup group, boolean moving, UUID id, TankType tankType) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
         this.moving = moving;
         this.id = id;
-        this.type = type;
+        this.tankType = tankType;
     }
 
     /**
      * 构造函数
      * @param tank
      */
-    public TankJoinMsg(Tank tank) {
+    public TankJoinMsg(Tank tank, TankType tankType) {
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
         this.group = tank.getGroup();
         this.moving = tank.isMoving();
         this.id = tank.getId();
+        this.tankType = tankType;
     }
 
+    /**
+     * 构造函数
+     * @param tank
+     */
+    public TankJoinMsg(Tank tank,boolean moving, TankType tankType) {
+        this.x = tank.getX();
+        this.y = tank.getY();
+        this.dir = tank.getDir();
+        this.group = tank.getGroup();
+        this.moving = moving;
+        this.id = tank.getId();
+        this.tankType = tankType;
+    }
+
+    /**
+     * 构造函数
+     * @param id
+     */
+    public TankJoinMsg(UUID id, TankType tankType) {
+        this.x = 0;
+        this.y = 0;
+        this.dir = Dir.DOWN;
+        this.group = TankGroup.BLUE;
+        this.moving = false;
+        this.id = id;
+        this.tankType = tankType;
+    }
 
     /**
      * 转换成二进制字节数组
@@ -88,7 +114,7 @@ public class TankJoinMsg {
             // UUID 高低64位 一共 128位
             dos.writeLong(this.id.getMostSignificantBits());
             dos.writeLong(this.id.getLeastSignificantBits());
-            dos.writeInt(this.type.ordinal());
+            dos.writeInt(this.tankType.ordinal());
             dos.flush();
 
             bytes = baos.toByteArray();
@@ -182,12 +208,12 @@ public class TankJoinMsg {
         return this;
     }
 
-    public Type getType() {
-        return type;
+    public TankType getType() {
+        return tankType;
     }
 
-    public TankJoinMsg setType(Type type) {
-        this.type = type;
+    public TankJoinMsg setType(TankType tankType) {
+        this.tankType = tankType;
         return this;
     }
 }

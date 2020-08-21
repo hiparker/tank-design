@@ -3,7 +3,7 @@ package com.parker.tank.net.coder;
 import com.parker.tank.Dir;
 import com.parker.tank.TankGroup;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.Type;
+import com.parker.tank.net.msg.TankType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -35,7 +35,7 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
                 .setGroup(TankGroup.values()[in.readInt()])
                 .setMoving(in.readBoolean())
                 .setId(new UUID(in.readLong(), in.readLong()))
-                .setType(Type.values()[in.readInt()]);
+                .setType(TankType.values()[in.readInt()]);
 
         out.add(msg);
 

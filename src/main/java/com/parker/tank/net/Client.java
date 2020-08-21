@@ -1,11 +1,11 @@
 package com.parker.tank.net;
 
-import com.parker.tank.Tank;
-import com.parker.tank.TankFactory;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
 import com.parker.tank.net.msg.TankJoinMsg;
+import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.thread.ClientMainThread;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -90,10 +90,11 @@ class ClientChanHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ByteBuf buf = Unpooled.buffer();
         byte[] bytes = new TankJoinMsg(
-                TankFrame.INSTANCE.getMyTank()).toBytes();
+                TankFrame.INSTANCE.getMyTank(), TankType.CREATE).toBytes();
 
         buf.writeBytes(
                 bytes);
+
         ctx.channel().writeAndFlush(buf);
     }
 
@@ -103,32 +104,7 @@ class ClientChanHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
             return;
         }
 
-        System.out.println(TankFrame.INSTANCE.getMyTank().getId().equals(msg.getId()));
-        System.out.println(TankFrame.INSTANCE.hasTank(msg.getId()));
-
-        if(TankFrame.INSTANCE.getMyTank().getId().equals(msg.getId()) ||
-             TankFrame.INSTANCE.hasTank(msg.getId())
-            ){
-            return;
-        }
-
-        Tank tank = TankFactory.createTank(msg.getX(), msg.getY(), msg.getDir(),TankFrame.INSTANCE,msg.getGroup(),msg.getId());
-
-        TankFrame.INSTANCE.addTank(tank);
-
-        // 将自己再写回新坦克面板里
-        ByteBuf buf = Unpooled.buffer();
-        TankJoinMsg myTankMsg = TankFrame.INSTANCE.getMyTankMsg();
-        byte[] bytes = new TankJoinMsg(TankFrame.INSTANCE.getMyTank()).toBytes();
-
-        buf.writeBytes(
-                bytes);
-        ctx.channel().writeAndFlush(buf);
-
-        System.out.println("敌人："+msg.toString());
-        System.out.println("自己："+myTankMsg.toString());
-
+        ClientMainThread.INSTANCE.process(ctx,msg);
     }
-
 
 }

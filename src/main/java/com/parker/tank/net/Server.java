@@ -3,11 +3,16 @@ package com.parker.tank.net;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
 import com.parker.tank.net.msg.TankJoinMsg;
+import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.thread.ServerMainThread;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.AttributeKey;
+
+import java.util.UUID;
 
 /**
  * @BelongsProject: learn-netty-gradle
@@ -58,13 +63,12 @@ public enum Server {
 class ServerChannelHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, TankJoinMsg msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
         if(msg == null){
             return;
         }
-
-        // 服务器
-        BroadCaster.INSTANCE.cast(msg);
+        // 单一线程执行操作
+        ServerMainThread.INSTANCE.process(ctx,msg);
     }
 
     @Override
@@ -74,8 +78,26 @@ class ServerChannelHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("客户端关闭");
-        BroadCaster.INSTANCE.remove(ctx.channel());
-        ctx.close();
+        super.handlerRemoved(ctx);
+
+        Runnable r = () -> {
+            UUID userId = (UUID) ctx.channel().attr(AttributeKey.valueOf("userId")).get();
+            if(userId == null){
+                return;
+            }
+
+            // 删除 当前组内记录数据
+            BroadCaster.INSTANCE.remove(ctx.channel());
+
+            TankJoinMsg joinMsg = new TankJoinMsg(userId, TankType.REMOVE);
+
+            // 向其他客户端发送 坦克删除信息
+            BroadCaster.INSTANCE.cast(joinMsg);
+
+            ctx.close();
+
+            System.out.println("客户端关闭:"+userId);
+        };
+        ServerMainThread.INSTANCE.process(r);
     }
 }

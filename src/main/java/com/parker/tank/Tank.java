@@ -192,11 +192,11 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        // 坦克阵亡
+        /*// 坦克阵亡
         if(!liveFlag){
             tankFrame.tanks.remove(this);
             return;
-        }
+        }*/
 
         Color c = g.getColor();
         g.setColor(Color.YELLOW);
@@ -221,7 +221,7 @@ public class Tank {
         // 坦克自动行走
         this.moveHandler();
 
-        // 设置坦克随机开炮 与 行走
+        /*// 设置坦克随机开炮 与 行走
         if(this.autoFlag){
 
             this.setMoving(true);
@@ -239,7 +239,7 @@ public class Tank {
                 this.setDir(dirs[po]);
             }
 
-        }
+        }*/
     }
 
 
