@@ -34,6 +34,11 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
+
+        if(in.readableBytes() < 8) return;
+
+        in.markReaderIndex();
+
         int num = in.readableBytes()-4;
         int flag = in.readInt();
 
