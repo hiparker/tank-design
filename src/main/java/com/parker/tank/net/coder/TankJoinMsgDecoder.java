@@ -1,19 +1,14 @@
 package com.parker.tank.net.coder;
 
-import com.parker.tank.Dir;
-import com.parker.tank.TankGroup;
-import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
+import com.parker.tank.net.msg.Msg;
+import com.parker.tank.net.msg.MsgUtil;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @BelongsProject: tank-design
@@ -24,46 +19,37 @@ import java.util.UUID;
  */
 public class TankJoinMsgDecoder extends ByteToMessageDecoder {
 
-    private static final Map<Integer,Integer> flagMap = new HashMap<>();
-
-    static {
-        // 粘包处理 0 坦克 1 炮弹
-        flagMap.put(1000,33);
-        flagMap.put(2000,36);
-    }
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
 
         if(in.readableBytes() < 8) return;
 
-        in.markReaderIndex();
+        try {
+            in.markReaderIndex();
 
-        int num = in.readableBytes()-4;
-        int flag = in.readInt();
+            MsgType msgType = MsgType.values()[in.readInt()];
+            int length = in.readInt();
+            // 如果长度不够 直接退出
+            if(in.readableBytes()< length) {
+                in.resetReaderIndex();
+                return;
+            }
 
-        // 小于flag个字节 直接出去
-        if(flagMap.get(flag) != null && num < flagMap.get(flag)){
-            return;
-        }
+            byte[] bytes = new byte[length];
+            in.readBytes(bytes);
 
-        // 坦克
-        if(1000 == flag){
-            TankJoinMsg msg = new TankJoinMsg();
-            msg.setX(in.readInt())
-                    .setY(in.readInt())
-                    .setDir(Dir.values()[in.readInt()])
-                    .setGroup(TankGroup.values()[in.readInt()])
-                    .setMoving(in.readBoolean())
-                    .setId(new UUID(in.readLong(), in.readLong()))
-                    .setType(TankType.values()[in.readInt()]);
+            Msg msg = null;
+            Class<?> msgClazz = MsgUtil.INSTANCE.getMsgClazz(msgType);
+            if(msgClazz != null){
+                msg =(Msg) msgClazz.newInstance();
+            }
+
+            msg.parse(bytes);
+            msg.setType(msgType);
             out.add(msg);
-        }else if(2000 == flag){
-            BulletJoinMsg msg = new BulletJoinMsg();
-            msg.setId(new UUID(in.readLong(), in.readLong()))
-                    .setTankId(new UUID(in.readLong(), in.readLong()))
-                    .setType(BulletType.values()[in.readInt()]);
-            out.add(msg);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
 
     }

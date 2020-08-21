@@ -3,9 +3,9 @@ package com.parker.tank.net;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
-import com.parker.tank.net.msg.BaseMsg;
+import com.parker.tank.net.msg.Msg;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
 import com.parker.tank.net.thread.ClientMainThread;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -72,15 +72,14 @@ public enum Client {
      * 发送消息
      * @param msg
      */
-    public void send(BaseMsg msg){
+    public void send(Msg msg,MsgType type){
         if(channel == null) return;
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(msg.toBytes());
-        this.channel.writeAndFlush(buf);
+        msg.setType(type);
+        this.channel.writeAndFlush(msg);
     }
 }
 
-class ClientChanHandler extends SimpleChannelInboundHandler<BaseMsg> {
+class ClientChanHandler extends SimpleChannelInboundHandler<Msg> {
 
 
     public ClientChanHandler(){
@@ -90,18 +89,14 @@ class ClientChanHandler extends SimpleChannelInboundHandler<BaseMsg> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ByteBuf buf = Unpooled.buffer();
-        byte[] bytes = new TankJoinMsg(
-                TankFrame.INSTANCE.getMyTank(), TankType.CREATE).toBytes();
+        // 发送消息
+        Client.INSTANCE.send(
+                new TankJoinMsg(TankFrame.INSTANCE.getMyTank()), MsgType.TANK_CREATE);
 
-        buf.writeBytes(
-                bytes);
-
-        ctx.channel().writeAndFlush(buf);
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
         if(msg == null){
             return;
         }

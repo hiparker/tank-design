@@ -1,30 +1,39 @@
-package com.parker.tank.net.handler.bullet;
+package com.parker.tank.net.handler.execute;
 
 import com.parker.tank.Bullet;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.handler.BaseHandler;
-import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
+import com.parker.tank.net.msg.BulletDiedMsg;
+import com.parker.tank.net.msg.Msg;
+import com.parker.tank.net.msg.MsgType;
 
 /**
  * @BelongsProject: tank-design
  * @BelongsPackage: com.parker.tank.net.handler
  * @Author: Parker
  * @CreateTime: 2020-08-21 09:55
- * @Description: 坦克死亡处理器
+ * @Description: 炮弹死亡处理器
  */
-public class DiedHandler extends BaseHandler {
+public class BulletDiedHandler extends BaseHandler {
 
     /** 执行器 状态 */
-    private BulletType bulletType = BulletType.DIED;
+    private final MsgType[] msgTypes = new MsgType[]{MsgType.BULLET_DIED};
 
     @Override
-    public BulletType getBulletType() {
-        return this.bulletType;
+    public MsgType[] getTypes() {
+        return this.msgTypes;
     }
 
     @Override
-    public void execute(BulletJoinMsg msg) {
+    public void execute(Msg baseMsg) {
+        // 类型转换
+        BulletDiedMsg msg;
+        if(baseMsg instanceof BulletDiedMsg){
+            msg = (BulletDiedMsg) baseMsg;
+        }else{
+            return;
+        }
+
         if(!TankFrame.INSTANCE.hasBullet(msg.getId())){
             return;
         }

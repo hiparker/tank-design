@@ -1,9 +1,9 @@
 package com.parker.tank.net.thread;
 
 import com.parker.tank.net.BroadCaster;
-import com.parker.tank.net.msg.BaseMsg;
+import com.parker.tank.net.msg.Msg;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
 import com.parker.tank.net.thread.factory.NameableThreadFactory;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
@@ -29,7 +29,7 @@ public enum ServerMainThread {
      * @param ctx
      * @param msg
      */
-    public void process(ChannelHandlerContext ctx, BaseMsg msg){
+    public void process(ChannelHandlerContext ctx, Msg msg){
         if(msg == null){
             return;
         }
@@ -38,7 +38,7 @@ public enum ServerMainThread {
                // 如果是新建 将ID 绑定在信道上
                if(msg instanceof TankJoinMsg){
                    TankJoinMsg tankMsg = (TankJoinMsg) msg;
-                   if(TankType.CREATE.equals(tankMsg.getType())){
+                   if(MsgType.TANK_CREATE.equals(tankMsg.getType())){
                        ctx.channel().attr(AttributeKey.valueOf("userId")).set(tankMsg.getId());
                    }
                }

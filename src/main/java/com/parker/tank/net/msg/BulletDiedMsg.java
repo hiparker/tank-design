@@ -1,6 +1,5 @@
 package com.parker.tank.net.msg;
 
-
 import java.io.*;
 import java.util.UUID;
 
@@ -11,26 +10,18 @@ import java.util.UUID;
  * @CreateTime: 2020-08-10 15:46
  * @Description: 主战坦克
  */
-public class BulletJoinMsg extends Msg {
+public class BulletDiedMsg extends Msg {
 
 
-
-    /** 坦克ID */
-    private UUID tankId;
-
-
-    public BulletJoinMsg() {
+    public BulletDiedMsg() {
     }
 
     /**
      * 构造函数
      * @param id
-     * @param tankId
      */
-    public BulletJoinMsg(UUID id,UUID tankId) {
+    public BulletDiedMsg(UUID id) {
         this.id = id;
-        this.tankId = tankId;
-        this.type = type;
     }
 
     /**
@@ -47,7 +38,6 @@ public class BulletJoinMsg extends Msg {
 
             // UUID 高低64位 一共 128位
             this.id = new UUID(dis.readLong(), dis.readLong());
-            this.tankId = new UUID(dis.readLong(), dis.readLong());
 
             //this.name = dis.readUTF();
         } catch (IOException e) {
@@ -77,8 +67,6 @@ public class BulletJoinMsg extends Msg {
             // UUID 高低64位 一共 128位
             dos.writeLong(this.id.getMostSignificantBits());
             dos.writeLong(this.id.getLeastSignificantBits());
-            dos.writeLong(this.tankId.getMostSignificantBits());
-            dos.writeLong(this.tankId.getLeastSignificantBits());
             dos.flush();
 
             bytes = baos.toByteArray();
@@ -108,18 +96,9 @@ public class BulletJoinMsg extends Msg {
     public String toString() {
         return "BulletJoinMsg{" +
                 "id=" + id +
-                ", tankId=" + tankId +
                 '}';
     }
 
-    // ------- -------
 
-    public UUID getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(UUID tankId) {
-        this.tankId = tankId;
-    }
 
 }

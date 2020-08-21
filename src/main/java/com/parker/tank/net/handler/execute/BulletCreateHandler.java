@@ -1,4 +1,4 @@
-package com.parker.tank.net.handler.bullet;
+package com.parker.tank.net.handler.execute;
 
 import com.parker.tank.Audio;
 import com.parker.tank.Bullet;
@@ -6,7 +6,8 @@ import com.parker.tank.Tank;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.handler.BaseHandler;
 import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
+import com.parker.tank.net.msg.Msg;
+import com.parker.tank.net.msg.MsgType;
 
 /**
  * @BelongsProject: tank-design
@@ -21,18 +22,27 @@ import com.parker.tank.net.msg.BulletType;
  *
  *
  */
-public class CreateHandler extends BaseHandler {
+public class BulletCreateHandler extends BaseHandler {
 
     /** 执行器 状态 */
-    private BulletType bulletType = BulletType.CREATE;
+    private final MsgType[] msgTypes = new MsgType[]{MsgType.BULLET_CREATE};
 
     @Override
-    public BulletType getBulletType() {
-        return this.bulletType;
+    public MsgType[] getTypes() {
+        return this.msgTypes;
     }
 
     @Override
-    public void execute(BulletJoinMsg msg) {
+    public void execute(Msg baseMsg) {
+        // 类型转换
+        BulletJoinMsg msg;
+        if(baseMsg instanceof BulletJoinMsg){
+            msg = (BulletJoinMsg) baseMsg;
+        }else{
+            return;
+        }
+
+
         if(TankFrame.INSTANCE.hasBullet(msg.getId())){
             return;
         }
@@ -41,6 +51,7 @@ public class CreateHandler extends BaseHandler {
         Tank tank = TankFrame.INSTANCE.getTank(msg.getTankId());
         Bullet bullet = new Bullet(tank.getX(), tank.getY(), tank.getDir(), TankFrame.INSTANCE, tank, msg.getId());
         TankFrame.INSTANCE.addBullet(bullet);
+
         // 开火音效
         new Thread(()->{
             new Audio("static/audio/tank_fire.wav").play();

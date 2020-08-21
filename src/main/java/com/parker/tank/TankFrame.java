@@ -1,8 +1,10 @@
 package com.parker.tank;
 
 import com.parker.tank.net.Client;
+import com.parker.tank.net.msg.TankIdMsg;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
+import com.parker.tank.net.msg.TankMoveMsg;
 import com.parker.tank.util.TankUtil;
 
 import java.awt.*;
@@ -46,8 +48,6 @@ public final class TankFrame extends Frame{
             this,
             TankGroup.RED, UUID.randomUUID());
 
-
-    private TankJoinMsg myTankMsg = new TankJoinMsg(myTank, TankType.CREATE);
 
     private TankFrame(){}
 
@@ -111,14 +111,6 @@ public final class TankFrame extends Frame{
         this.myTank = myTank;
     }
 
-    public TankJoinMsg getMyTankMsg() {
-        this.myTankMsg.setX(myTank.getX());
-        this.myTankMsg.setY(myTank.getY());
-        this.myTankMsg.setDir(myTank.getDir());
-        this.myTankMsg.setMoving(myTank.isMoving());
-        return myTankMsg;
-    }
-
 
     /** 坦克集合 **/
     public void addTank(Tank t){
@@ -174,10 +166,20 @@ public final class TankFrame extends Frame{
         g.setColor(c);
 
         // 坦克渲染
-        tanks.values().stream().forEach((e) -> e.paint(g));
+        //tanks.values().stream().forEach((e) -> e.paint(g));
+        Set<UUID> tankIds = tanks.keySet();
+        for (UUID tankId : tankIds) {
+            Tank tank = tanks.get(tankId);
+            if(tank != null) tank.paint(g);
+        }
 
         // 炮弹渲染
-        bullets.values().stream().forEach((e) -> e.paint(g));
+        //bullets.values().stream().forEach((e) -> e.paint(g));
+        Set<UUID> bulletIds = bullets.keySet();
+        for (UUID bulletId : bulletIds) {
+            Bullet bullet = bullets.get(bulletId);
+            if(bullet != null) bullet.paint(g);
+        }
 
         // 坦克爆炸
         for (int i = 0; i < explodeList.size(); i++) {
@@ -185,15 +187,11 @@ public final class TankFrame extends Frame{
         }
 
         // 子弹与坦克碰撞
-        Set<UUID> bulletIds = bullets.keySet();
-        Set<UUID> tankIds = tanks.keySet();
         for (UUID bulletId : bulletIds) {
             for (UUID tankId : tankIds) {
                 TankUtil.collideWith(tanks.get(tankId),bullets.get(bulletId));
             }
         }
-
-
     }
 
     /**
@@ -241,7 +239,7 @@ public final class TankFrame extends Frame{
                             break;
                         }
                         // 发送开火通知到服务器
-                        Client.INSTANCE.send(new TankJoinMsg(myTank, TankType.FIRE));
+                        Client.INSTANCE.send(new TankIdMsg(myTank.getId()), MsgType.TANK_FIRE);
                         //myTank.fired();
                     }
                     break;
@@ -262,18 +260,23 @@ public final class TankFrame extends Frame{
                 return;
             }
             boolean moving = false;
-
+            Dir dir = null;
             if(bL || bU || bR || bD){
-                if(bL) myTank.setDir(Dir.LEFT);
-                if(bU) myTank.setDir(Dir.UP);
-                if(bR) myTank.setDir(Dir.RIGHT);
-                if(bD) myTank.setDir(Dir.DOWN);
+                if(bL) dir = Dir.LEFT;
+                if(bU) dir = Dir.UP;
+                if(bR) dir = Dir.RIGHT;
+                if(bD) dir = Dir.DOWN;
+
                 moving = true;
                 //myTank.setMoving(true);
             }
 
-            // 发送开火通知到服务器
-            Client.INSTANCE.send(new TankJoinMsg(myTank,moving ,TankType.MOVE));
+            // 只有不同状态才发 moving事件 这样减少客户端与服务端数据传输
+            if(moving != myTank.isMoving() || !myTank.getDir().equals(dir)){
+                // 发送移动通知到服务器
+                Client.INSTANCE.send(new TankMoveMsg(myTank.getId(),dir,moving),MsgType.TANK_MOVE);
+            }
+
         }
 
         @Override

@@ -1,39 +1,49 @@
-package com.parker.tank.net.handler.tank;
+package com.parker.tank.net.handler.execute;
 
 import com.parker.tank.Audio;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.handler.BaseHandler;
-import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.*;
 
 /**
  * @BelongsProject: tank-design
  * @BelongsPackage: com.parker.tank.net.handler
  * @Author: Parker
  * @CreateTime: 2020-08-21 09:55
- * @Description: 坦克创建器
+ * @Description: 坦克移动执行器
  */
-public class MoveHandler extends BaseHandler {
+public class TankMoveHandler extends BaseHandler {
 
     /** 执行器 状态 */
-    private TankType tankType = TankType.MOVE;
+    private final MsgType[] msgTypes = new MsgType[]{MsgType.TANK_MOVE};
 
     @Override
-    public TankType getTankType() {
-        return this.tankType;
+    public MsgType[] getTypes() {
+        return this.msgTypes;
     }
 
     @Override
-    public void execute(TankJoinMsg msg) {
+    public void execute(Msg baseMsg) {
+
+        // 类型转换
+        TankMoveMsg msg;
+        if(baseMsg instanceof TankMoveMsg){
+            msg = (TankMoveMsg) baseMsg;
+        }else{
+            return;
+        }
+
         if(!TankFrame.INSTANCE.hasTank(msg.getId())){
             return;
         }
         System.out.println("坦克移动："+msg.getId());
         // 从坦克移动
         Tank tank = TankFrame.INSTANCE.getTank(msg.getId());
-        tank.setDir(msg.getDir());
         tank.setMoving(msg.isMoving());
+        if(msg.isMoving()){
+            tank.setDir(msg.getDir());
+        }
 
         // 移动音乐
         new Thread(()->{

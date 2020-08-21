@@ -1,19 +1,14 @@
 package com.parker.tank.net.handler;
 
 
-import com.parker.tank.net.handler.BaseHandler;
-import com.parker.tank.net.handler.KindHandler;
-import com.parker.tank.net.handler.tank.CreateHandler;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
 import com.parker.tank.util.ClassUtils;
-import com.parker.tank.util.PackageUtil;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @BelongsProject: tank-design
@@ -22,9 +17,11 @@ import java.util.Set;
  * @CreateTime: 2020-08-21 09:25
  * @Description: 客户端执行器
  */
-public class TankHandler implements KindHandler {
+public enum MsgHandler {
 
-    private static final Map<TankType, BaseHandler> HANDLER_MAP = new HashMap<>();
+    INSTANCE;
+
+    private static final Map<MsgType, BaseHandler> HANDLER_MAP = new HashMap<>();
 
     private static final Class<?> keyClazz = TankJoinMsg.class;
 
@@ -33,7 +30,8 @@ public class TankHandler implements KindHandler {
         /*Set<Class<?>> classes = PackageUtil.listSubClazz(
                 TankHandler.class.getPackage().getName()+".tank", true, BaseHandler.class);*/
 
-        List<Class> classes = ClassUtils.getAllClassByInterface(CreateHandler.class.getPackage().getName(),BaseHandler.class);
+        List<Class> classes = ClassUtils.getAllClassByInterface(
+                BaseHandler.class.getPackage().getName()+".execute",BaseHandler.class);
 
         for (Class<?> aClass : classes) {
             // 位运算 去除抽象类
@@ -43,8 +41,10 @@ public class TankHandler implements KindHandler {
 
             try {
                 BaseHandler baseHandler = (BaseHandler) aClass.newInstance();
-                TankType tankType = baseHandler.getTankType();
-                HANDLER_MAP.put(tankType,baseHandler);
+                MsgType[] types = baseHandler.getTypes();
+                for (MsgType type : types) {
+                    HANDLER_MAP.put(type,baseHandler);
+                }
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -56,19 +56,11 @@ public class TankHandler implements KindHandler {
 
     /**
      * 获得执行器
-     * @param tankType
+     * @param msgType
      * @return
      */
-    public BaseHandler getHandler(TankType tankType){
-        return HANDLER_MAP.get(tankType);
+    public BaseHandler getHandler(MsgType msgType){
+        return HANDLER_MAP.get(msgType);
     }
 
-    /**
-     * 获得 Msg Key Clazz
-     * @return
-     */
-    @Override
-    public Class<?> getKeyClazz() {
-        return keyClazz;
-    }
 }

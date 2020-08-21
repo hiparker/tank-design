@@ -1,8 +1,8 @@
 package com.parker.tank;
 
 import com.parker.tank.net.Client;
-import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
+import com.parker.tank.net.msg.BulletDiedMsg;
+import com.parker.tank.net.msg.MsgType;
 
 import java.awt.*;
 import java.util.UUID;
@@ -142,7 +142,7 @@ public class Bullet {
         // 边缘处理
         if(x < 0 || y < bulletHeight/2 || x > TankFrame.GAME_WIDTH-bulletWidth || y > TankFrame.GAME_HEIGHT-bulletHeight){
             // 子弹死亡
-            Client.INSTANCE.send(new BulletJoinMsg(this.id,this.belongTank.getId(), BulletType.DIED));
+            Client.INSTANCE.send(new BulletDiedMsg(this.id), MsgType.BULLET_DIED);
         }
 
     }

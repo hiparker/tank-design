@@ -1,6 +1,7 @@
 package com.parker.tank.net.msg;
 
-import com.parker.tank.*;
+import com.parker.tank.Dir;
+import com.parker.tank.Tank;
 
 import java.io.*;
 import java.util.UUID;
@@ -12,35 +13,26 @@ import java.util.UUID;
  * @CreateTime: 2020-08-10 15:46
  * @Description: 主战坦克
  */
-public class TankJoinMsg extends Msg {
+public class TankMoveMsg extends Msg {
 
 
-    /** XY坐标 */
-    private int x , y;
+
     /** 坦克方向 */
     private Dir dir = Dir.DOWN;
     /** 是否是移动的状态 */
     private boolean moving = false;
-    /** 坦克分组 */
-    private TankGroup group;
 
 
-    public TankJoinMsg() {
+    public TankMoveMsg() {
     }
 
     /**
      * 构造函数
-     * @param x
-     * @param y
      * @param dir
-     * @param group
      * @param id
      */
-    public TankJoinMsg(int x, int y, Dir dir, TankGroup group, boolean moving, UUID id) {
-        this.x = x;
-        this.y = y;
+    public TankMoveMsg(UUID id, Dir dir, boolean moving) {
         this.dir = dir;
-        this.group = group;
         this.moving = moving;
         this.id = id;
     }
@@ -49,42 +41,24 @@ public class TankJoinMsg extends Msg {
      * 构造函数
      * @param tank
      */
-    public TankJoinMsg(Tank tank) {
+    public TankMoveMsg(Tank tank) {
         if(tank == null) return;
-        this.x = tank.getX();
-        this.y = tank.getY();
+        this.id = tank.getId();
         this.dir = tank.getDir();
-        this.group = tank.getGroup();
         this.moving = tank.isMoving();
-        this.id = tank.getId();
     }
 
     /**
      * 构造函数
      * @param tank
      */
-    public TankJoinMsg(Tank tank,boolean moving) {
+    public TankMoveMsg(Tank tank, boolean moving) {
         if(tank == null) return;
-        this.x = tank.getX();
-        this.y = tank.getY();
-        this.dir = tank.getDir();
-        this.group = tank.getGroup();
-        this.moving = moving;
         this.id = tank.getId();
+        this.dir = tank.getDir();
+        this.moving = moving;
     }
 
-    /**
-     * 构造函数
-     * @param id
-     */
-    public TankJoinMsg(UUID id, MsgType msgType) {
-        this.x = 0;
-        this.y = 0;
-        this.dir = Dir.DOWN;
-        this.group = TankGroup.BLUE;
-        this.moving = false;
-        this.id = id;
-    }
 
     /**
      * 解析数据
@@ -98,10 +72,7 @@ public class TankJoinMsg extends Msg {
             //略过消息类型
             //dis.readInt();
 
-            this.x = dis.readInt();
-            this.y = dis.readInt();
             this.dir = Dir.values()[dis.readInt()];
-            this.group = TankGroup.values()[dis.readInt()];
             this.moving = dis.readBoolean();
             this.id = new UUID(dis.readLong(), dis.readLong());
 
@@ -129,10 +100,11 @@ public class TankJoinMsg extends Msg {
 
             baos = new ByteArrayOutputStream();
             dos = new DataOutputStream(baos);
-            dos.writeInt(this.x);
-            dos.writeInt(this.y);
-            dos.writeInt(this.dir.ordinal());
-            dos.writeInt(this.group.ordinal());
+            int dirC = 0;
+            if(this.dir != null){
+                dirC = this.dir.ordinal();
+            }
+            dos.writeInt(dirC);
             dos.writeBoolean(this.moving);
             // UUID 高低64位 一共 128位
             dos.writeLong(this.id.getMostSignificantBits());
@@ -165,32 +137,14 @@ public class TankJoinMsg extends Msg {
     @Override
     public String toString() {
         return "TankJoinMsg{" +
-                "x=" + x +
-                ", y=" + y +
                 ", dir=" + dir +
                 ", moving=" + moving +
-                ", group=" + group +
                 ", id=" + id +
                 '}';
     }
 
     // ------- -------
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public Dir getDir() {
         return dir;
@@ -207,14 +161,5 @@ public class TankJoinMsg extends Msg {
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
-
-    public TankGroup getGroup() {
-        return group;
-    }
-
-    public void setGroup(TankGroup group) {
-        this.group = group;
-    }
-
 
 }

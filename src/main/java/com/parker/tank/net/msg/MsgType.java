@@ -5,12 +5,22 @@ package com.parker.tank.net.msg;
  * @BelongsPackage: com.parker.tank.net
  * @Author: Parker
  * @CreateTime: 2020-08-21 00:14
- * @Description: 炮弹操作类型
+ * @Description: TODO
  */
-public enum BulletType {
+public enum MsgType {
 
-    CREATE,
+    TANK_CREATE,
 
-    DIED;
+    TANK_REMOVE,
+
+    TANK_FIRE,
+
+    TANK_MOVE,
+
+    TANK_DIED,
+
+    BULLET_CREATE,
+
+    BULLET_DIED;
 
 }

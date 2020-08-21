@@ -3,9 +3,9 @@ package com.parker.tank.net;
 import com.parker.tank.MainServer;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
-import com.parker.tank.net.msg.BaseMsg;
+import com.parker.tank.net.msg.Msg;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.MsgType;
 import com.parker.tank.net.thread.ServerMainThread;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -62,10 +62,10 @@ public enum Server {
 
 }
 
-class ServerChannelHandler extends SimpleChannelInboundHandler<BaseMsg>{
+class ServerChannelHandler extends SimpleChannelInboundHandler<Msg>{
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
         if(msg == null){
             return;
         }
@@ -91,7 +91,7 @@ class ServerChannelHandler extends SimpleChannelInboundHandler<BaseMsg>{
             // 删除 当前组内记录数据
             BroadCaster.INSTANCE.remove(ctx.channel());
 
-            TankJoinMsg joinMsg = new TankJoinMsg(userId, TankType.REMOVE);
+            TankJoinMsg joinMsg = new TankJoinMsg(userId, MsgType.TANK_REMOVE);
 
             // 向其他客户端发送 坦克删除信息
             BroadCaster.INSTANCE.cast(joinMsg);
@@ -101,5 +101,12 @@ class ServerChannelHandler extends SimpleChannelInboundHandler<BaseMsg>{
             System.out.println("客户端关闭:"+userId);
         };
         ServerMainThread.INSTANCE.process(r);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        BroadCaster.INSTANCE.remove(ctx.channel());
+        ctx.close();
     }
 }

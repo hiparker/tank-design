@@ -1,9 +1,7 @@
 package com.parker.tank.net.handler;
 
-import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
-import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.TankType;
+import com.parker.tank.net.msg.Msg;
+import com.parker.tank.net.msg.MsgType;
 
 /**
  * @BelongsProject: tank-design
@@ -18,33 +16,16 @@ public abstract class BaseHandler {
      * 获得坦克执行器类型
      * @return
      */
-    public TankType getTankType(){
-        throw new RuntimeException("未实现类型方法");
-    }
+    public abstract MsgType[] getTypes();
 
-    /**
-     * 获得炮弹执行器类型
-     * @return
-     */
-    public BulletType getBulletType(){
-        throw new RuntimeException("未实现类型方法");
-    }
+
 
     /**
      * 坦克执行
      *
-     * @param msg
+     * @param baseMsg
      */
-    public void execute(TankJoinMsg msg) {
-        throw new RuntimeException("未实现执行器方法");
-    }
+    public abstract void execute(Msg baseMsg);
 
-    /**
-     * 子弹执行
-     * @param msg
-     */
-    public void execute(BulletJoinMsg msg){
-        throw new RuntimeException("未实现执行器方法");
-    }
 
 }

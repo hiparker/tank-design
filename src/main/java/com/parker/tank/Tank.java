@@ -2,7 +2,7 @@ package com.parker.tank;
 
 import com.parker.tank.net.Client;
 import com.parker.tank.net.msg.BulletJoinMsg;
-import com.parker.tank.net.msg.BulletType;
+import com.parker.tank.net.msg.MsgType;
 
 import java.awt.*;
 import java.util.Random;
@@ -254,8 +254,7 @@ public class Tank {
     public void fired() {
         //tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
         // 发送指令到服务器
-        //System.out.println(12321);
-        Client.INSTANCE.send(new BulletJoinMsg(UUID.randomUUID(),this.id, BulletType.CREATE));
+        Client.INSTANCE.send(new BulletJoinMsg(UUID.randomUUID(),this.id), MsgType.BULLET_CREATE);
     }
 
     public void died() {

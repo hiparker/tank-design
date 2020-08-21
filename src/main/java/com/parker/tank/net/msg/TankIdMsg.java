@@ -1,5 +1,6 @@
 package com.parker.tank.net.msg;
 
+import com.parker.tank.Tank;
 
 import java.io.*;
 import java.util.UUID;
@@ -9,29 +10,31 @@ import java.util.UUID;
  * @BelongsPackage: com.parker.tank
  * @Author: Parker
  * @CreateTime: 2020-08-10 15:46
- * @Description: 主战坦克
+ * @Description: 主战坦克 死亡
  */
-public class BulletJoinMsg extends Msg {
+public class TankIdMsg extends Msg {
 
 
-
-    /** 坦克ID */
-    private UUID tankId;
-
-
-    public BulletJoinMsg() {
+    public TankIdMsg() {
     }
 
     /**
      * 构造函数
      * @param id
-     * @param tankId
      */
-    public BulletJoinMsg(UUID id,UUID tankId) {
+    public TankIdMsg(UUID id) {
         this.id = id;
-        this.tankId = tankId;
-        this.type = type;
     }
+
+    /**
+     * 构造函数
+     * @param tank
+     */
+    public TankIdMsg(Tank tank) {
+        if(tank == null) return;
+        this.id = tank.getId();
+    }
+
 
     /**
      * 解析数据
@@ -45,9 +48,7 @@ public class BulletJoinMsg extends Msg {
             //略过消息类型
             //dis.readInt();
 
-            // UUID 高低64位 一共 128位
             this.id = new UUID(dis.readLong(), dis.readLong());
-            this.tankId = new UUID(dis.readLong(), dis.readLong());
 
             //this.name = dis.readUTF();
         } catch (IOException e) {
@@ -65,7 +66,6 @@ public class BulletJoinMsg extends Msg {
      * 转换成二进制字节数组
      * @return
      */
-    @Override
     public byte[] toBytes(){
         ByteArrayOutputStream baos = null;
         DataOutputStream dos = null;
@@ -77,8 +77,6 @@ public class BulletJoinMsg extends Msg {
             // UUID 高低64位 一共 128位
             dos.writeLong(this.id.getMostSignificantBits());
             dos.writeLong(this.id.getLeastSignificantBits());
-            dos.writeLong(this.tankId.getMostSignificantBits());
-            dos.writeLong(this.tankId.getLeastSignificantBits());
             dos.flush();
 
             bytes = baos.toByteArray();
@@ -106,20 +104,12 @@ public class BulletJoinMsg extends Msg {
 
     @Override
     public String toString() {
-        return "BulletJoinMsg{" +
+        return "TankJoinMsg{" +
                 "id=" + id +
-                ", tankId=" + tankId +
                 '}';
     }
 
     // ------- -------
 
-    public UUID getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(UUID tankId) {
-        this.tankId = tankId;
-    }
 
 }
