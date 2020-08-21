@@ -1,7 +1,12 @@
 package com.parker.tank.net.thread;
 
 import com.parker.tank.net.handler.BaseHandler;
-import com.parker.tank.net.handler.ClientHandler;
+import com.parker.tank.net.handler.KindHandler;
+import com.parker.tank.net.handler.BulletHandler;
+import com.parker.tank.net.handler.TankHandler;
+import com.parker.tank.net.msg.BaseMsg;
+import com.parker.tank.net.msg.BulletJoinMsg;
+import com.parker.tank.net.msg.Msg;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.thread.factory.NameableThreadFactory;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,15 +30,29 @@ public enum ClientMainThread {
     /**
      * 执行
      * @param ctx
-     * @param msg
+     * @param baseMsg
      */
-    public void process(ChannelHandlerContext ctx, TankJoinMsg msg){
+    public void process(ChannelHandlerContext ctx, BaseMsg baseMsg){
         EXECUTOR_SERVICE.submit(()->{
            try {
-                // 调用执行器
-               BaseHandler handler = ClientHandler.getInstance().getHandler(msg.getType());
-               if(handler != null){
-                   handler.execute(msg);
+               // 调用执行器
+               KindHandler kindHandler = Msg.INSTANCE.getHandler(baseMsg.getClass());
+               BaseHandler handler = null;
+               // 坦克执行
+               if(kindHandler instanceof TankHandler){
+                   TankJoinMsg msg = (TankJoinMsg) baseMsg;
+                   handler = ((TankHandler) kindHandler).getHandler(msg.getType());
+                   if(handler != null){
+                       handler.execute(msg);
+                   }
+               }
+               // 子弹执行
+               else if(kindHandler instanceof BulletHandler){
+                   BulletJoinMsg msg = (BulletJoinMsg) baseMsg;
+                   handler = ((BulletHandler) kindHandler).getHandler(msg.getType());
+                   if(handler != null){
+                       handler.execute(msg);
+                   }
                }
            }catch (Exception e){
                System.out.println(e.getMessage());

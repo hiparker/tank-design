@@ -1,14 +1,13 @@
-package com.parker.tank.net.handler;
+package com.parker.tank.net.handler.tank;
 
 import com.parker.tank.Tank;
 import com.parker.tank.TankFactory;
 import com.parker.tank.TankFrame;
 import com.parker.tank.TankGroup;
 import com.parker.tank.net.Client;
+import com.parker.tank.net.handler.BaseHandler;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 /**
  * @BelongsProject: tank-design
@@ -17,12 +16,12 @@ import io.netty.buffer.Unpooled;
  * @CreateTime: 2020-08-21 09:55
  * @Description: 坦克创建器
  */
-public class CreateHandler implements BaseHandler{
+public class CreateHandler extends BaseHandler {
 
     private TankType tankType = TankType.CREATE;
 
     @Override
-    public TankType getType() {
+    public TankType getTankType() {
         return this.tankType;
     }
 

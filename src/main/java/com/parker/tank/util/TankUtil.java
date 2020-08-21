@@ -4,6 +4,8 @@ import com.parker.tank.Bullet;
 import com.parker.tank.Tank;
 import com.parker.tank.TankGroup;
 import com.parker.tank.net.Client;
+import com.parker.tank.net.msg.BulletJoinMsg;
+import com.parker.tank.net.msg.BulletType;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 
@@ -41,7 +43,7 @@ public final class TankUtil {
                 // 坦克死亡
                 Client.INSTANCE.send(new TankJoinMsg(tank, TankType.DIED));
                 // 子弹死亡
-
+                Client.INSTANCE.send(new BulletJoinMsg(bullet.getId(),tank.getId(), BulletType.DIED));
                 flag = false;
                     /*tank.died();
                     bullet.died();*/

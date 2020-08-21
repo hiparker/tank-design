@@ -1,5 +1,9 @@
 package com.parker.tank;
 
+import com.parker.tank.net.Client;
+import com.parker.tank.net.msg.BulletJoinMsg;
+import com.parker.tank.net.msg.BulletType;
+
 import java.awt.*;
 import java.util.Random;
 import java.util.UUID;
@@ -248,12 +252,10 @@ public class Tank {
      * 开火
      */
     public void fired() {
-        tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
-
-        // 开火音效
-        new Thread(()->{
-            new Audio("static/audio/tank_fire.wav").play();
-        }).start();
+        //tankFrame.bulletList.add(new Bullet(this.x,this.y,this.dir,this.tankFrame,this));
+        // 发送指令到服务器
+        //System.out.println(12321);
+        Client.INSTANCE.send(new BulletJoinMsg(UUID.randomUUID(),this.id, BulletType.CREATE));
     }
 
     public void died() {

@@ -5,7 +5,7 @@ package com.parker.tank.net.msg;
  * @BelongsPackage: com.parker.tank.net.msg
  * @Author: Parker
  * @CreateTime: 2020-08-21 14:33
- * @Description: TODO
+ * @Description: 基础信息类
  */
 public interface BaseMsg {
 

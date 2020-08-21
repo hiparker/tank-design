@@ -1,7 +1,9 @@
 package com.parker.tank.net;
 
+import com.parker.tank.MainServer;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
+import com.parker.tank.net.msg.BaseMsg;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 import com.parker.tank.net.thread.ServerMainThread;
@@ -60,10 +62,10 @@ public enum Server {
 
 }
 
-class ServerChannelHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
+class ServerChannelHandler extends SimpleChannelInboundHandler<BaseMsg>{
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg) throws Exception {
         if(msg == null){
             return;
         }

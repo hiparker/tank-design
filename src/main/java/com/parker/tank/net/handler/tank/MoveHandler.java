@@ -1,8 +1,9 @@
-package com.parker.tank.net.handler;
+package com.parker.tank.net.handler.tank;
 
 import com.parker.tank.Audio;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFrame;
+import com.parker.tank.net.handler.BaseHandler;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 
@@ -13,13 +14,13 @@ import com.parker.tank.net.msg.TankType;
  * @CreateTime: 2020-08-21 09:55
  * @Description: 坦克创建器
  */
-public class MoveHandler implements BaseHandler{
+public class MoveHandler extends BaseHandler {
 
     /** 执行器 状态 */
     private TankType tankType = TankType.MOVE;
 
     @Override
-    public TankType getType() {
+    public TankType getTankType() {
         return this.tankType;
     }
 
@@ -30,7 +31,7 @@ public class MoveHandler implements BaseHandler{
         }
         System.out.println("坦克移动："+msg.getId());
         // 从坦克移动
-        Tank tank = TankFrame.INSTANCE.getTanks(msg.getId());
+        Tank tank = TankFrame.INSTANCE.getTank(msg.getId());
         tank.setDir(msg.getDir());
         tank.setMoving(msg.isMoving());
 

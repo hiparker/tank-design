@@ -40,7 +40,7 @@ public class Audio {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -60,7 +60,7 @@ public class Audio {
             //volctrl.setValue(-40);//
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ public class Audio {
             sourceDataLine.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

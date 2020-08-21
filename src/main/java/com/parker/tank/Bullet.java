@@ -1,6 +1,11 @@
 package com.parker.tank;
 
+import com.parker.tank.net.Client;
+import com.parker.tank.net.msg.BulletJoinMsg;
+import com.parker.tank.net.msg.BulletType;
+
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * @BelongsProject: tank-01
@@ -16,7 +21,8 @@ public class Bullet {
     /** 宽度 高度 */
     private int bulletWidth = ResourcesMgr.bulletD.getWidth(), bulletHeight = ResourcesMgr.bulletD.getHeight();
 
-
+    /** ID */
+    private UUID id;
     /** XY坐标 */
     private int x , y;
     /** 子弹方向 */
@@ -36,12 +42,13 @@ public class Bullet {
      * @param y
      * @param dir
      */
-    public Bullet(int x, int y, Dir dir,TankFrame tankFrame,Tank belongTank) {
+    public Bullet(int x, int y, Dir dir,TankFrame tankFrame,Tank belongTank,UUID id) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
         this.belongTank = belongTank;
+        this.id = id;
 
         // 设置碰撞检测位置
         rectangle = new Rectangle(this.x,this.y,bulletWidth,bulletHeight);
@@ -134,7 +141,8 @@ public class Bullet {
 
         // 边缘处理
         if(x < 0 || y < bulletHeight/2 || x > TankFrame.GAME_WIDTH-bulletWidth || y > TankFrame.GAME_HEIGHT-bulletHeight){
-            liveFlag = false;
+            // 子弹死亡
+            Client.INSTANCE.send(new BulletJoinMsg(this.id,this.belongTank.getId(), BulletType.DIED));
         }
 
     }
@@ -144,7 +152,7 @@ public class Bullet {
 
         // 炮弹死亡移除
         if(!this.liveFlag){
-            tankFrame.bulletList.remove(this);
+            tankFrame.bullets.remove(this);
         }
 
         switch (dir) {
@@ -164,6 +172,14 @@ public class Bullet {
 
         // 子弹自动行走
         this.moveHandler();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public void died() {

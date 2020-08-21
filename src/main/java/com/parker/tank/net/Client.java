@@ -3,6 +3,7 @@ package com.parker.tank.net;
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
+import com.parker.tank.net.msg.BaseMsg;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 import com.parker.tank.net.thread.ClientMainThread;
@@ -44,7 +45,7 @@ public enum Client {
                                     .addLast(new ClientChanHandler());
                         }
                     })
-                    .connect("localhost",12345)
+                    .connect("192.168.0.103",12345)
                     .sync();
 
             if(channelFuture.isSuccess()){
@@ -69,16 +70,17 @@ public enum Client {
 
     /**
      * 发送消息
-     * @param tankJoinMsg
+     * @param msg
      */
-    public void send(TankJoinMsg tankJoinMsg){
+    public void send(BaseMsg msg){
+        if(channel == null) return;
         ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(tankJoinMsg.toBytes());
+        buf.writeBytes(msg.toBytes());
         this.channel.writeAndFlush(buf);
     }
 }
 
-class ClientChanHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
+class ClientChanHandler extends SimpleChannelInboundHandler<BaseMsg> {
 
 
     public ClientChanHandler(){
@@ -99,7 +101,7 @@ class ClientChanHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg) throws Exception {
         if(msg == null){
             return;
         }

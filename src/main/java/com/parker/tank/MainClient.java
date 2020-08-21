@@ -1,4 +1,4 @@
-package com.parker.tank.net;
+package com.parker.tank;
 
 import com.parker.tank.TankFrame;
 import com.parker.tank.net.Client;

@@ -1,8 +1,7 @@
 package com.parker.tank.net.thread;
 
 import com.parker.tank.net.BroadCaster;
-import com.parker.tank.net.handler.BaseHandler;
-import com.parker.tank.net.handler.ClientHandler;
+import com.parker.tank.net.msg.BaseMsg;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 import com.parker.tank.net.thread.factory.NameableThreadFactory;
@@ -30,12 +29,18 @@ public enum ServerMainThread {
      * @param ctx
      * @param msg
      */
-    public void process(ChannelHandlerContext ctx, TankJoinMsg msg){
+    public void process(ChannelHandlerContext ctx, BaseMsg msg){
+        if(msg == null){
+            return;
+        }
         EXECUTOR_SERVICE.submit(()->{
            try {
                // 如果是新建 将ID 绑定在信道上
-               if(TankType.CREATE.equals(msg.getType())){
-                   ctx.channel().attr(AttributeKey.valueOf("userId")).set(msg.getId());
+               if(msg instanceof TankJoinMsg){
+                   TankJoinMsg tankMsg = (TankJoinMsg) msg;
+                   if(TankType.CREATE.equals(tankMsg.getType())){
+                       ctx.channel().attr(AttributeKey.valueOf("userId")).set(tankMsg.getId());
+                   }
                }
                // 服务器
                BroadCaster.INSTANCE.cast(msg);

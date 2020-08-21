@@ -1,8 +1,8 @@
-package com.parker.tank.net.handler;
+package com.parker.tank.net.handler.tank;
 
-import com.parker.tank.Audio;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFrame;
+import com.parker.tank.net.handler.BaseHandler;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
 
@@ -13,13 +13,13 @@ import com.parker.tank.net.msg.TankType;
  * @CreateTime: 2020-08-21 09:55
  * @Description: 坦克创建器
  */
-public class DiedHandler implements BaseHandler{
+public class DiedHandler extends BaseHandler {
 
     /** 执行器 状态 */
     private TankType tankType = TankType.DIED;
 
     @Override
-    public TankType getType() {
+    public TankType getTankType() {
         return this.tankType;
     }
 
@@ -30,8 +30,8 @@ public class DiedHandler implements BaseHandler{
         }
         System.out.println("坦克死亡："+msg.getId());
         // 坦克死亡
-        Tank tank = TankFrame.INSTANCE.getTanks(msg.getId());
-        TankFrame.INSTANCE.removeTanks(msg.getId());
+        Tank tank = TankFrame.INSTANCE.getTank(msg.getId());
+        TankFrame.INSTANCE.removeTank(msg.getId());
         tank.died();
         if(TankFrame.INSTANCE.getMyTank() != null){
             if(TankFrame.INSTANCE.getMyTank().getId().equals(msg.getId())){

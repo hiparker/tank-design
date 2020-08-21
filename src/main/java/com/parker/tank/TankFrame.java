@@ -34,14 +34,14 @@ public final class TankFrame extends Frame{
     Map<UUID,Tank> tanks = new HashMap<>();
 
     /** 子弹集合 */
-    List<Bullet> bulletList = new ArrayList<Bullet>();
+    Map<UUID,Bullet> bullets = new HashMap<>();
 
     /** 爆炸集合 */
-    List<Explode> explodeList = new ArrayList<Explode>();
+    List<Explode> explodeList = new ArrayList<>();
 
     /** 我方主战坦克 */
     Tank myTank = TankFactory.createTank(
-            r.nextInt(GAME_WIDTH-50),r.nextInt(GAME_HEIGHT-50),
+            r.nextInt(GAME_WIDTH-100)+50,r.nextInt(GAME_HEIGHT-100)+50,
             Dir.values()[r.nextInt(Dir.values().length)],
             this,
             TankGroup.RED, UUID.randomUUID());
@@ -119,6 +119,8 @@ public final class TankFrame extends Frame{
         return myTankMsg;
     }
 
+
+    /** 坦克集合 **/
     public void addTank(Tank t){
         this.tanks.put(t.getId(),t);
     }
@@ -130,20 +132,43 @@ public final class TankFrame extends Frame{
         return false;
     }
 
-    public Tank getTanks(UUID id) {
+    public Tank getTank(UUID id) {
         return tanks.get(id);
     }
 
-    public void removeTanks(UUID id) {
+    public void removeTank(UUID id) {
         tanks.remove(id);
     }
+
+    /** 炮弹集合 **/
+    public void addBullet(Bullet b){
+        this.bullets.put(b.getId(),b);
+    }
+
+    public boolean hasBullet(UUID id){
+        if(this.bullets.get(id) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public Bullet getBullet(UUID id) {
+        return this.bullets.get(id);
+    }
+
+    public void removeBullet(UUID id) {
+        this.bullets.remove(id);
+    }
+
+
+
 
     @Override
     public void paint(Graphics g) {
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("子弹的数量："+bulletList.size(),10,40);
+        g.drawString("子弹的数量："+bullets.size(),10,40);
         g.drawString("敌人的数量："+(tanks.size()-1),10,60);
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
@@ -151,24 +176,23 @@ public final class TankFrame extends Frame{
         // 坦克渲染
         tanks.values().stream().forEach((e) -> e.paint(g));
 
-        // 子弹自动行走
-        for (int i = 0; i < bulletList.size(); i++) {
-            bulletList.get(i).paint(g);
-        }
-        
+        // 炮弹渲染
+        bullets.values().stream().forEach((e) -> e.paint(g));
+
         // 坦克爆炸
         for (int i = 0; i < explodeList.size(); i++) {
             explodeList.get(i).paint(g);
         }
 
         // 子弹与坦克碰撞
-        for (int i = 0; i < bulletList.size(); i++) {
-
-            Set<Map.Entry<UUID, Tank>> entries = tanks.entrySet();
-            for (Map.Entry<UUID, Tank> entry : entries) {
-                TankUtil.collideWith(entry.getValue(),bulletList.get(i));
+        Set<UUID> bulletIds = bullets.keySet();
+        Set<UUID> tankIds = tanks.keySet();
+        for (UUID bulletId : bulletIds) {
+            for (UUID tankId : tankIds) {
+                TankUtil.collideWith(tanks.get(tankId),bullets.get(bulletId));
             }
         }
+
 
     }
 

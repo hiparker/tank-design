@@ -107,7 +107,8 @@ public class TankJoinMsg implements BaseMsg{
 
             baos = new ByteArrayOutputStream();
             dos = new DataOutputStream(baos);
-
+            // 设置表示 0为 坦克
+            dos.writeInt(1000);
             dos.writeInt(this.x);
             dos.writeInt(this.y);
             dos.writeInt(this.dir.ordinal());

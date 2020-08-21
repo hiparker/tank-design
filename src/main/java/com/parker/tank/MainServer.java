@@ -1,4 +1,6 @@
-package com.parker.tank.net;
+package com.parker.tank;
+
+import com.parker.tank.net.Server;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
