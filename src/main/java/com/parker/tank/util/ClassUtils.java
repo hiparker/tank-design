@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
 /**
  * 类相关的工具类
  *
- * @author <a href="mailto:ohergal@gmail.com">ohergal</a>
+ * @author Parker
  *
  */
 public class ClassUtils {
