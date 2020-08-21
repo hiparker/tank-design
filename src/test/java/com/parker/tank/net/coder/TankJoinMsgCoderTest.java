@@ -3,7 +3,7 @@ package com.parker.tank.net.coder;
 import com.parker.tank.Dir;
 import com.parker.tank.TankGroup;
 import com.parker.tank.net.msg.TankJoinMsg;
-import com.parker.tank.net.msg.Type;
+import com.parker.tank.net.msg.TankType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
@@ -32,7 +32,7 @@ public class TankJoinMsgCoderTest{
 
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(
-                5,10, Dir.LEFT, TankGroup.BLUE,true,id, Type.FIRE
+                5,10, Dir.LEFT, TankGroup.BLUE,true,id, TankType.FIRE
         );
 
         ch.writeOutbound(msg);
@@ -63,7 +63,7 @@ public class TankJoinMsgCoderTest{
 
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(
-                5,10, Dir.LEFT, TankGroup.BLUE,true,id,Type.MOVE
+                5,10, Dir.LEFT, TankGroup.BLUE,true,id, TankType.MOVE
         );
 
         ByteBuf buf = Unpooled.buffer();
