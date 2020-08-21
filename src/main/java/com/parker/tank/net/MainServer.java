@@ -17,15 +17,15 @@ import java.awt.event.WindowEvent;
  * @CreateTime: 2020-08-20 23:00
  * @Description: TODO
  */
-public class ServerFrame extends Frame {
-    public static final ServerFrame INSTANCE = new ServerFrame();
+public class MainServer extends Frame {
+    public static final MainServer INSTANCE = new MainServer();
 
     Button btnStart = new Button("start");
     TextArea taLeft = new TextArea();
     TextArea taRight = new TextArea();
     Server server = Server.INSTANCE;
 
-    public ServerFrame () {
+    public MainServer() {
         this.setSize(1600, 600);
         this.setLocation(300, 30);
         this.add(btnStart, BorderLayout.NORTH);
@@ -47,8 +47,8 @@ public class ServerFrame extends Frame {
     }
 
     public static void main(String[] args) {
-        ServerFrame.INSTANCE.setVisible(true);
-        ServerFrame.INSTANCE.server.connect();
+        MainServer.INSTANCE.setVisible(true);
+        MainServer.INSTANCE.server.connect();
     }
 
     public void updateServerMsg(String string) {

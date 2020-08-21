@@ -1,5 +1,6 @@
-package com.parker.tank;
+package com.parker.tank.net;
 
+import com.parker.tank.TankFrame;
 import com.parker.tank.net.Client;
 
 import java.util.concurrent.TimeUnit;
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @CreateTime: 2020-08-10 01:32
  * @Description: 坦克 主入口
  */
-public class Main {
+public class MainClient {
 
 
     public static void main(String[] args) throws InterruptedException {

@@ -79,7 +79,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <!-- 指定Main入口 -->
-                            <mainClass>com.parker.tank.Main</mainClass>
+                            <mainClass>com.parker.tank.net.MainClient</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

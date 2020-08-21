@@ -48,7 +48,7 @@ public enum Server {
         try{
             ChannelFuture f = b.bind(12345).sync();
             if(f.isSuccess()){
-                ServerFrame.INSTANCE.updateServerMsg("服务端启动！！！");
+                MainServer.INSTANCE.updateServerMsg("服务端启动！！！");
             }
 
             f.channel().closeFuture().sync();
