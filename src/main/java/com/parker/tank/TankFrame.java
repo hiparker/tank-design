@@ -44,7 +44,7 @@ public final class TankFrame extends Frame{
             r.nextInt(GAME_WIDTH-50),r.nextInt(GAME_HEIGHT-50),
             Dir.values()[r.nextInt(Dir.values().length)],
             this,
-            TankGroup.values()[r.nextInt(TankGroup.values().length)], UUID.randomUUID());
+            TankGroup.RED, UUID.randomUUID());
 
 
     private TankJoinMsg myTankMsg = new TankJoinMsg(myTank, TankType.CREATE);
@@ -213,6 +213,9 @@ public final class TankFrame extends Frame{
                 case KeyEvent.VK_SPACE:
                     // 按键抬起时
                     if(!flag){
+                        if(myTank == null){
+                            break;
+                        }
                         // 发送开火通知到服务器
                         Client.INSTANCE.send(new TankJoinMsg(myTank, TankType.FIRE));
                         //myTank.fired();
@@ -231,6 +234,9 @@ public final class TankFrame extends Frame{
          * 设置主战坦克方向
          */
         private void setMainTankDir() {
+            if(myTank == null){
+                return;
+            }
             boolean moving = false;
 
             if(bL || bU || bR || bD){

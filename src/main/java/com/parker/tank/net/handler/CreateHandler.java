@@ -3,6 +3,7 @@ package com.parker.tank.net.handler;
 import com.parker.tank.Tank;
 import com.parker.tank.TankFactory;
 import com.parker.tank.TankFrame;
+import com.parker.tank.TankGroup;
 import com.parker.tank.net.Client;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.TankType;
@@ -33,7 +34,7 @@ public class CreateHandler implements BaseHandler{
             return;
         }
 
-        Tank tank = TankFactory.createTank(msg.getX(), msg.getY(), msg.getDir(),TankFrame.INSTANCE,msg.getGroup(),msg.getId());
+        Tank tank = TankFactory.createTank(msg.getX(), msg.getY(), msg.getDir(),TankFrame.INSTANCE, TankGroup.BLUE,msg.getId());
 
         TankFrame.INSTANCE.addTank(tank);
 
