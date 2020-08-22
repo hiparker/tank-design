@@ -2,7 +2,6 @@ package com.parker.tank.net.coder;
 
 import com.parker.tank.net.msg.Msg;
 import com.parker.tank.net.msg.MsgUtil;
-import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.MsgType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,7 +31,8 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
         // 标记读取位置 ⭐️⭐️⭐️⭐️⭐️
         in.markReaderIndex();
 
-        MsgType msgType = MsgType.values()[in.readInt()];
+        int typeIndex = in.readInt();
+        MsgType msgType = MsgType.values()[typeIndex];
         int length = in.readInt();
         // 如果消息体长度不够 直接退出
         if(in.readableBytes()< length) {
