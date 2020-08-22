@@ -34,7 +34,8 @@ public enum Server {
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
         ServerBootstrap b = new ServerBootstrap();
-
+        // 禁用nagle算法
+        b.option(ChannelOption.TCP_NODELAY,true);
         b.group(bossGroup,workGroup);
         b.channel(NioServerSocketChannel.class);
         b.childHandler(new ChannelInitializer<SocketChannel>() {

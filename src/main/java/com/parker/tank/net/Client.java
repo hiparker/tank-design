@@ -34,6 +34,8 @@ public enum Client {
         Bootstrap b = new Bootstrap();
         try{
             ChannelFuture channelFuture = b.group(group)
+                    // 禁用nagle算法
+                    .option(ChannelOption.TCP_NODELAY,true)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -45,7 +47,7 @@ public enum Client {
                                     .addLast(new ClientChanHandler());
                         }
                     })
-                    .connect("192.168.0.103",12345)
+                    .connect("127.0.0.1",12345)
                     .sync();
 
             if(channelFuture.isSuccess()){
