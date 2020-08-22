@@ -165,32 +165,36 @@ public final class TankFrame extends Frame{
         g.drawString("爆炸的数量："+explodeList.size(),10,80);
         g.setColor(c);
 
-        // 坦克渲染
-        //tanks.values().stream().forEach((e) -> e.paint(g));
-        Set<UUID> tankIds = tanks.keySet();
-        for (UUID tankId : tankIds) {
-            Tank tank = tanks.get(tankId);
-            if(tank != null) tank.paint(g);
-        }
-
-        // 炮弹渲染
-        //bullets.values().stream().forEach((e) -> e.paint(g));
-        Set<UUID> bulletIds = bullets.keySet();
-        for (UUID bulletId : bulletIds) {
-            Bullet bullet = bullets.get(bulletId);
-            if(bullet != null) bullet.paint(g);
-        }
-
-        // 坦克爆炸
-        for (int i = 0; i < explodeList.size(); i++) {
-            explodeList.get(i).paint(g);
-        }
-
-        // 子弹与坦克碰撞
-        for (UUID bulletId : bulletIds) {
+        try {
+            // 坦克渲染
+            //tanks.values().stream().forEach((e) -> e.paint(g));
+            Set<UUID> tankIds = tanks.keySet();
             for (UUID tankId : tankIds) {
-                TankUtil.collideWith(tanks.get(tankId),bullets.get(bulletId));
+                Tank tank = tanks.get(tankId);
+                if(tank != null) tank.paint(g);
             }
+
+            // 炮弹渲染
+            //bullets.values().stream().forEach((e) -> e.paint(g));
+            Set<UUID> bulletIds = bullets.keySet();
+            for (UUID bulletId : bulletIds) {
+                Bullet bullet = bullets.get(bulletId);
+                if(bullet != null) bullet.paint(g);
+            }
+
+            // 坦克爆炸
+            for (int i = 0; i < explodeList.size(); i++) {
+                explodeList.get(i).paint(g);
+            }
+
+            // 子弹与坦克碰撞
+            for (UUID bulletId : bulletIds) {
+                for (UUID tankId : tankIds) {
+                    TankUtil.collideWith(tanks.get(tankId),bullets.get(bulletId));
+                }
+            }
+        }catch (Exception e){
+            System.out.println("碰撞渲染 部分失败");
         }
     }
 

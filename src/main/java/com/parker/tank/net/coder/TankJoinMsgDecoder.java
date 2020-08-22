@@ -22,35 +22,37 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
-
+        // ⭐️⭐️⭐️⭐️⭐️
+        // type int 为4个字节
+        // length int 为4个字节
+        // 如果消息不满足上面这个两个条件 直接不处理
         if(in.readableBytes() < 8) return;
 
-        try {
-            in.markReaderIndex();
 
-            MsgType msgType = MsgType.values()[in.readInt()];
-            int length = in.readInt();
-            // 如果长度不够 直接退出
-            if(in.readableBytes()< length) {
-                in.resetReaderIndex();
-                return;
-            }
+        // 标记读取位置 ⭐️⭐️⭐️⭐️⭐️
+        in.markReaderIndex();
 
-            byte[] bytes = new byte[length];
-            in.readBytes(bytes);
-
-            Msg msg = null;
-            Class<?> msgClazz = MsgUtil.INSTANCE.getMsgClazz(msgType);
-            if(msgClazz != null){
-                msg =(Msg) msgClazz.newInstance();
-            }
-
-            msg.parse(bytes);
-            msg.setType(msgType);
-            out.add(msg);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        MsgType msgType = MsgType.values()[in.readInt()];
+        int length = in.readInt();
+        // 如果消息体长度不够 直接退出
+        if(in.readableBytes()< length) {
+            // 回到标记读取位置 ⭐️⭐️⭐️⭐️⭐️
+            // 什么时候 消息读全了 什么时候再继续往后执行
+            in.resetReaderIndex();
+            return;
         }
 
+        byte[] bytes = new byte[length];
+        in.readBytes(bytes);
+
+        Msg msg = null;
+        Class<?> msgClazz = MsgUtil.INSTANCE.getMsgClazz(msgType);
+        if(msgClazz != null){
+            msg =(Msg) msgClazz.newInstance();
+        }
+
+        msg.parse(bytes);
+        msg.setType(msgType);
+        out.add(msg);
     }
 }
