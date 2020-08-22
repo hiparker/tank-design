@@ -19,6 +19,9 @@ import static org.junit.Assert.assertEquals;
  * @Author: Parker
  * @CreateTime: 2020-08-20 21:37
  * @Description: 编解码器 单元测试
+ *
+ * 针对 编码器 和 解码器
+ *
  */
 public class TankJoinMsgCoderTest{
 
