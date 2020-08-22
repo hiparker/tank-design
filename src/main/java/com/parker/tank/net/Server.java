@@ -70,6 +70,7 @@ class ServerChannelHandler extends SimpleChannelInboundHandler<Msg>{
         if(msg == null){
             return;
         }
+        MainServer.INSTANCE.updateClientMsg(msg.toString());
         // 单一线程执行操作
         ServerMainThread.INSTANCE.process(ctx,msg);
     }
