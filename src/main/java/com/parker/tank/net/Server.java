@@ -4,6 +4,7 @@ import com.parker.tank.MainServer;
 import com.parker.tank.net.coder.TankJoinMsgDecoder;
 import com.parker.tank.net.coder.TankJoinMsgEncoder;
 import com.parker.tank.net.msg.Msg;
+import com.parker.tank.net.msg.TankIdMsg;
 import com.parker.tank.net.msg.TankJoinMsg;
 import com.parker.tank.net.msg.MsgType;
 import com.parker.tank.net.thread.ServerMainThread;
@@ -91,10 +92,11 @@ class ServerChannelHandler extends SimpleChannelInboundHandler<Msg>{
             // 删除 当前组内记录数据
             BroadCaster.INSTANCE.remove(ctx.channel());
 
-            TankJoinMsg joinMsg = new TankJoinMsg(userId, MsgType.TANK_REMOVE);
+            TankIdMsg  msg = new TankIdMsg(userId);
+            msg.setType(MsgType.TANK_REMOVE);
 
             // 向其他客户端发送 坦克删除信息
-            BroadCaster.INSTANCE.cast(joinMsg);
+            BroadCaster.INSTANCE.cast(msg);
 
             ctx.close();
 
