@@ -1,5 +1,6 @@
 # 坦克大战 - 设计模式训练
 
+![封面](https://www.arcinbj.com/upload/2020/08/%E5%B0%81%E9%9D%A2-4cc9fb6b66c548cdaa9595faa97c9727.png)
 
 
 ## Tank-Master 基础版 - 里程碑
