@@ -1,12 +1,12 @@
 # 坦克大战 - 设计模式训练
 
-![封面](https://www.arcinbj.com/upload/2020/08/%E5%B0%81%E9%9D%A2-4cc9fb6b66c548cdaa9595faa97c9727.png)
+![封面](https://www.bedebug.com/upload/2020/08/%E5%B0%81%E9%9D%A2-4cc9fb6b66c548cdaa9595faa97c9727.png)
 
-![关卡](https://www.arcinbj.com/upload/2020/08/%E5%85%B3%E5%8D%A1%E6%88%AA%E5%9B%BE-b9dba12e325045ebaad09ef0b16895c1.png)
+![关卡](https://www.bedebug.com/upload/2020/08/%E5%85%B3%E5%8D%A1%E6%88%AA%E5%9B%BE-b9dba12e325045ebaad09ef0b16895c1.png)
 
-![游戏内](https://www.arcinbj.com/upload/2020/08/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE-9195c71036e6499f81a1bcb13be38904.png)
+![游戏内](https://www.bedebug.com/upload/2020/08/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE-9195c71036e6499f81a1bcb13be38904.png)
 
-![游戏结束](https://www.arcinbj.com/upload/2020/08/%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F-4348257b8ba547da815ec17dc868e87e.png)
+![游戏结束](https://www.bedebug.com/upload/2020/08/%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F-4348257b8ba547da815ec17dc868e87e.png)
 
 
 ## Tank-Master 基础版 - 里程碑
